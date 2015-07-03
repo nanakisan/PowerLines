@@ -1,6 +1,7 @@
 package untouchedwagons.minecraft.powerlines;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -8,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraftforge.common.config.Configuration;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
+import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.0.1")
 public class PowerLinesMod
@@ -17,6 +19,10 @@ public class PowerLinesMod
     public static Configuration config;
 
     public static SimpleNetworkWrapper networking;
+
+    @SidedProxy(serverSide = "untouchedwagons.minecraft.powerlines.proxy.ServerProxy", clientSide = "untouchedwagons.minecraft.powerlines.proxy.ClientProxy")
+    public static CommonProxy proxy;
+
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -39,7 +45,8 @@ public class PowerLinesMod
 
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(PowerLinesMod.large_power_line, "large-power-line");
+        GameRegistry.registerBlock(PowerLinesMod.large_power_line, "LargePowerLine");
 
+        PowerLinesMod.proxy.registerSpecialTileEntities();
     }
 }
