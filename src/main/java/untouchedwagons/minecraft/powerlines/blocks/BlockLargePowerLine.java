@@ -21,7 +21,7 @@ public class BlockLargePowerLine extends BlockPowerLine {
         );
 
         this.setBlockName("large-power-line");
-        this.setBlockTextureName("power-lines:large-power-line");
+        this.setBlockTextureName("powerlines:large-power-line");
     }
 
     @Override
