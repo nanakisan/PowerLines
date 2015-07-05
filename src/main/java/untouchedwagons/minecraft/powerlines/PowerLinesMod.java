@@ -11,7 +11,7 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 
-@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.1")
+@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.1", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
     public static BlockPowerLine large_power_line;
