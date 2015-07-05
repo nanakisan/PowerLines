@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
-import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
 
 public class BlockLargePowerLine extends BlockPowerLine {
@@ -43,6 +42,6 @@ public class BlockLargePowerLine extends BlockPowerLine {
     @Override
     public int getRenderType()
     {
-        return CommonProxy.RENDER_ID;
+        return -1;
     }
 }

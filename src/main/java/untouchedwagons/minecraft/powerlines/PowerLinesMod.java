@@ -41,12 +41,12 @@ public class PowerLinesMod
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
 
         PowerLinesMod.networking = new SimpleNetworkWrapper("powerlines");
+
+        GameRegistry.registerBlock(PowerLinesMod.large_power_line, "LargePowerLine");
     }
 
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(PowerLinesMod.large_power_line, "LargePowerLine");
-
         PowerLinesMod.proxy.registerSpecialTileEntities();
     }
 }
