@@ -10,6 +10,7 @@ import net.minecraftforge.common.config.Configuration;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
 
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.0.1", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
@@ -43,6 +44,7 @@ public class PowerLinesMod
         PowerLinesMod.networking = new SimpleNetworkWrapper("powerlines");
 
         GameRegistry.registerBlock(PowerLinesMod.large_power_line, "LargePowerLine");
+        GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");
     }
 
     @Mod.EventHandler

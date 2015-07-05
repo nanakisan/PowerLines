@@ -13,7 +13,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerSpecialTileEntities() {
-        GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLargePowerLine.class, new RenderLargePowerLine());
     }
 }

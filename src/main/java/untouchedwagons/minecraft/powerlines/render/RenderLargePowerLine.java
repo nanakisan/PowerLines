@@ -23,7 +23,7 @@ public class RenderLargePowerLine extends TileEntitySpecialRenderer {
 
         GL11.glRotatef(180, 0F, 0F, 1F);
 
-        model.render(null, 0, 0, 0, 0, 0, 0);
+        model.render(null, te.xCoord, te.yCoord, te.zCoord, 0, 0, partialTick);
 
         GL11.glPopMatrix();
     }
