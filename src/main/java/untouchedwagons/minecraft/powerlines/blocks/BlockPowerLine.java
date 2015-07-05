@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import untouchedwagons.minecraft.powerlines.PowerLineInfo;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerLine;
 
 abstract public class BlockPowerLine extends Block implements ITileEntityProvider
@@ -39,5 +38,20 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         player.addChatComponentMessage(new ChatComponentText(String.format("%d", tepl.getEnergyStored())));
 
         return false;
+    }
+
+    public static class PowerLineInfo
+    {
+        public final int max_energy;
+        public final int max_io;
+        public final int max_distance;
+        public final double max_angle;
+
+        public PowerLineInfo(int max_energy, int max_io, int max_distance, double max_angle) {
+            this.max_energy = max_energy;
+            this.max_io = max_io;
+            this.max_distance = max_distance;
+            this.max_angle = max_angle;
+        }
     }
 }

@@ -3,7 +3,6 @@ package untouchedwagons.minecraft.powerlines.blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import untouchedwagons.minecraft.powerlines.PowerLineInfo;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;

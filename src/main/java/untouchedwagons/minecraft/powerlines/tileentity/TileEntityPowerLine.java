@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import untouchedwagons.minecraft.powerlines.PowerLineInfo;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 
 public abstract class TileEntityPowerLine extends TileEntity implements IEnergyStorage, IEnergyHandler
@@ -62,7 +61,7 @@ public abstract class TileEntityPowerLine extends TileEntity implements IEnergyS
         return this.getPowerLineInfo().max_energy;
     }
 
-    public PowerLineInfo getPowerLineInfo()
+    public BlockPowerLine.PowerLineInfo getPowerLineInfo()
     {
         Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
 
