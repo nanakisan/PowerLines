@@ -2,8 +2,7 @@ package untouchedwagons.minecraft.powerlines.proxy;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import untouchedwagons.minecraft.powerlines.render.RenderLargePowerLine;
+import untouchedwagons.minecraft.powerlines.render.LargePowerLineRenderer;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
 
 public class ClientProxy extends CommonProxy {
@@ -13,6 +12,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerSpecialTileEntities() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLargePowerLine.class, new RenderLargePowerLine());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLargePowerLine.class, new LargePowerLineRenderer());
     }
 }
