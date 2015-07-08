@@ -14,6 +14,7 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.item.ItemBlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.item.ItemBlockSubStation;
+import untouchedwagons.minecraft.powerlines.item.ItemPowerGridLinker;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
@@ -26,6 +27,8 @@ public class PowerLinesMod
     public static BlockBoundingBox bounding_box;
     public static BlockLargePowerLine large_power_line;
     public static BlockSubStation substation;
+
+    public static ItemPowerGridLinker grid_linker;
 
     public static Configuration config;
 
@@ -64,6 +67,8 @@ public class PowerLinesMod
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
         PowerLinesMod.substation = new BlockSubStation();
 
+        PowerLinesMod.grid_linker = new ItemPowerGridLinker();
+
         GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityFluxedBoundingBox.class, "FluxedBoundingBox");
@@ -73,6 +78,8 @@ public class PowerLinesMod
 
         GameRegistry.registerBlock(PowerLinesMod.substation, ItemBlockSubStation.class, "SubStation");
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
+
+        GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }
