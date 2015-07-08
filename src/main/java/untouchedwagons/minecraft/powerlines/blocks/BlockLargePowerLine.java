@@ -10,9 +10,13 @@ public class BlockLargePowerLine extends BlockPowerLine {
     public BlockLargePowerLine() {
         super(
                 Material.iron,
+                new ITileEntityFactory() {
+                    @Override
+                    public TileEntity makeTileEntity(World p_149915_1_, int p_149915_2_) {
+                        return new TileEntityLargePowerLine();
+                    }
+                },
                 new PowerLineInfo(
-                        PowerLinesMod.config.get("large-power-line", "max-energy", 1000000).getInt(),
-                        PowerLinesMod.config.get("large-power-line", "max-io", 100000).getInt(),
                         PowerLinesMod.config.get("large-power-line", "max-distance", 48).getInt(),
                         PowerLinesMod.config.get("large-power-line", "max-angle", 45).getDouble()
                 )
@@ -20,28 +24,16 @@ public class BlockLargePowerLine extends BlockPowerLine {
 
         this.setBlockName("large-power-line");
         this.setBlockTextureName("powerlines:large-power-line");
+
+        this.setBlockBounds(0, 0, 0, 1, 4, 1);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return new TileEntityLargePowerLine();
-    }
+    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+        boolean is_air = world.isAirBlock(x, y + 1, z) &&
+                        world.isAirBlock(x, y + 2, z) &&
+                        world.isAirBlock(x, y + 3, z);
 
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
+        return super.canPlaceBlockAt(world, x, y, z) && is_air;
     }
 }
