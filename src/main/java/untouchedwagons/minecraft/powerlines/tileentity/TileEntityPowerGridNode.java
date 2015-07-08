@@ -6,7 +6,7 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 
 import java.util.UUID;
 
-public class TileEntityPowerGridNode extends TileEntity {
+public abstract class TileEntityPowerGridNode extends TileEntity {
     protected PowerGrid grid;
     protected UUID node_uuid = UUID.randomUUID();
     protected UUID grid_uuid = UUID.randomUUID();

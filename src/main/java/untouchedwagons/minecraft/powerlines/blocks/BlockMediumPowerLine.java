@@ -25,4 +25,9 @@ public class BlockMediumPowerLine extends BlockPowerLine {
         this.setBlockName("medium-power-line");
         this.setBlockTextureName("powerlines:medium-power-line");
     }
+
+    @Override
+    public String getNodeIdentifier() {
+        return "MediumPowerLine";
+    }
 }

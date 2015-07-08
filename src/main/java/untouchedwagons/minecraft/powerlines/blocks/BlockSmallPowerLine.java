@@ -25,4 +25,9 @@ public class BlockSmallPowerLine extends BlockPowerLine {
         this.setBlockName("small-power-line");
         this.setBlockTextureName("powerlines:small-power-line");
     }
+
+    @Override
+    public String getNodeIdentifier() {
+        return "SmallPowerLine";
+    }
 }

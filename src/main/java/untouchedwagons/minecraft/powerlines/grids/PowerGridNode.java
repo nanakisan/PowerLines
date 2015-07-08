@@ -8,16 +8,19 @@ public class PowerGridNode {
     private int z;
     private boolean isSubStation;
     private boolean isConnected;
+    private String node_type;
 
     public PowerGridNode() {
+
     }
 
-    public PowerGridNode(int x, int y, int z, boolean isSubStation, boolean isConnected) {
+    public PowerGridNode(int x, int y, int z, boolean isSubStation, boolean isConnected, String node_type) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.isSubStation = isSubStation;
         this.isConnected = isConnected;
+        this.node_type = node_type;
     }
 
     public int getX() {
@@ -40,12 +43,17 @@ public class PowerGridNode {
         return isConnected;
     }
 
+    public String getNodeType() {
+        return node_type;
+    }
+
     public void readFromNBT(NBTTagCompound nbt) {
         this.x = nbt.getInteger("x");
         this.y = nbt.getInteger("y");
         this.z = nbt.getInteger("z");
         this.isSubStation = nbt.getBoolean("is-sub-station");
         this.isConnected = nbt.getBoolean("is-connected");
+        this.node_type = nbt.getString("node-type");
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
@@ -54,5 +62,6 @@ public class PowerGridNode {
         nbt.setInteger("z", this.getZ());
         nbt.setBoolean("is-sub-station", this.isSubStation());
         nbt.setBoolean("is-connected", this.isConnected());
+        nbt.setString("node-type", this.getNodeType());
     }
 }

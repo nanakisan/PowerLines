@@ -12,10 +12,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 abstract public class BlockPowerLine extends Block implements ITileEntityProvider
 {
     private final PowerLineInfo pole_info;
     private final ITileEntityFactory factory;
+
+    private static final Map<String, PowerLineInfo> node_types = new LinkedHashMap<String, PowerLineInfo>();
 
     protected BlockPowerLine(Material p_i45394_1_, ITileEntityFactory factory, PowerLineInfo pole_info) {
         super(p_i45394_1_);
@@ -26,6 +31,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         this.setHardness(2F);
         this.setStepSound(Block.soundTypeStone);
         this.setCreativeTab(CreativeTabs.tabMisc);
+
+        BlockPowerLine.node_types.put(this.getNodeIdentifier(), pole_info);
     }
 
     public PowerLineInfo getPoleInfo() {
@@ -86,6 +93,13 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         }
 
         return world.setBlockToAir(x, y, z);
+    }
+
+    public abstract String getNodeIdentifier();
+
+    public static PowerLineInfo getPowerLineInfoByType(String node_type)
+    {
+        return BlockPowerLine.node_types.get(node_type);
     }
 
     public static class PowerLineInfo

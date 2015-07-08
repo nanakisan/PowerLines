@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
 
 import java.util.Random;
 
@@ -21,8 +22,15 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return new TileEntityBoundingBox();
+    public TileEntity createNewTileEntity(World world, int meta) {
+        switch (meta){
+            case 0:
+                return new TileEntityBoundingBox();
+            case 1:
+                return new TileEntityFluxedBoundingBox();
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -31,8 +39,6 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
 
         return super.getPickBlock(target, world, tebbox.orig_x, tebbox.orig_y, tebbox.orig_z, player);
     }
-
-
 
     @Override
     public int quantityDropped(Random p_149745_1_) {

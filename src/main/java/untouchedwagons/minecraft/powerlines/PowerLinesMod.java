@@ -3,6 +3,7 @@ package untouchedwagons.minecraft.powerlines;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -10,16 +11,21 @@ import net.minecraftforge.common.config.Configuration;
 import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
+import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.item.ItemBlockLargePowerLine;
+import untouchedwagons.minecraft.powerlines.item.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.0.2", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
     public static BlockBoundingBox bounding_box;
-    public static BlockPowerLine large_power_line;
+    public static BlockLargePowerLine large_power_line;
+    public static BlockSubStation substation;
 
     public static Configuration config;
 
@@ -56,12 +62,19 @@ public class PowerLinesMod
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
+        PowerLinesMod.substation = new BlockSubStation();
 
         GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
+        GameRegistry.registerTileEntity(TileEntityFluxedBoundingBox.class, "FluxedBoundingBox");
 
         GameRegistry.registerBlock(PowerLinesMod.large_power_line, ItemBlockLargePowerLine.class, "LargePowerLine");
         GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");
+
+        GameRegistry.registerBlock(PowerLinesMod.substation, ItemBlockSubStation.class, "SubStation");
+        GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
+
+        FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }
 
     @Mod.EventHandler

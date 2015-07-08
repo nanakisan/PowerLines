@@ -36,4 +36,9 @@ public class BlockLargePowerLine extends BlockPowerLine {
 
         return super.canPlaceBlockAt(world, x, y, z) && is_air;
     }
+
+    @Override
+    public String getNodeIdentifier() {
+        return "LargePowerLine";
+    }
 }
