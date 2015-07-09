@@ -30,4 +30,9 @@ public class BlockMediumPowerLine extends BlockPowerLine {
     public String getNodeIdentifier() {
         return "MediumPowerLine";
     }
+
+    @Override
+    public boolean isSubStation() {
+        return false;
+    }
 }

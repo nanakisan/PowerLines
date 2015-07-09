@@ -41,4 +41,9 @@ public class BlockLargePowerLine extends BlockPowerLine {
     public String getNodeIdentifier() {
         return "LargePowerLine";
     }
+
+    @Override
+    public boolean isSubStation() {
+        return false;
+    }
 }

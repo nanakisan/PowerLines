@@ -3,3 +3,15 @@ tile.large-power-line.name=Large Power Line
 tile.bounding-box.name=Bounding Box
 
 item.grid-linker.name=Power Grid Linker
+
+text.grid-linker-not-tile-entity=That's not a Power Grid node
+text.grid-linker-link-ready=Ready to link
+text.grid-linker-link-info.1=Right click a power line or substation
+text.grid-linker-link-info.2=to connect it to a power grid.
+text.grid-linker-link-info.3=Sneak and right click to clear.
+text.grid-linker-clear=Grid Linker cleared
+text.grid-linker-pre-link-info.1=Sneak and right click a power node
+text.grid-linker-pre-link-info.2=to save its power grid info.
+text.grid-linker-pre-link-error=No power grid set.
+text.grid-linker-pre-link-success=Power grid set. If this is a substation, make sure it can connect to the other substations so that they all can work.
+text.grid=Grid

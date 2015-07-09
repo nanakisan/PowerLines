@@ -11,9 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
+import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerLine;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 abstract public class BlockPowerLine extends Block implements ITileEntityProvider
 {
@@ -61,14 +66,21 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        super.onBlockPlacedBy(world, x, y, z, entity, stack);
-
         TileEntity te = world.getTileEntity(x, y, z);
 
         if (te instanceof IBoundingBlock)
         {
             ((IBoundingBlock)te).onPlace();
         }
+
+        PowerGridNode node = new PowerGridNode(x, y, z, this.isSubStation(), false, this.getNodeIdentifier());
+        UUID grid_uuid = ((TileEntityPowerLine)te).getPowerGridUUID();
+        PowerGridWorldSavedData data = PowerGridWorldSavedData.get(world);
+
+        PowerGrid grid = data.getGridByUUID(grid_uuid);
+        grid.connectGridNode(node);
+
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
 
     @Override
@@ -79,6 +91,10 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         {
             ((IBoundingBlock)te).onBreak();
         }
+
+        UUID grid_uuid = ((TileEntityPowerLine)te).getPowerGridUUID();
+        PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
+        grid.disconnectGridNode(x, y, z);
 
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -96,6 +112,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     }
 
     public abstract String getNodeIdentifier();
+
+    public abstract boolean isSubStation();
 
     public static PowerLineInfo getPowerLineInfoByType(String node_type)
     {

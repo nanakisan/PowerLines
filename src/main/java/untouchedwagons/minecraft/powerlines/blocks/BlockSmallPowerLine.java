@@ -30,4 +30,9 @@ public class BlockSmallPowerLine extends BlockPowerLine {
     public String getNodeIdentifier() {
         return "SmallPowerLine";
     }
+
+    @Override
+    public boolean isSubStation() {
+        return false;
+    }
 }

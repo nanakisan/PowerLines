@@ -65,4 +65,9 @@ public class BlockSubStation extends BlockPowerLine implements ITileEntityProvid
     public String getNodeIdentifier() {
         return "SubStation";
     }
+
+    @Override
+    public boolean isSubStation() {
+        return true;
+    }
 }

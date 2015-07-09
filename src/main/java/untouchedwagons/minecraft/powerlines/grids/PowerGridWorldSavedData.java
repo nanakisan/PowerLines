@@ -30,7 +30,7 @@ public class PowerGridWorldSavedData extends WorldSavedData {
                 return grid;
         }
 
-        PowerGrid new_grid = new PowerGrid(grid_uuid);
+        PowerGrid new_grid = new PowerGrid(grid_uuid, this);
 
         this.grids.add(new_grid);
         this.markDirty();
@@ -77,6 +77,13 @@ public class PowerGridWorldSavedData extends WorldSavedData {
     }
 
     public static PowerGridWorldSavedData get(World world) {
-        return (PowerGridWorldSavedData)world.perWorldStorage.loadData(PowerGridWorldSavedData.class, IDENTIFIER);
+        PowerGridWorldSavedData data = (PowerGridWorldSavedData)world.mapStorage.loadData(PowerGridWorldSavedData.class, IDENTIFIER);
+
+        if (data == null) {
+            data = new PowerGridWorldSavedData();
+            world.mapStorage.setData(IDENTIFIER, data);
+        }
+
+        return data;
     }
 }
