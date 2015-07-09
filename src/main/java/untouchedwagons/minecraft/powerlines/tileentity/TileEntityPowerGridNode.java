@@ -1,6 +1,9 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.UUID;
@@ -26,6 +29,20 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
 
         nbt.setString("node-uuid", this.node_uuid.toString());
         nbt.setString("grid-uuid", this.grid_uuid.toString());
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbtTag = new NBTTagCompound();
+
+        this.writeToNBT(nbtTag);
+
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.func_148857_g());
     }
 
     public UUID getPowerGridUUID() {

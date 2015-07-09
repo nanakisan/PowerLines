@@ -6,9 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PowerGrid implements IEnergyStorage {
     private final EnergyStorage energy = new EnergyStorage(PowerLinesMod.config.get("power-grid", "max-energy", 1000000).getInt());
@@ -36,11 +34,36 @@ public class PowerGrid implements IEnergyStorage {
     /**
      * This method checks to see if the power grid is working, that is, all the substations can connect to each other
      * via power lines. The substations don't have to be loaded for this to work. If one substation can't route to its
-     * brothers, the grid won't work. This method is called aut
+     * brothers, the grid won't work. This method is called automatically
      */
     private void connectGrid()
     {
+        PowerGridNode first_substation = null;
 
+        for (PowerGridNode node : this.nodes)
+        {
+            node.findNeighours(this.nodes);
+
+            if (first_substation == null && node.isSubStation())
+                first_substation = node;
+        }
+
+        if (first_substation == null)
+            return;
+
+        Set<PowerGridNode> visited_nodes = new LinkedHashSet<PowerGridNode>();
+        Set<PowerGridNode> substations = new LinkedHashSet<PowerGridNode>();
+        List<PowerGridNode> substations_in_grid = this.getSubStations();
+
+        this.searchForConnectedSubStations(first_substation, substations, visited_nodes);
+
+        int substation_count = substations_in_grid.size();
+        int connected_substations = substations.size();
+
+        for (PowerGridNode substation : substations_in_grid)
+        {
+            substation.setIsConnected(substation_count == connected_substations);
+        }
     }
 
     public void connectGridNode(PowerGridNode node)
@@ -63,16 +86,31 @@ public class PowerGrid implements IEnergyStorage {
             if (node.getX() == x && node.getY() == y && node.getZ() == z)
             {
                 this.nodes.remove(node);
+                node.disconnect();
                 this.storage.markDirty();
 
                 if (this.nodes.size() == 0)
+                {
                     this.storage.removePowerGrid(this);
 
-                return;
+                    return;
+                }
+
+                break;
             }
         }
 
         this.connectGrid();
+    }
+
+    public PowerGridNode getGridNode(int x, int y, int z)
+    {
+        for (PowerGridNode node : this.nodes) {
+            if (node.getX() == x && node.getY() == y && node.getZ() == z)
+                return node;
+        }
+
+        return null;
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
@@ -152,11 +190,31 @@ public class PowerGrid implements IEnergyStorage {
         for (PowerGridNode node : this.nodes)
         {
             if (node.isSubStation())
-            {
                 substations.add(node);
-            }
         }
 
         return substations;
+    }
+
+    /**
+     * This method recursively walks the network, looking for connected substations
+     * @param current_node The node that the walker is currently at
+     * @param substations A set of found and connected substations
+     * @param visited_nodes A set of all the nodes that have been visited
+     */
+    private void searchForConnectedSubStations(PowerGridNode current_node, Set<PowerGridNode> substations, Set<PowerGridNode> visited_nodes)
+    {
+        visited_nodes.add(current_node);
+
+        for (PowerGridNode neighbour : current_node.getNeighbours())
+        {
+            if (visited_nodes.contains(neighbour))
+                connectGrid();
+
+            if (neighbour.isSubStation())
+                substations.add(neighbour);
+
+            searchForConnectedSubStations(neighbour, substations, visited_nodes);
+        }
     }
 }

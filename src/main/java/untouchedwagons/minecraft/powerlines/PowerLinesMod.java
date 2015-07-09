@@ -1,20 +1,29 @@
 package untouchedwagons.minecraft.powerlines;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
-import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.item.ItemBlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.item.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.item.ItemPowerGridLinker;
+import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
@@ -24,6 +33,9 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.0.2", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
+    @Mod.Instance
+    public static PowerLinesMod INSTANCE;
+
     public static BlockBoundingBox bounding_box;
     public static BlockLargePowerLine large_power_line;
     public static BlockSubStation substation;
@@ -61,7 +73,13 @@ public class PowerLinesMod
 
         if (PowerLinesMod.config.hasChanged()) PowerLinesMod.config.save();
 
-        PowerLinesMod.networking = new SimpleNetworkWrapper("powerlines");
+        PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
+        PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 1, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridDestroyedMessage.class, PowerGridDestroyedMessage.class, 2, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 3, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.SERVER);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
@@ -85,7 +103,32 @@ public class PowerLinesMod
     }
 
     @Mod.EventHandler
-    public void load(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
         PowerLinesMod.proxy.registerTileEntitiesRenderers();
+
+        FMLCommonHandler.instance().bus().register(this);
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        this.sendPlayerPowerGridWorldSavedData(event);
+    }
+
+    @SubscribeEvent
+    public void onPlayerSwitchDimension(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        this.sendPlayerPowerGridWorldSavedData(event);
+    }
+
+    private void sendPlayerPowerGridWorldSavedData(PlayerEvent event)
+    {
+        FMLLog.info("Sending grid info");
+
+        World world = event.player.getEntityWorld();
+        PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
+        PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(pgwsd);
+
+        PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) event.player);
     }
 }

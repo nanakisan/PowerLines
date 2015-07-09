@@ -1,11 +1,15 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyStorage;
+import net.minecraftforge.common.util.ForgeDirection;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.extra.PowerLineUtils;
+import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
-public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage {
-
+public class TileEntitySubStation extends TileEntityPowerLine implements IBoundingBlock, IEnergyStorage, IEnergyConnection {
     public TileEntitySubStation() {
 
     }
@@ -52,21 +56,50 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        return 0;
+        PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
+        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+
+        if (!node.isConnected())
+            return 0;
+
+        return grid.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        return 0;
+        PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
+        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+
+        if (!node.isConnected())
+            return 0;
+
+        return grid.extractEnergy(maxExtract, simulate);
     }
 
     @Override
     public int getEnergyStored() {
-        return 0;
+        PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
+        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+
+        if (!node.isConnected())
+            return 0;
+
+        return grid.getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return 0;
+        PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
+        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+
+        if (!node.isConnected())
+            return 0;
+
+        return grid.getMaxEnergyStored();
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return from == ForgeDirection.DOWN;
     }
 }

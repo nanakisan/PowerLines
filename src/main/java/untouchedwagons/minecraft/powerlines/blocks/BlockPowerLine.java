@@ -66,6 +66,9 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+        if (world.isRemote)
+            return;
+
         TileEntity te = world.getTileEntity(x, y, z);
 
         if (te instanceof IBoundingBlock)
@@ -85,6 +88,9 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (world.isRemote)
+            return;
+
         TileEntity te = world.getTileEntity(x, y, z);
 
         if (te instanceof IBoundingBlock)
