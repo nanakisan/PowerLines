@@ -1,10 +1,12 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 
 import java.util.UUID;
 
@@ -43,6 +45,13 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         this.readFromNBT(packet.func_148857_g());
+    }
+
+    public BlockPowerLine.PowerLineInfo getPowerLineInfo()
+    {
+        Block b = this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
+
+        return ((BlockPowerLine)b).getPoleInfo();
     }
 
     public UUID getPowerGridUUID() {

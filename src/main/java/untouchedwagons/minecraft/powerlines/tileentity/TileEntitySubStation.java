@@ -9,7 +9,7 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
-public class TileEntitySubStation extends TileEntityPowerLine implements IBoundingBlock, IEnergyStorage, IEnergyConnection {
+public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection {
     public TileEntitySubStation() {
 
     }

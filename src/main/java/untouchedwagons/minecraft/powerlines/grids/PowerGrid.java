@@ -176,6 +176,10 @@ public class PowerGrid implements IEnergyStorage {
         return this.grid_uuid;
     }
 
+    public List<PowerGridNode> getNodes() {
+        return nodes;
+    }
+
     public void setStorage(PowerGridWorldSavedData storage) {
         this.storage.markDirty();
         this.storage = storage;

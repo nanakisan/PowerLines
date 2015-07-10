@@ -7,16 +7,23 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerLine;
+import untouchedwagons.minecraft.powerlines.network.PowerGridCreatedMessage;
+import untouchedwagons.minecraft.powerlines.network.PowerGridDestroyedMessage;
+import untouchedwagons.minecraft.powerlines.network.PowerGridNodeConnectedMessage;
+import untouchedwagons.minecraft.powerlines.network.PowerGridNodeDisconnectedMessage;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -76,13 +83,9 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             ((IBoundingBlock)te).onPlace();
         }
 
-        PowerGridNode node = new PowerGridNode(x, y, z, this.isSubStation(), false, this.getNodeIdentifier());
-        UUID grid_uuid = ((TileEntityPowerLine)te).getPowerGridUUID();
-        PowerGridWorldSavedData data = PowerGridWorldSavedData.get(world);
+        UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
 
-        PowerGrid grid = data.getGridByUUID(grid_uuid);
-        grid.connectGridNode(node);
-        grid.connectGrid();
+        connectToPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
 
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
@@ -99,10 +102,9 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             ((IBoundingBlock)te).onBreak();
         }
 
-        UUID grid_uuid = ((TileEntityPowerLine)te).getPowerGridUUID();
-        PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
-        grid.disconnectGridNode(x, y, z);
-        grid.connectGrid();
+        UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
+
+        disconnectFromPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
 
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -117,6 +119,49 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         }
 
         return world.setBlockToAir(x, y, z);
+    }
+
+    public void connectToPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
+    {
+        PowerGridNode node = new PowerGridNode(te_node.xCoord, te_node.yCoord, te_node.zCoord, this.isSubStation(), false, this.getNodeIdentifier());
+        PowerGridWorldSavedData data = PowerGridWorldSavedData.get(te_node.getWorldObj());
+
+        PowerGrid grid = data.getGridByUUID(grid_uuid);
+        grid.connectGridNode(node);
+        grid.connectGrid();
+
+        PowerGridCreatedMessage message = new PowerGridCreatedMessage(grid_uuid);
+        PowerGridNodeConnectedMessage message2 = new PowerGridNodeConnectedMessage(grid_uuid, node);
+
+        //noinspection unchecked
+        for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
+        {
+            PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
+            PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player);
+        }
+    }
+
+    public void disconnectFromPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
+    {
+        PowerGrid grid = PowerGridWorldSavedData.get(te_node.getWorldObj()).getGridByUUID(grid_uuid);
+        PowerGridNode node = grid.getGridNode(te_node.xCoord, te_node.yCoord, te_node.zCoord);
+
+        grid.disconnectGridNode(node);
+        grid.connectGrid();
+
+        boolean grid_has_nodes = grid.getNodes().size() != 0;
+
+        PowerGridNodeDisconnectedMessage message = new PowerGridNodeDisconnectedMessage(grid_uuid, node);
+        PowerGridDestroyedMessage message2 = grid_has_nodes ? null : new PowerGridDestroyedMessage(grid_uuid);
+
+        //noinspection unchecked
+        for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
+        {
+            PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
+
+            if (message2 != null)
+                PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player);
+        }
     }
 
     public abstract String getNodeIdentifier();

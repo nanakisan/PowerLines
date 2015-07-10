@@ -20,7 +20,7 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.Method;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerLine;
+import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
 import java.util.List;
@@ -52,21 +52,21 @@ public class WailaDataProvider implements IWailaDataProvider
         if (te instanceof TileEntityBoundingBox)
         {
             TileEntityBoundingBox tebb = (TileEntityBoundingBox)te;
-            TileEntityPowerLine tepl = (TileEntityPowerLine) accessor.getWorld().getTileEntity(tebb.orig_x, tebb.orig_y, tebb.orig_z);
+            TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) accessor.getWorld().getTileEntity(tebb.orig_x, tebb.orig_y, tebb.orig_z);
 
             if(accessor.getPlayer().isSneaking())
             {
-                currenttip.add(String.format("%sNode UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepl.getNodeUUID(), EnumChatFormatting.RESET));
-                currenttip.add(String.format("%sGrid UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepl.getPowerGridUUID(), EnumChatFormatting.RESET));
+                currenttip.add(String.format("%sNode UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepgn.getNodeUUID(), EnumChatFormatting.RESET));
+                currenttip.add(String.format("%sGrid UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepgn.getPowerGridUUID(), EnumChatFormatting.RESET));
             }
             else
             {
                 currenttip.add("Sneak to view extra info");
             }
 
-            if (tepl instanceof TileEntitySubStation)
+            if (tepgn instanceof TileEntitySubStation)
             {
-                PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepl.getPowerGridUUID());
+                PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
                 PowerGridNode node = grid.getGridNode(tebb.orig_x, tebb.orig_y, tebb.orig_z);
 
                 currenttip.add(String.format("Is Connected: %b", node.isConnected()));

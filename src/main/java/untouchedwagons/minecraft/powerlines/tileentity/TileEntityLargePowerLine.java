@@ -3,7 +3,7 @@ package untouchedwagons.minecraft.powerlines.tileentity;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.extra.PowerLineUtils;
 
-public class TileEntityLargePowerLine extends TileEntityPowerLine implements IBoundingBlock {
+public class TileEntityLargePowerLine extends TileEntityPowerGridNode implements IBoundingBlock {
 
     @Override
     public void onPlace() {
