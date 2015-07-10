@@ -74,12 +74,12 @@ public class PowerLinesMod
         if (PowerLinesMod.config.hasChanged()) PowerLinesMod.config.save();
 
         PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
-        PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.SERVER);
-        PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 1, Side.SERVER);
-        PowerLinesMod.networking.registerMessage(PowerGridDestroyedMessage.class, PowerGridDestroyedMessage.class, 2, Side.SERVER);
-        PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 3, Side.SERVER);
-        PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.SERVER);
-        PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.SERVER);
+        PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 1, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridDestroyedMessage.class, PowerGridDestroyedMessage.class, 2, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 3, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();

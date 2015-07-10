@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -38,7 +39,7 @@ public class PowerGridSynchronizationMessage extends AbstractMessage<PowerGridSy
     public IMessage onMessage(PowerGridSynchronizationMessage message, MessageContext ctx) {
         FMLLog.info("message received");
 
-        World world = ctx.getServerHandler().playerEntity.worldObj;
+        World world = Minecraft.getMinecraft().theWorld;
         PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
 
         pgwsd.readFromNBT(message.getGridNbtData());
