@@ -1,6 +1,5 @@
-package untouchedwagons.minecraft.powerlines.item;
+package untouchedwagons.minecraft.powerlines.items;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,9 +11,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
-import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
-import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
-import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
 import java.util.List;
@@ -23,6 +19,7 @@ import java.util.UUID;
 public class ItemPowerGridLinker extends Item {
     public ItemPowerGridLinker() {
         this.setUnlocalizedName("grid-linker");
+        this.setTextureName("powerlines:grid-linker");
         this.setMaxStackSize(1);
         this.setCreativeTab(CreativeTabs.tabMisc);
     }

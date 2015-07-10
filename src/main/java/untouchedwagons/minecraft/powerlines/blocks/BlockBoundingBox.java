@@ -19,6 +19,7 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
         super(Material.iron);
 
         this.setBlockName("pl-bounding-box");
+        this.setBlockName("powerlines:pl-bounding-box");
     }
 
     @Override

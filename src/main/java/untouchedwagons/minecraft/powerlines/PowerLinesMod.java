@@ -20,9 +20,9 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.item.ItemBlockLargePowerLine;
-import untouchedwagons.minecraft.powerlines.item.ItemBlockSubStation;
-import untouchedwagons.minecraft.powerlines.item.ItemPowerGridLinker;
+import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockLargePowerLine;
+import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
+import untouchedwagons.minecraft.powerlines.items.ItemPowerGridLinker;
 import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
@@ -30,7 +30,7 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingB
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
-@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.2", dependencies = "required-after:CoFHCore")
+@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.3", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
     @Mod.Instance
@@ -53,7 +53,7 @@ public class PowerLinesMod
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        event.getModMetadata().version = "0.0.2";
+        event.getModMetadata().version = "0.0.3";
 
         PowerLinesMod.config = new Configuration(event.getSuggestedConfigurationFile());
 
@@ -97,7 +97,7 @@ public class PowerLinesMod
         GameRegistry.registerBlock(PowerLinesMod.substation, ItemBlockSubStation.class, "SubStation");
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
 
-        GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker");
+        GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker", "powerlines");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }

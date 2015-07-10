@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.grids;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;

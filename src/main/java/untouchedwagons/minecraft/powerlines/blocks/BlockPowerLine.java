@@ -66,10 +66,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     }
 
     @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
+    public int getRenderType() { return -1; }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
