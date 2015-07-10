@@ -24,7 +24,12 @@ public class SubStationItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, 0);
+
+        if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+        {
+            GL11.glTranslatef(0.75F, 0.4F, 0.75F);
+        }
+
         GL11.glRotatef(180, 0F, 0F, 1F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
 
