@@ -38,6 +38,11 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         return new_grid;
     }
 
+    public void removePowerGrid(UUID grid_uuid)
+    {
+        this.removePowerGrid(this.getGridByUUID(grid_uuid));
+    }
+
     public void removePowerGrid(PowerGrid grid)
     {
         this.grids.remove(grid);
@@ -53,6 +58,7 @@ public class PowerGridWorldSavedData extends WorldSavedData {
             NBTTagCompound grid_tag = grids.getCompoundTagAt(i);
             PowerGrid grid = new PowerGrid(this);
             grid.readFromNBT(grid_tag);
+            grid.connectGrid();
 
             this.grids.add(grid);
         }

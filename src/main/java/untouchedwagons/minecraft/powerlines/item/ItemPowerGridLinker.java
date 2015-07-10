@@ -89,6 +89,7 @@ public class ItemPowerGridLinker extends Item {
 
                 PowerGrid old_grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
                 old_grid.disconnectGridNode(x, y, z);
+                old_grid.connectGrid();
 
                 UUID new_grid_uuid = UUID.fromString(stack.getTagCompound().getString("grid-uuid"));
                 PowerGrid new_grid = PowerGridWorldSavedData.get(world).getGridByUUID(new_grid_uuid);
@@ -97,6 +98,7 @@ public class ItemPowerGridLinker extends Item {
 
                 tepgn.setGridUUID(new_grid_uuid);
                 new_grid.connectGridNode(new PowerGridNode(x, y, z, power_line.isSubStation(), false, power_line.getNodeIdentifier()));
+                new_grid.connectGrid();
 
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-pre-link-success")));
             }

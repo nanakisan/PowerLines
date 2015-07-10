@@ -34,9 +34,9 @@ public class PowerGrid implements IEnergyStorage {
     /**
      * This method checks to see if the power grid is working, that is, all the substations can connect to each other
      * via power lines. The substations don't have to be loaded for this to work. If one substation can't route to its
-     * brothers, the grid won't work. This method is called automatically
+     * brothers, the grid won't work.
      */
-    private void connectGrid()
+    public void connectGrid()
     {
         PowerGridNode first_substation = null;
 
@@ -70,8 +70,6 @@ public class PowerGrid implements IEnergyStorage {
     {
         this.nodes.add(node);
         this.storage.markDirty();
-
-        this.connectGrid();
     }
 
     public void disconnectGridNode(PowerGridNode node)
@@ -99,8 +97,6 @@ public class PowerGrid implements IEnergyStorage {
                 break;
             }
         }
-
-        this.connectGrid();
     }
 
     public PowerGridNode getGridNode(int x, int y, int z)
@@ -129,8 +125,6 @@ public class PowerGrid implements IEnergyStorage {
 
             this.nodes.add(node_coord);
         }
-
-        this.connectGrid();
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
@@ -174,6 +168,10 @@ public class PowerGrid implements IEnergyStorage {
         return this.energy.getMaxEnergyStored();
     }
 
+    public void setEnergyStored(int energy) {
+        this.energy.setEnergyStored(energy);
+    }
+
     public UUID getGridUUID() {
         return this.grid_uuid;
     }
@@ -209,7 +207,7 @@ public class PowerGrid implements IEnergyStorage {
         for (PowerGridNode neighbour : current_node.getNeighbours())
         {
             if (visited_nodes.contains(neighbour))
-                connectGrid();
+                continue;
 
             if (neighbour.isSubStation())
                 substations.add(neighbour);

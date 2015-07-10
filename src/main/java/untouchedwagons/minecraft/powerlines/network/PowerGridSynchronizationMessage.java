@@ -23,7 +23,6 @@ public class PowerGridSynchronizationMessage extends AbstractMessage<PowerGridSy
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        FMLLog.info("bytes received");
         this.grid_nbt_data = ByteBufUtils.readTag(buf);
     }
 
@@ -37,8 +36,6 @@ public class PowerGridSynchronizationMessage extends AbstractMessage<PowerGridSy
 
     @Override
     public IMessage onMessage(PowerGridSynchronizationMessage message, MessageContext ctx) {
-        FMLLog.info("message received");
-
         World world = Minecraft.getMinecraft().theWorld;
         PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
 

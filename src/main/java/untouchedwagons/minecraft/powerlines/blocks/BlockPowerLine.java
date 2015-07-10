@@ -82,6 +82,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
         PowerGrid grid = data.getGridByUUID(grid_uuid);
         grid.connectGridNode(node);
+        grid.connectGrid();
 
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
@@ -101,6 +102,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         UUID grid_uuid = ((TileEntityPowerLine)te).getPowerGridUUID();
         PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
         grid.disconnectGridNode(x, y, z);
+        grid.connectGrid();
 
         super.breakBlock(world, x, y, z, block, meta);
     }
