@@ -9,9 +9,11 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
+import java.util.UUID;
+
 public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection {
     public TileEntitySubStation() {
-
+        super(UUID.randomUUID());
     }
 
     @Override

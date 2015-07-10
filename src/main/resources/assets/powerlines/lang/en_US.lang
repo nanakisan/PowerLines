@@ -5,13 +5,27 @@ tile.pl-bounding-box.name=Bounding Box
 item.grid-linker.name=Power Grid Linker
 
 text.grid-linker-not-tile-entity=That's not a Power Grid node
-text.grid-linker-link-ready=Ready to link
-text.grid-linker-link-info.1=Right click a power line or substation
-text.grid-linker-link-info.2=to connect it to a power grid.
-text.grid-linker-link-info.3=Sneak and right click to clear.
+
+text.grid-linker-info.1=Links power nodes together.
+text.grid-linker-info.2=Sneak+Right click a linked node
+text.grid-linker-info.3=to save the destination grid.
+text.grid-linker-info.4=Right click another node to
+text.grid-linker-info.5=connect the later to the
+text.grid-linker-info.6=former's grid. Substations are
+text.grid-linker-info.7=always linked to a grid, but
+text.grid-linker-info.8=power lines are not.
+
 text.grid-linker-clear=Grid Linker cleared
-text.grid-linker-pre-link-info.1=Sneak and right click a power node
-text.grid-linker-pre-link-info.2=to save its power grid info.
-text.grid-linker-pre-link-error=No power grid set.
-text.grid-linker-pre-link-success=Power grid set. If this is a substation, make sure it can connect to the other substations so that they all can work.
+text.grid-linker-saved=Node info saved
+
+text.grid-linker-no-grid-error=This node has not been connected to a power grid.
+text.grid-linker-no-data-error=No data to load.
+text.grid-linker-no-block-error=Original power line node has been unloaded.
+text.grid-linker-missing-block-error=Original power line block is missing. Have you gone across dimensions or destroyed the original?
+text.grid-linker-too-far-error=Power line nodes are too far apart.
+text.grid-linker-too-steep-error=Angle between the two power lines is too great
+
+text.grid-linker-link-success=Power grid set. If this is a substation, make sure it can connect to the other substations so that they all can work.
 text.grid=Grid
+
+text.waila.grid-uuid-none=None

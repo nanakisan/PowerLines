@@ -12,9 +12,14 @@ import java.util.UUID;
 
 public abstract class TileEntityPowerGridNode extends TileEntity {
     protected UUID node_uuid = UUID.randomUUID();
-    protected UUID grid_uuid = UUID.randomUUID();
+    protected UUID grid_uuid;
 
     public TileEntityPowerGridNode() {
+        this(null);
+    }
+
+    public TileEntityPowerGridNode(UUID grid_uuid) {
+        this.grid_uuid = grid_uuid;
     }
 
     @Override
@@ -22,7 +27,9 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
         super.readFromNBT(nbt);
 
         this.node_uuid = UUID.fromString(nbt.getString("node-uuid"));
-        this.grid_uuid = UUID.fromString(nbt.getString("grid-uuid"));
+
+        String grid_uuid = nbt.getString("grid-uuid");
+        this.grid_uuid = grid_uuid.equals("") ? null : UUID.fromString(grid_uuid);
     }
 
     @Override
@@ -30,7 +37,7 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
         super.writeToNBT(nbt);
 
         nbt.setString("node-uuid", this.node_uuid.toString());
-        nbt.setString("grid-uuid", this.grid_uuid.toString());
+        nbt.setString("grid-uuid", this.grid_uuid != null ? this.grid_uuid.toString() : "");
     }
 
     @Override

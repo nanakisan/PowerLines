@@ -30,7 +30,7 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingB
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
-@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.3", dependencies = "required-after:CoFHCore")
+@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.4", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
     @Mod.Instance
@@ -53,7 +53,7 @@ public class PowerLinesMod
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        event.getModMetadata().version = "0.0.3";
+        event.getModMetadata().version = "0.0.4";
 
         PowerLinesMod.config = new Configuration(event.getSuggestedConfigurationFile());
 
@@ -75,11 +75,7 @@ public class PowerLinesMod
 
         PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 1, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridDestroyedMessage.class, PowerGridDestroyedMessage.class, 2, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 3, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();

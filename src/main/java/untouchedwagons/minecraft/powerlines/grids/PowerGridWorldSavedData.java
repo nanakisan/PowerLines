@@ -50,6 +50,8 @@ public class PowerGridWorldSavedData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
+        this.grids.clear();
+
         NBTTagList grids = nbt.getTagList("grids", 10);
 
         for (int i = 0; i < grids.tagCount(); i++)

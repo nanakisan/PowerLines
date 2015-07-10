@@ -16,10 +16,7 @@ import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.PowerGridCreatedMessage;
-import untouchedwagons.minecraft.powerlines.network.PowerGridDestroyedMessage;
-import untouchedwagons.minecraft.powerlines.network.PowerGridNodeConnectedMessage;
-import untouchedwagons.minecraft.powerlines.network.PowerGridNodeDisconnectedMessage;
+import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
 import java.util.LinkedHashMap;
@@ -82,7 +79,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
         UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
 
-        connectToPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
+        if (grid_uuid != null)
+            connectToPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
 
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
@@ -101,7 +99,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
         UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
 
-        disconnectFromPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
+        if (grid_uuid != null)
+            disconnectFromPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
 
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -127,14 +126,13 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         grid.connectGridNode(node);
         grid.connectGrid();
 
-        PowerGridCreatedMessage message = new PowerGridCreatedMessage(grid_uuid);
-        PowerGridNodeConnectedMessage message2 = new PowerGridNodeConnectedMessage(grid_uuid, node);
+        // Inform everyone in the world of the changes.
+        PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(te_node.getWorldObj()));
 
         //noinspection unchecked
         for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
         {
             PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
-            PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player);
         }
     }
 
@@ -146,18 +144,13 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         grid.disconnectGridNode(node);
         grid.connectGrid();
 
-        boolean grid_has_nodes = grid.getNodes().size() != 0;
-
-        PowerGridNodeDisconnectedMessage message = new PowerGridNodeDisconnectedMessage(grid_uuid, node);
-        PowerGridDestroyedMessage message2 = grid_has_nodes ? null : new PowerGridDestroyedMessage(grid_uuid);
+        // Inform everyone in the world of the changes.
+        PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(te_node.getWorldObj()));
 
         //noinspection unchecked
         for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
         {
             PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
-
-            if (message2 != null)
-                PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player);
         }
     }
 

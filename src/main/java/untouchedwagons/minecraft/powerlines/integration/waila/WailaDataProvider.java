@@ -11,8 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
+import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
@@ -24,6 +26,7 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
 import java.util.List;
+import java.util.UUID;
 
 @Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
 public class WailaDataProvider implements IWailaDataProvider
@@ -48,29 +51,79 @@ public class WailaDataProvider implements IWailaDataProvider
     @Method(modid = "Waila")
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         TileEntity te = accessor.getTileEntity();
+        TileEntityPowerGridNode tepgn;
 
-        if (te instanceof TileEntityBoundingBox)
+        if (te instanceof TileEntityBoundingBox) {
+            TileEntityBoundingBox tebb = (TileEntityBoundingBox) te;
+            tepgn = (TileEntityPowerGridNode) accessor.getWorld().getTileEntity(tebb.orig_x, tebb.orig_y, tebb.orig_z);
+        }
+        else
         {
-            TileEntityBoundingBox tebb = (TileEntityBoundingBox)te;
-            TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) accessor.getWorld().getTileEntity(tebb.orig_x, tebb.orig_y, tebb.orig_z);
+            tepgn = (TileEntityPowerGridNode) te;
+        }
 
-            if(accessor.getPlayer().isSneaking())
+        if(accessor.getPlayer().isSneaking())
+        {
+            currenttip.add(
+                    String.format(
+                            "%sNode UUID%s: %s%s%s",
+                            EnumChatFormatting.AQUA,
+                            EnumChatFormatting.RESET,
+                            EnumChatFormatting.GREEN,
+                            tepgn.getNodeUUID(),
+                            EnumChatFormatting.RESET
+                    )
+            );
+
+            UUID grid_uuid = tepgn.getPowerGridUUID();
+
+            if (grid_uuid != null)
             {
-                currenttip.add(String.format("%sNode UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepgn.getNodeUUID(), EnumChatFormatting.RESET));
-                currenttip.add(String.format("%sGrid UUID%s: %s%s%s", EnumChatFormatting.RED, EnumChatFormatting.RESET, EnumChatFormatting.AQUA, tepgn.getPowerGridUUID(), EnumChatFormatting.RESET));
+                currenttip.add(
+                        String.format(
+                                "%sGrid UUID%s: %s%s%s",
+                                EnumChatFormatting.AQUA,
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.GREEN,
+                                tepgn.getPowerGridUUID(),
+                                EnumChatFormatting.RESET
+                        )
+                );
             }
             else
             {
-                currenttip.add("Sneak to view extra info");
+                currenttip.add(
+                        String.format(
+                                "%sGrid UUID%s: %s%s%s",
+                                EnumChatFormatting.AQUA,
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.RED,
+                                StatCollector.translateToLocal("text.waila.grid-uuid-none"),
+                                EnumChatFormatting.RESET
+                        )
+                );
             }
+        }
+        else
+        {
+            currenttip.add("Sneak to view extra info");
+        }
 
-            if (tepgn instanceof TileEntitySubStation)
-            {
-                PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
-                PowerGridNode node = grid.getGridNode(tebb.orig_x, tebb.orig_y, tebb.orig_z);
+        if (tepgn instanceof TileEntitySubStation)
+        {
+            PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
+            PowerGridNode node = grid.getGridNode(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
 
-                currenttip.add(String.format("Is Connected: %b", node.isConnected()));
-            }
+            currenttip.add(
+                    String.format(
+                            "%sIs Connected:%s %s%b%s",
+                            EnumChatFormatting.AQUA,
+                            EnumChatFormatting.RESET,
+                            node.isConnected() ? EnumChatFormatting.GREEN : EnumChatFormatting.RED,
+                            node.isConnected(),
+                            EnumChatFormatting.RESET
+                    )
+            );
         }
 
         return currenttip;
@@ -95,7 +148,8 @@ public class WailaDataProvider implements IWailaDataProvider
         WailaDataProvider provider = new WailaDataProvider();
         registrar.registerStackProvider(provider, BlockBoundingBox.class);
 
-        registrar.registerBodyProvider(provider, BlockSubStation.class);
         registrar.registerBodyProvider(provider, BlockBoundingBox.class);
+        registrar.registerBodyProvider(provider, BlockSubStation.class);
+        registrar.registerBodyProvider(provider, BlockPowerLine.class);
     }
 }

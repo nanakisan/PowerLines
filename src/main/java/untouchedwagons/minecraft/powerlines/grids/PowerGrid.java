@@ -40,14 +40,16 @@ public class PowerGrid implements IEnergyStorage {
     {
         PowerGridNode first_substation = null;
 
+        // Get any node that's a substation, we'll use it as a starting point for finding everything
         for (PowerGridNode node : this.nodes)
         {
-            node.findNeighours(this.nodes);
-
             if (first_substation == null && node.isSubStation())
                 first_substation = node;
         }
 
+        // No substations in the grid. This can occur if a player links a power line to a substation,
+        // destroys the substation, then links another power line to the original power line.
+        // Power lines don't use the isConnected boolean anyways
         if (first_substation == null)
             return;
 
@@ -124,6 +126,11 @@ public class PowerGrid implements IEnergyStorage {
             node_coord.readFromNBT(node);
 
             this.nodes.add(node_coord);
+        }
+
+        for (PowerGridNode node : this.nodes)
+        {
+            node.discoverNeighbours(this);
         }
     }
 

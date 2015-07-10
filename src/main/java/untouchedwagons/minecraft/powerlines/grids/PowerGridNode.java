@@ -1,11 +1,14 @@
 package untouchedwagons.minecraft.powerlines.grids;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import untouchedwagons.math.MathHelper;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class PowerGridNode {
     private int x;
@@ -15,10 +18,17 @@ public class PowerGridNode {
     private boolean is_connected = false;
     private String node_type;
 
-    private final List<PowerGridNode> neighbours = new LinkedList<PowerGridNode>();
+    private final Set<PowerGridNode> neighbours = new LinkedHashSet<PowerGridNode>();
+    private final List<PowerGridNode> undiscovered_neighbours = new LinkedList<PowerGridNode>();
 
     public PowerGridNode() {
 
+    }
+
+    public PowerGridNode(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public PowerGridNode(int x, int y, int z, boolean is_sub_station, boolean is_connected, String node_type) {
@@ -30,26 +40,16 @@ public class PowerGridNode {
         this.node_type = node_type;
     }
 
-    public void findNeighours(List<PowerGridNode> nodes)
+    public void discoverNeighbours(PowerGrid grid)
     {
-        BlockPowerLine.PowerLineInfo this_node = BlockPowerLine.getPowerLineInfoByType(this.getNodeType());
-
-        for (PowerGridNode node : nodes)
+        for (PowerGridNode undiscovered_neighbour : this.undiscovered_neighbours)
         {
-            if (node == this)
-                continue;
+            PowerGridNode discovered_neighbour = grid.getGridNode(undiscovered_neighbour.getX(), undiscovered_neighbour.getY(), undiscovered_neighbour.getZ());
 
-            BlockPowerLine.PowerLineInfo that_node = BlockPowerLine.getPowerLineInfoByType(node.getNodeType());
-
-            int max_distance = this_node.max_distance > that_node.max_distance ? that_node.max_distance : this_node.max_distance;
-            double max_angle = this_node.max_angle > that_node.max_distance ? that_node.max_angle : this_node.max_angle;
-
-            int distance = (int)MathHelper.calculateDistance(this.x, this.y, this.z, node.x, node.y, node.z);
-            double angle = Math.round(Math.toDegrees(MathHelper.calculateAngle(this.x, this.y, this.z, node.x, node.y, node.z)));
-
-            if (distance <= max_distance && angle <= max_angle)
-                this.neighbours.add(node);
+            this.neighbours.add(discovered_neighbour);
         }
+
+        this.undiscovered_neighbours.clear();
     }
 
     public void killConnection(PowerGridNode node)
@@ -89,7 +89,7 @@ public class PowerGridNode {
         return node_type;
     }
 
-    public List<PowerGridNode> getNeighbours() {
+    public Set<PowerGridNode> getNeighbours() {
         return neighbours;
     }
 
@@ -104,6 +104,17 @@ public class PowerGridNode {
         this.is_sub_station = nbt.getBoolean("is-sub-station");
         this.is_connected = nbt.getBoolean("is-connected");
         this.node_type = nbt.getString("node-type");
+
+        NBTTagList neighbours = nbt.getTagList("neighbours", 10);
+
+        for (int i = 0; i < neighbours.tagCount(); i++)
+        {
+            NBTTagCompound node_tag = neighbours.getCompoundTagAt(i);
+
+            PowerGridNode neighbour = new PowerGridNode(node_tag.getInteger("x"), node_tag.getInteger("y"), node_tag.getInteger("z"));
+
+            this.undiscovered_neighbours.add(neighbour);
+        }
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
@@ -113,5 +124,31 @@ public class PowerGridNode {
         nbt.setBoolean("is-sub-station", this.isSubStation());
         nbt.setBoolean("is-connected", this.isConnected());
         nbt.setString("node-type", this.getNodeType());
+
+        NBTTagList neighbours_list = new NBTTagList();
+        nbt.setTag("neighbours", neighbours_list);
+
+        for (PowerGridNode node : this.neighbours)
+        {
+            NBTTagCompound node_tag = new NBTTagCompound();
+            node_tag.setInteger("x", node.getX());
+            node_tag.setInteger("y", node.getY());
+            node_tag.setInteger("z", node.getZ());
+
+            neighbours_list.appendTag(node_tag);
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PowerGridNode))
+            return false;
+
+        PowerGridNode node = (PowerGridNode) obj;
+
+        return this.getX() == node.getX() &&
+                this.getY() == node.getY() &&
+                this.getZ() == node.getZ() &&
+                this.isSubStation() == node.isSubStation();
     }
 }
