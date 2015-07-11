@@ -2,6 +2,7 @@ package untouchedwagons.minecraft.powerlines.grids;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyStorage;
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
@@ -53,6 +54,8 @@ public class PowerGrid implements IEnergyStorage {
         if (first_substation == null)
             return;
 
+        FMLLog.info("Substation found");
+
         Set<PowerGridNode> visited_nodes = new LinkedHashSet<PowerGridNode>();
         Set<PowerGridNode> substations = new LinkedHashSet<PowerGridNode>();
         List<PowerGridNode> substations_in_grid = this.getSubStations();
@@ -61,6 +64,9 @@ public class PowerGrid implements IEnergyStorage {
 
         int substation_count = substations_in_grid.size();
         int connected_substations = substations.size();
+
+        FMLLog.info(String.format("Substations in grid: %d", substation_count));
+        FMLLog.info(String.format("Connected Substations: %d", connected_substations));
 
         for (PowerGridNode substation : substations_in_grid)
         {
@@ -213,15 +219,16 @@ public class PowerGrid implements IEnergyStorage {
      */
     private void searchForConnectedSubStations(PowerGridNode current_node, Set<PowerGridNode> substations, Set<PowerGridNode> visited_nodes)
     {
+        if (current_node.isSubStation())
+            substations.add(current_node);
+
         visited_nodes.add(current_node);
 
         for (PowerGridNode neighbour : current_node.getNeighbours())
         {
+            FMLLog.info("Looking at neighbour");
             if (visited_nodes.contains(neighbour))
                 continue;
-
-            if (neighbour.isSubStation())
-                substations.add(neighbour);
 
             searchForConnectedSubStations(neighbour, substations, visited_nodes);
         }
