@@ -71,8 +71,6 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
     }
 
     public void setGridUUID(UUID grid_uuid) {
-        FMLLog.info(String.format("Changing Grid UUID from %s to %s", this.grid_uuid.toString(), grid_uuid.toString()));
-
         this.grid_uuid = grid_uuid;
         this.markDirty();
     }
