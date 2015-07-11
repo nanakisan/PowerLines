@@ -63,8 +63,6 @@ public class PowerGridWorldSavedData extends WorldSavedData {
 
             this.grids.add(grid);
         }
-
-        this.markDirty();
     }
 
     @Override

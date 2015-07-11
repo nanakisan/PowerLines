@@ -76,6 +76,7 @@ public class PowerLinesMod
         PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeGridUUIDChange.class, PowerGridNodeGridUUIDChange.class, 2, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();

@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.items;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
+import untouchedwagons.minecraft.powerlines.network.PowerGridNodeGridUUIDChange;
 import untouchedwagons.minecraft.powerlines.network.PowerGridSynchronizationMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
@@ -51,7 +53,7 @@ public class ItemPowerGridLinker extends Item {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         if (world.isRemote)
-            return false;
+            return true;
 
         TileEntity te = world.getTileEntity(x, y, z);
         TileEntityPowerGridNode tepgn = null;
@@ -117,14 +119,14 @@ public class ItemPowerGridLinker extends Item {
                 return false;
             }
 
-            BlockPowerLine that_block =(BlockPowerLine) world.getBlock(orig_x, orig_y, orig_z);
-            BlockPowerLine this_block = (BlockPowerLine) world.getBlock(x, y, z);
+            BlockPowerLine that_block = (BlockPowerLine) world.getBlock(orig_x, orig_y, orig_z);
+            BlockPowerLine this_block = (BlockPowerLine) world.getBlock(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
 
             int max_distance = that_block.getPoleInfo().max_distance > this_block.getPoleInfo().max_distance ? this_block.getPoleInfo().max_distance : that_block.getPoleInfo().max_distance;
             double max_angle = that_block.getPoleInfo().max_angle > this_block.getPoleInfo().max_angle ? this_block.getPoleInfo().max_angle : that_block.getPoleInfo().max_angle;
 
-            double distance = MathHelper.calculateDistance(x, y, z, orig_x, orig_y, orig_z);
-            double angle = MathHelper.calculateAngle(x, y, z, orig_x, orig_y, orig_z);
+            double distance = MathHelper.calculateDistance(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, orig_x, orig_y, orig_z);
+            double angle = MathHelper.calculateAngle(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, orig_x, orig_y, orig_z);
 
             // Too far apart?
             if (distance > max_distance)
@@ -147,7 +149,7 @@ public class ItemPowerGridLinker extends Item {
 
             if (tepgn.getPowerGridUUID() == null) // If this node isn't already part of a grid
             {
-                this_node = new PowerGridNode(x, y, z, this_block.isSubStation(), false, this_block.getNodeIdentifier());
+                this_node = new PowerGridNode(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), false, this_block.getNodeIdentifier());
             }
             else
             {
@@ -162,17 +164,22 @@ public class ItemPowerGridLinker extends Item {
             that_node.getNeighbours().add(this_node);
             this_node.getNeighbours().add(that_node);
 
+            // Update the TE's grid UUID
+            tepgn.setGridUUID(grid_uuid);
+
             // Inform the grid about the new node
             grid.connectGridNode(this_node);
             grid.connectGrid();
 
             // Inform everyone in the world of the changes.
             PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(world));
+            PowerGridNodeGridUUIDChange message2 = new PowerGridNodeGridUUIDChange(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, grid_uuid);
 
             //noinspection unchecked
             for (EntityPlayer player_in_world : (List<EntityPlayer>)world.playerEntities)
             {
                 PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player_in_world);
+                PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player_in_world);
             }
 
             player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-link-success")));

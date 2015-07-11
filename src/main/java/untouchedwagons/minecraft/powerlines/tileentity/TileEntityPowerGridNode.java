@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -70,6 +71,8 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
     }
 
     public void setGridUUID(UUID grid_uuid) {
+        FMLLog.info(String.format("Changing Grid UUID from %s to %s", this.grid_uuid.toString(), grid_uuid.toString()));
+
         this.grid_uuid = grid_uuid;
         this.markDirty();
     }
