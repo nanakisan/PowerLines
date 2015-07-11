@@ -89,7 +89,7 @@ public class ItemPowerGridLinker extends Item {
 
             player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-saved")));
 
-            return false;
+            return true;
         }
         else // Setting node data
         {
