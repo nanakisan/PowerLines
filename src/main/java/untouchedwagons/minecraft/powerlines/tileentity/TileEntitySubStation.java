@@ -1,6 +1,7 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
 import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import net.minecraftforge.common.util.ForgeDirection;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
@@ -11,7 +12,7 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
 import java.util.UUID;
 
-public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection {
+public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler {
     public TileEntitySubStation() {
         super(UUID.randomUUID());
     }
@@ -103,5 +104,25 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return from == ForgeDirection.DOWN;
+    }
+
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return this.receiveEnergy(maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return this.extractEnergy(maxExtract, simulate);
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return this.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return this.getMaxEnergyStored();
     }
 }

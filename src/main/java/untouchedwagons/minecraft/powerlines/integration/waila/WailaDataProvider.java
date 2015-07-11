@@ -149,7 +149,6 @@ public class WailaDataProvider implements IWailaDataProvider
         registrar.registerStackProvider(provider, BlockBoundingBox.class);
 
         registrar.registerBodyProvider(provider, BlockBoundingBox.class);
-        registrar.registerBodyProvider(provider, BlockSubStation.class);
         registrar.registerBodyProvider(provider, BlockPowerLine.class);
     }
 }
