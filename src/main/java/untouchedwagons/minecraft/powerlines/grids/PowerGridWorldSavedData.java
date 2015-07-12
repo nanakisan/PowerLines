@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.grids;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -35,11 +36,6 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         this.markDirty();
 
         return new_grid;
-    }
-
-    public void removePowerGrid(UUID grid_uuid)
-    {
-        this.removePowerGrid(this.getGridByUUID(grid_uuid));
     }
 
     public void removePowerGrid(PowerGrid grid)

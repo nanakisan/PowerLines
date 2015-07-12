@@ -119,7 +119,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     public void connectToPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
     {
-        PowerGridNode node = new PowerGridNode(te_node.xCoord, te_node.yCoord, te_node.zCoord, this.isSubStation(), false, this.getNodeIdentifier());
+        PowerGridNode node = new PowerGridNode(te_node.getNodeUUID(), te_node.xCoord, te_node.yCoord, te_node.zCoord, this.isSubStation(), false, this.getNodeIdentifier());
         PowerGridWorldSavedData data = PowerGridWorldSavedData.get(te_node.getWorldObj());
 
         PowerGrid grid = data.getGridByUUID(grid_uuid);
@@ -139,7 +139,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     public void disconnectFromPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
     {
         PowerGrid grid = PowerGridWorldSavedData.get(te_node.getWorldObj()).getGridByUUID(grid_uuid);
-        PowerGridNode node = grid.getGridNode(te_node.xCoord, te_node.yCoord, te_node.zCoord);
+        PowerGridNode node = grid.getGridNode(te_node.getNodeUUID());
 
         grid.disconnectGridNode(node);
         grid.connectGrid();

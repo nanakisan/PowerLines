@@ -21,6 +21,7 @@ text.grid-linker-saved=Node info saved
 text.grid-linker-no-grid-error=This node has not been connected to a power grid.
 text.grid-linker-no-data-error=No data to load.
 text.grid-linker-no-block-error=Original power line node has been unloaded.
+text.grid-linker-no-node-error=The origin node could not be found in the power grid.
 text.grid-linker-missing-block-error=Original power line block is missing. Have you gone across dimensions or destroyed the original?
 text.grid-linker-too-far-error=Power line nodes are too far apart.
 text.grid-linker-too-steep-error=Angle between the two power lines is too great

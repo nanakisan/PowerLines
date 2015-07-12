@@ -112,7 +112,7 @@ public class WailaDataProvider implements IWailaDataProvider
         if (tepgn instanceof TileEntitySubStation)
         {
             PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
-            PowerGridNode node = grid.getGridNode(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
+            PowerGridNode node = grid.getGridNode(tepgn.getNodeUUID());
 
             currenttip.add(
                     String.format(

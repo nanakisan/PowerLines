@@ -24,14 +24,6 @@ public class PowerGrid implements IEnergyStorage {
         this.storage = storage;
     }
 
-    public PowerGrid(UUID grid_uuid) {
-        this.grid_uuid = grid_uuid;
-    }
-
-    public PowerGrid() {
-        this(UUID.randomUUID());
-    }
-
     /**
      * This method checks to see if the power grid is working, that is, all the substations can connect to each other
      * via power lines. The substations don't have to be loaded for this to work. If one substation can't route to its
@@ -75,16 +67,11 @@ public class PowerGrid implements IEnergyStorage {
         this.storage.markDirty();
     }
 
-    public void disconnectGridNode(PowerGridNode node)
-    {
-        this.disconnectGridNode(node.getX(), node.getY(), node.getZ());
-    }
-
-    public void disconnectGridNode(int x, int y, int z)
+    public void disconnectGridNode(PowerGridNode node_to_remove)
     {
         for (PowerGridNode node : this.nodes)
         {
-            if (node.getX() == x && node.getY() == y && node.getZ() == z)
+            if (node.equals(node_to_remove))
             {
                 this.nodes.remove(node);
                 node.disconnect();
@@ -102,10 +89,10 @@ public class PowerGrid implements IEnergyStorage {
         }
     }
 
-    public PowerGridNode getGridNode(int x, int y, int z)
+    public PowerGridNode getGridNode(UUID node_uuid)
     {
         for (PowerGridNode node : this.nodes) {
-            if (node.getX() == x && node.getY() == y && node.getZ() == z)
+            if (node.getNodeUUID().equals(node_uuid))
                 return node;
         }
 
@@ -156,8 +143,13 @@ public class PowerGrid implements IEnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
+
+        int energy_injected = this.energy.receiveEnergy(maxReceive, simulate);
+        FMLLog.info(String.format("maxReceive = %d, simulate = %b, energy_injected = %d, energyStored = %d, maxEnergyStored = %d", maxReceive, simulate, energy_injected, this.energy.getEnergyStored(), this.energy.getMaxEnergyStored()));
+
         this.storage.markDirty();
-        return this.energy.receiveEnergy(maxReceive, simulate);
+
+        return energy_injected;
     }
 
     @Override
@@ -182,15 +174,6 @@ public class PowerGrid implements IEnergyStorage {
 
     public UUID getGridUUID() {
         return this.grid_uuid;
-    }
-
-    public List<PowerGridNode> getNodes() {
-        return nodes;
-    }
-
-    public void setStorage(PowerGridWorldSavedData storage) {
-        this.storage.markDirty();
-        this.storage = storage;
     }
 
     public List<PowerGridNode> getSubStations()

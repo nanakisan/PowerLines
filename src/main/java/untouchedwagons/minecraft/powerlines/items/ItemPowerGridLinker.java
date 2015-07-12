@@ -1,9 +1,7 @@
 package untouchedwagons.minecraft.powerlines.items;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -83,9 +81,7 @@ public class ItemPowerGridLinker extends Item {
 
             NBTTagCompound linker_data = new NBTTagCompound();
             linker_data.setString("grid-uuid", tepgn.getPowerGridUUID().toString());
-            linker_data.setInteger("x", tepgn.xCoord);
-            linker_data.setInteger("y", tepgn.yCoord);
-            linker_data.setInteger("z", tepgn.zCoord);
+            linker_data.setString("node-uuid", tepgn.getNodeUUID().toString());
 
             stack.setTagCompound(linker_data);
 
@@ -95,7 +91,7 @@ public class ItemPowerGridLinker extends Item {
         }
         else // Setting node data
         {
-            if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("grid-uuid"))
+            if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("grid-uuid") || !stack.getTagCompound().hasKey("node-uuid"))
             {
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-data-error")));
                 return false;
@@ -103,30 +99,41 @@ public class ItemPowerGridLinker extends Item {
 
             NBTTagCompound stack_tag = stack.getTagCompound();
             UUID grid_uuid = UUID.fromString(stack_tag.getString("grid-uuid"));
-            int orig_x = stack_tag.getInteger("x"), orig_y = stack_tag.getInteger("y"), orig_z = stack_tag.getInteger("z");
+            UUID node_uuid = UUID.fromString(stack_tag.getString("node-uuid"));
+
+            PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
+
+            PowerGridNode that_node = grid.getGridNode(node_uuid);
+            PowerGridNode this_node;
+
+            if (that_node == null)
+            {
+                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-node-error")));
+                return false;
+            }
 
             // Has the player gone so far that the chunk has unloaded?
-            if (!world.blockExists(orig_x, orig_y, orig_z))
+            if (!world.blockExists(that_node.getX(), that_node.getY(), that_node.getZ()))
             {
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-block-error")));
                 return false;
             }
 
             // Has the player gone to another dimension or destroyed the original power line?
-            if (!(world.getBlock(orig_x, orig_y, orig_z) instanceof BlockPowerLine))
+            if (!(world.getBlock(that_node.getX(), that_node.getY(), that_node.getZ()) instanceof BlockPowerLine))
             {
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-missing-block-error")));
                 return false;
             }
 
-            BlockPowerLine that_block = (BlockPowerLine) world.getBlock(orig_x, orig_y, orig_z);
+            BlockPowerLine that_block = (BlockPowerLine) world.getBlock(that_node.getX(), that_node.getY(), that_node.getZ());
             BlockPowerLine this_block = (BlockPowerLine) world.getBlock(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
 
             int max_distance = that_block.getPoleInfo().max_distance > this_block.getPoleInfo().max_distance ? this_block.getPoleInfo().max_distance : that_block.getPoleInfo().max_distance;
             double max_angle = that_block.getPoleInfo().max_angle > this_block.getPoleInfo().max_angle ? this_block.getPoleInfo().max_angle : that_block.getPoleInfo().max_angle;
 
-            double distance = MathHelper.calculateDistance(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, orig_x, orig_y, orig_z);
-            double angle = MathHelper.calculateAngle(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, orig_x, orig_y, orig_z);
+            double distance = MathHelper.calculateDistance(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, that_node.getX(), that_node.getY(), that_node.getZ());
+            double angle = MathHelper.calculateAngle(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, that_node.getX(), that_node.getY(), that_node.getZ());
 
             // Too far apart?
             if (distance > max_distance)
@@ -142,19 +149,14 @@ public class ItemPowerGridLinker extends Item {
                 return false;
             }
 
-            PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
-
-            PowerGridNode that_node = grid.getGridNode(orig_x, orig_y, orig_z);
-            PowerGridNode this_node = null;
-
             if (tepgn.getPowerGridUUID() == null) // If this node isn't already part of a grid
             {
-                this_node = new PowerGridNode(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), false, this_block.getNodeIdentifier());
+                this_node = new PowerGridNode(tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), false, this_block.getNodeIdentifier());
             }
             else
             {
                 PowerGrid old_grid = PowerGridWorldSavedData.get(world).getGridByUUID(tepgn.getPowerGridUUID());
-                this_node = old_grid.getGridNode(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
+                this_node = old_grid.getGridNode(tepgn.getNodeUUID());
 
                 old_grid.disconnectGridNode(this_node);
                 old_grid.connectGrid();
@@ -192,9 +194,11 @@ public class ItemPowerGridLinker extends Item {
         if (world.isRemote)
             return stack;
 
-        if (player.isSneaking())
+        if (player.isSneaking() && stack.getTagCompound() != null)
         {
-            stack.setTagCompound(null);
+            if (stack.getTagCompound().hasKey("grid-uuid")) stack.getTagCompound().removeTag("grid-uuid");
+            if (stack.getTagCompound().hasKey("node-uuid")) stack.getTagCompound().removeTag("node-uuid");
+
             player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-clear")));
         }
 

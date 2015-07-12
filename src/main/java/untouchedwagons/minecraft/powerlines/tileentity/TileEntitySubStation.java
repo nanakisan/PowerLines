@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
@@ -62,7 +63,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
         if (!node.isConnected())
             return 0;
@@ -73,7 +74,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
         if (!node.isConnected())
             return 0;
@@ -84,7 +85,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int getEnergyStored() {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
         if (!node.isConnected())
             return 0;
@@ -95,7 +96,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int getMaxEnergyStored() {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
         if (!node.isConnected())
             return 0;
@@ -139,7 +140,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
             return;
 
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.xCoord, this.yCoord, this.zCoord);
+        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
         if (!node.isConnected())
             return;

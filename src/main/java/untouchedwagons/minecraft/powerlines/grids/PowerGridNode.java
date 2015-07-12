@@ -1,16 +1,15 @@
 package untouchedwagons.minecraft.powerlines.grids;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import untouchedwagons.math.MathHelper;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PowerGridNode {
+    private UUID node_uuid;
     private int x;
     private int y;
     private int z;
@@ -21,17 +20,15 @@ public class PowerGridNode {
     private final Set<PowerGridNode> neighbours = new LinkedHashSet<PowerGridNode>();
     private final List<PowerGridNode> undiscovered_neighbours = new LinkedList<PowerGridNode>();
 
-    public PowerGridNode() {
-
-    }
-
-    public PowerGridNode(int x, int y, int z) {
+    public PowerGridNode(UUID node_uuid, int x, int y, int z) {
+        this.node_uuid = node_uuid;
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public PowerGridNode(int x, int y, int z, boolean is_sub_station, boolean is_connected, String node_type) {
+    public PowerGridNode(UUID node_uuid, int x, int y, int z, boolean is_sub_station, boolean is_connected, String node_type) {
+        this.node_uuid = node_uuid;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -40,11 +37,15 @@ public class PowerGridNode {
         this.node_type = node_type;
     }
 
+    public PowerGridNode() {
+
+    }
+
     public void discoverNeighbours(PowerGrid grid)
     {
         for (PowerGridNode undiscovered_neighbour : this.undiscovered_neighbours)
         {
-            PowerGridNode discovered_neighbour = grid.getGridNode(undiscovered_neighbour.getX(), undiscovered_neighbour.getY(), undiscovered_neighbour.getZ());
+            PowerGridNode discovered_neighbour = grid.getGridNode(undiscovered_neighbour.getNodeUUID());
 
             this.neighbours.add(discovered_neighbour);
         }
@@ -63,6 +64,10 @@ public class PowerGridNode {
         {
             node.killConnection(this);
         }
+    }
+
+    public UUID getNodeUUID() {
+        return node_uuid;
     }
 
     public int getX() {
@@ -98,6 +103,7 @@ public class PowerGridNode {
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
+        this.node_uuid = UUID.fromString(nbt.getString("node-uuid"));
         this.x = nbt.getInteger("x");
         this.y = nbt.getInteger("y");
         this.z = nbt.getInteger("z");
@@ -111,13 +117,19 @@ public class PowerGridNode {
         {
             NBTTagCompound node_tag = neighbours.getCompoundTagAt(i);
 
-            PowerGridNode neighbour = new PowerGridNode(node_tag.getInteger("x"), node_tag.getInteger("y"), node_tag.getInteger("z"));
+            PowerGridNode neighbour = new PowerGridNode(
+                    UUID.fromString(node_tag.getString("node-uuid")),
+                    node_tag.getInteger("x"),
+                    node_tag.getInteger("y"),
+                    node_tag.getInteger("z")
+            );
 
             this.undiscovered_neighbours.add(neighbour);
         }
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
+        nbt.setString("node-uuid", this.node_uuid.toString());
         nbt.setInteger("x", this.getX());
         nbt.setInteger("y", this.getY());
         nbt.setInteger("z", this.getZ());
@@ -131,6 +143,7 @@ public class PowerGridNode {
         for (PowerGridNode node : this.neighbours)
         {
             NBTTagCompound node_tag = new NBTTagCompound();
+            node_tag.setString("node-uuid", node.getNodeUUID().toString());
             node_tag.setInteger("x", node.getX());
             node_tag.setInteger("y", node.getY());
             node_tag.setInteger("z", node.getZ());
@@ -146,7 +159,8 @@ public class PowerGridNode {
 
         PowerGridNode node = (PowerGridNode) obj;
 
-        return this.getX() == node.getX() &&
+        return  this.getNodeUUID().equals(node.getNodeUUID()) &&
+                this.getX() == node.getX() &&
                 this.getY() == node.getY() &&
                 this.getZ() == node.getZ() &&
                 this.isSubStation() == node.isSubStation();

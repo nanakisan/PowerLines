@@ -103,7 +103,7 @@ public class TileEntityFluxedBoundingBox extends TileEntityBoundingBox implement
             return;
 
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(sub_station.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.orig_x, this.orig_y, this.orig_z);
+        PowerGridNode node = grid.getGridNode(sub_station.getNodeUUID());
 
         if (!node.isConnected())
             return;
