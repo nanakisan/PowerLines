@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
+import untouchedwagons.minecraft.powerlines.extra.IRotatable;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -64,6 +65,29 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     @Override
     public int getRenderType() { return -1; }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z) {
+        if (world.isRemote)
+            return false;
+
+        TileEntity te = world.getTileEntity(x, y, z);
+
+        if (te instanceof IRotatable && player.isSneaking())
+        {
+            ((IRotatable) te).rotate();
+
+            NodeRotationMessage message = new NodeRotationMessage(x, y, z, ((IRotatable) te).getRotation());
+
+            //noinspection unchecked
+            for (EntityPlayer p : (List<EntityPlayer>)world.playerEntities)
+            {
+                PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) p);
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {

@@ -4,6 +4,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import untouchedwagons.minecraft.powerlines.extra.IRotatable;
+import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.models.ModelSubStation;
 
 public class SubStationRenderer extends TileEntitySpecialRenderer {
@@ -17,7 +19,16 @@ public class SubStationRenderer extends TileEntitySpecialRenderer {
 
         bindTexture(texture);
 
-        GL11.glRotatef(180, 0F, 0F, 1F);
+        IRotatable ir = (IRotatable) te;
+
+        if (ir.getRotation() == Rotation.NORTH_SOUTH)
+        {
+            GL11.glRotatef(180F, 0F, 0F, 1F);
+        }
+        else
+        {
+            GL11.glRotatef(90F, 0F, 0F, 1F);
+        }
 
         model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 

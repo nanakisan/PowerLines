@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;

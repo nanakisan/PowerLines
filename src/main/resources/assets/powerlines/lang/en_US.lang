@@ -30,3 +30,8 @@ text.grid-linker-link-success=Power grid set. If this is a substation, make sure
 text.grid=Grid
 
 text.waila.grid-uuid-none=None
+
+text.substation.mode.text=Energy Mode
+text.substation.mode.input=Input
+text.substation.mode.output=Output
+text.substation.mode.unknown=Unknown

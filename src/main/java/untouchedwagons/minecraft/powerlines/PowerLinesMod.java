@@ -25,10 +25,7 @@ import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.items.ItemPowerGridLinker;
 import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
-import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
+import untouchedwagons.minecraft.powerlines.tileentity.*;
 
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.0.4", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
@@ -77,6 +74,7 @@ public class PowerLinesMod
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridNodeGridUUIDChange.class, PowerGridNodeGridUUIDChange.class, 2, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(NodeRotationMessage.class, NodeRotationMessage.class, 3, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
@@ -87,6 +85,7 @@ public class PowerLinesMod
         GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityFluxedBoundingBox.class, "FluxedBoundingBox");
+        GameRegistry.registerTileEntity(TileEntityDumbFluxedBoundingBox.class, "DumbFluxedBoundingBox");
 
         GameRegistry.registerBlock(PowerLinesMod.large_power_line, ItemBlockLargePowerLine.class, "LargePowerLine");
         GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");

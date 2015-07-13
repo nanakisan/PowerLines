@@ -15,7 +15,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
-import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -27,6 +26,8 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
 import java.util.List;
 import java.util.UUID;
+
+import static untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation.EnergyMode.INPUT;
 
 @Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
 public class WailaDataProvider implements IWailaDataProvider
@@ -124,6 +125,23 @@ public class WailaDataProvider implements IWailaDataProvider
                             EnumChatFormatting.RESET
                     )
             );
+
+            String mode_text = "";
+
+            switch (((TileEntitySubStation) tepgn).getEnergyMode())
+            {
+                case INPUT:
+                    mode_text = String.format("%s%s%s", EnumChatFormatting.BLUE, StatCollector.translateToLocal("text.substation.mode.input"), EnumChatFormatting.RESET);
+                    break;
+                case OUTPUT:
+                    mode_text = String.format("%s%s%s", EnumChatFormatting.GOLD, StatCollector.translateToLocal("text.substation.mode.output"), EnumChatFormatting.RESET);
+                    break;
+                case UNKNOWN:
+                    mode_text = String.format("%s%s%s", EnumChatFormatting.GRAY, StatCollector.translateToLocal("text.substation.mode.unknown"), EnumChatFormatting.RESET);
+                    break;
+            }
+
+            currenttip.add(String.format("%s%s%s: %s", EnumChatFormatting.AQUA, StatCollector.translateToLocal("text.substation.mode.text"), EnumChatFormatting.RESET, mode_text));
         }
 
         return currenttip;
