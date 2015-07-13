@@ -15,19 +15,17 @@ public class SubStationRenderer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 1F, (float) y + 1.5F, (float) z + 1F);
+        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
         bindTexture(texture);
 
         IRotatable ir = (IRotatable) te;
 
-        if (ir.getRotation() == Rotation.NORTH_SOUTH)
+        GL11.glRotatef(180F, 0F, 0F, 1F);
+
+        if (ir.getRotation() == Rotation.EAST_WEST)
         {
-            GL11.glRotatef(180F, 0F, 0F, 1F);
-        }
-        else
-        {
-            GL11.glRotatef(90F, 0F, 0F, 1F);
+            GL11.glRotatef(90f, 0f, 1f, 0f);
         }
 
         model.render(null, 0, 0, 0, 0, 0, 0.0625F);
