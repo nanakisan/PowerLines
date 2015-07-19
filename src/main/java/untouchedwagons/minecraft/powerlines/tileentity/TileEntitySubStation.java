@@ -176,6 +176,11 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public void setRotation(Rotation rotation) {
         this.rotation = rotation;
+
+        this.worldObj.markBlockForUpdate(this.xCoord - 1, this.yCoord, this.zCoord);
+        this.worldObj.markBlockForUpdate(this.xCoord + 1, this.yCoord, this.zCoord);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord - 1);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord + 1);
     }
 
     @Override

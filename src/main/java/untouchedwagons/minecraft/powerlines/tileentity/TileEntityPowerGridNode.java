@@ -7,7 +7,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
-import untouchedwagons.minecraft.powerlines.extra.Rotation;
+import untouchedwagons.minecraft.powerlines.extra.ConnectionPoint;
+import untouchedwagons.minecraft.powerlines.extra.ConnectionPointCoordinate;
 
 import java.util.UUID;
 
@@ -48,6 +49,11 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
         this.writeToNBT(nbtTag);
 
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbtTag);
+    }
+
+    public ConnectionPointCoordinate getConnectionPointVector(ConnectionPoint point)
+    {
+        return null;
     }
 
     @Override

@@ -133,6 +133,69 @@ public class ModelSubStation extends ModelBase
     ModelRenderer Dissipation_Grid_Bravo_Row_4_Column_12;
     ModelRenderer Dissipation_Grid_Bravo_Row_4_Column_13;
     ModelRenderer Dissipation_Grid_Bravo_Row_5;
+    ModelRenderer Connector_Alpha;
+    ModelRenderer Insulator_Alpha;
+    ModelRenderer Rounding_bit_Alpha;
+    ModelRenderer Rounding_bit_Bravo;
+    ModelRenderer Rounding_bit_Charlie;
+    ModelRenderer Rounding_bit_Delta;
+    ModelRenderer Insulator_Bravo;
+    ModelRenderer Rounding_bit_Alpha1;
+    ModelRenderer Rounding_bit_Bravo1;
+    ModelRenderer Rounding_bit_Charlie1;
+    ModelRenderer Rounding_bit_Delta1;
+    ModelRenderer Insulator_Charlie;
+    ModelRenderer Rounding_bit_Alpha2;
+    ModelRenderer Rounding_bit_Bravo2;
+    ModelRenderer Rounding_bit_Charlie2;
+    ModelRenderer Rounding_bit_Delta2;
+    ModelRenderer Insulator_Delta;
+    ModelRenderer Rounding_bit_Alpha3;
+    ModelRenderer Rounding_bit_Bravo3;
+    ModelRenderer Rounding_bit_Charlie3;
+    ModelRenderer Rounding_bit_Delta3;
+    ModelRenderer Connector_Bravo;
+    ModelRenderer Insulator_Alpha1;
+    ModelRenderer Rounding_bit_Alpha4;
+    ModelRenderer Rounding_bit_Bravo4;
+    ModelRenderer Rounding_bit_Charlie4;
+    ModelRenderer Rounding_bit_Delta4;
+    ModelRenderer Insulator_Bravo1;
+    ModelRenderer Rounding_bit_Alpha5;
+    ModelRenderer Rounding_bit_Bravo5;
+    ModelRenderer Rounding_bit_Charlie5;
+    ModelRenderer Rounding_bit_Delta5;
+    ModelRenderer Insulator_Charlie1;
+    ModelRenderer Rounding_bit_Alpha6;
+    ModelRenderer Rounding_bit_Bravo6;
+    ModelRenderer Rounding_bit_Charlie6;
+    ModelRenderer Rounding_bit_Delta6;
+    ModelRenderer Insulator_Delta1;
+    ModelRenderer Rounding_bit_Alpha7;
+    ModelRenderer Rounding_bit_Bravo7;
+    ModelRenderer Rounding_bit_Charlie7;
+    ModelRenderer Rounding_bit_Delta7;
+    ModelRenderer Connector_Charlie;
+    ModelRenderer Insulator_Alpha2;
+    ModelRenderer Rounding_bit_Alpha8;
+    ModelRenderer Rounding_bit_Bravo8;
+    ModelRenderer Rounding_bit_Charlie8;
+    ModelRenderer Rounding_bit_Delta8;
+    ModelRenderer Insulator_Bravo2;
+    ModelRenderer Rounding_bit_Alpha9;
+    ModelRenderer Rounding_bit_Bravo9;
+    ModelRenderer Rounding_bit_Charlie9;
+    ModelRenderer Rounding_bit_Delta9;
+    ModelRenderer Insulator_Charlie2;
+    ModelRenderer Rounding_bit_Alpha10;
+    ModelRenderer Rounding_bit_Bravo10;
+    ModelRenderer Rounding_bit_Charlie10;
+    ModelRenderer Rounding_bit_Delta10;
+    ModelRenderer Insulator_Delta2;
+    ModelRenderer Rounding_bit_Alpha11;
+    ModelRenderer Rounding_bit_Bravo11;
+    ModelRenderer Rounding_bit_Charlie11;
+    ModelRenderer Rounding_bit_Delta11;
 
     public ModelSubStation()
     {
@@ -644,6 +707,258 @@ public class ModelSubStation extends ModelBase
         Dissipation_Grid_Bravo_Row_5.setTextureSize( 128, 128 );
         Dissipation_Grid_Bravo_Row_5.addBox( -5.5F, -1F, -10F, 11, 2, 20);
         Dissipation_Grid_Bravo_Row_5.setRotationPoint( 14.5F, 21.01F, -0.1499996F );
+        Connector_Alpha = new ModelRenderer( this, 0, 20 );
+        Connector_Alpha.setTextureSize( 128, 128 );
+        Connector_Alpha.addBox( -1F, -5F, -1F, 2, 10, 2);
+        Connector_Alpha.setRotationPoint( 0F, -27F, -14F );
+        Insulator_Alpha = new ModelRenderer( this, 42, 25 );
+        Insulator_Alpha.setTextureSize( 128, 128 );
+        Insulator_Alpha.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Alpha.setRotationPoint( 0F, -24F, -14F );
+        Rounding_bit_Alpha = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha.setRotationPoint( 0F, -24F, -10.5F );
+        Rounding_bit_Bravo = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo.setRotationPoint( -3.5F, -24F, -14F );
+        Rounding_bit_Charlie = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie.setRotationPoint( 0F, -24F, -17.5F );
+        Rounding_bit_Delta = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta.setTextureSize( 128, 128 );
+        Rounding_bit_Delta.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta.setRotationPoint( 3.5F, -24F, -14F );
+        Insulator_Bravo = new ModelRenderer( this, 42, 25 );
+        Insulator_Bravo.setTextureSize( 128, 128 );
+        Insulator_Bravo.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Bravo.setRotationPoint( 0F, -26F, -14F );
+        Rounding_bit_Alpha1 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha1.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha1.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha1.setRotationPoint( 0F, -26F, -10.5F );
+        Rounding_bit_Bravo1 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo1.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo1.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo1.setRotationPoint( -3.5F, -26F, -14F );
+        Rounding_bit_Charlie1 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie1.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie1.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie1.setRotationPoint( 0F, -26F, -17.5F );
+        Rounding_bit_Delta1 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta1.setTextureSize( 128, 128 );
+        Rounding_bit_Delta1.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta1.setRotationPoint( 3.5F, -26F, -14F );
+        Insulator_Charlie = new ModelRenderer( this, 42, 25 );
+        Insulator_Charlie.setTextureSize( 128, 128 );
+        Insulator_Charlie.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Charlie.setRotationPoint( 0F, -28F, -14F );
+        Rounding_bit_Alpha2 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha2.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha2.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha2.setRotationPoint( 0F, -28F, -10.5F );
+        Rounding_bit_Bravo2 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo2.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo2.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo2.setRotationPoint( -3.5F, -28F, -14F );
+        Rounding_bit_Charlie2 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie2.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie2.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie2.setRotationPoint( 0F, -28F, -17.5F );
+        Rounding_bit_Delta2 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta2.setTextureSize( 128, 128 );
+        Rounding_bit_Delta2.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta2.setRotationPoint( 3.5F, -28F, -14F );
+        Insulator_Delta = new ModelRenderer( this, 42, 25 );
+        Insulator_Delta.setTextureSize( 128, 128 );
+        Insulator_Delta.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Delta.setRotationPoint( 0F, -30F, -14F );
+        Rounding_bit_Alpha3 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha3.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha3.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha3.setRotationPoint( 0F, -30F, -10.5F );
+        Rounding_bit_Bravo3 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo3.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo3.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo3.setRotationPoint( -3.5F, -30F, -14F );
+        Rounding_bit_Charlie3 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie3.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie3.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie3.setRotationPoint( 0F, -30F, -17.5F );
+        Rounding_bit_Delta3 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta3.setTextureSize( 128, 128 );
+        Rounding_bit_Delta3.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta3.setRotationPoint( 3.5F, -30F, -14F );
+        Connector_Bravo = new ModelRenderer( this, 0, 20 );
+        Connector_Bravo.setTextureSize( 128, 128 );
+        Connector_Bravo.addBox( -1F, -5F, -1F, 2, 10, 2);
+        Connector_Bravo.setRotationPoint( 0F, -27F, 0F );
+        Insulator_Alpha1 = new ModelRenderer( this, 42, 25 );
+        Insulator_Alpha1.setTextureSize( 128, 128 );
+        Insulator_Alpha1.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Alpha1.setRotationPoint( 0F, -24F, 0F );
+        Rounding_bit_Alpha4 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha4.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha4.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha4.setRotationPoint( 0F, -24F, 3.5F );
+        Rounding_bit_Bravo4 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo4.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo4.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo4.setRotationPoint( -3.5F, -24F, 0F );
+        Rounding_bit_Charlie4 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie4.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie4.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie4.setRotationPoint( 0F, -24F, -3.5F );
+        Rounding_bit_Delta4 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta4.setTextureSize( 128, 128 );
+        Rounding_bit_Delta4.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta4.setRotationPoint( 3.5F, -24F, 0F );
+        Insulator_Bravo1 = new ModelRenderer( this, 42, 25 );
+        Insulator_Bravo1.setTextureSize( 128, 128 );
+        Insulator_Bravo1.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Bravo1.setRotationPoint( 0F, -26F, 0F );
+        Rounding_bit_Alpha5 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha5.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha5.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha5.setRotationPoint( 0F, -26F, 3.5F );
+        Rounding_bit_Bravo5 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo5.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo5.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo5.setRotationPoint( -3.5F, -26F, 0F );
+        Rounding_bit_Charlie5 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie5.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie5.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie5.setRotationPoint( 0F, -26F, -3.5F );
+        Rounding_bit_Delta5 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta5.setTextureSize( 128, 128 );
+        Rounding_bit_Delta5.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta5.setRotationPoint( 3.5F, -26F, 0F );
+        Insulator_Charlie1 = new ModelRenderer( this, 42, 25 );
+        Insulator_Charlie1.setTextureSize( 128, 128 );
+        Insulator_Charlie1.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Charlie1.setRotationPoint( 0F, -28F, 0F );
+        Rounding_bit_Alpha6 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha6.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha6.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha6.setRotationPoint( 0F, -28F, 3.5F );
+        Rounding_bit_Bravo6 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo6.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo6.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo6.setRotationPoint( -3.5F, -28F, 0F );
+        Rounding_bit_Charlie6 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie6.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie6.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie6.setRotationPoint( 0F, -28F, -3.5F );
+        Rounding_bit_Delta6 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta6.setTextureSize( 128, 128 );
+        Rounding_bit_Delta6.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta6.setRotationPoint( 3.5F, -28F, 0F );
+        Insulator_Delta1 = new ModelRenderer( this, 42, 25 );
+        Insulator_Delta1.setTextureSize( 128, 128 );
+        Insulator_Delta1.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Delta1.setRotationPoint( 0F, -30F, 0F );
+        Rounding_bit_Alpha7 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha7.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha7.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha7.setRotationPoint( 0F, -30F, 3.5F );
+        Rounding_bit_Bravo7 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo7.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo7.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo7.setRotationPoint( -3.5F, -30F, 0F );
+        Rounding_bit_Charlie7 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie7.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie7.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie7.setRotationPoint( 0F, -30F, -3.5F );
+        Rounding_bit_Delta7 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta7.setTextureSize( 128, 128 );
+        Rounding_bit_Delta7.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta7.setRotationPoint( 3.5F, -30F, 0F );
+        Connector_Charlie = new ModelRenderer( this, 0, 20 );
+        Connector_Charlie.setTextureSize( 128, 128 );
+        Connector_Charlie.addBox( -1F, -5F, -1F, 2, 10, 2);
+        Connector_Charlie.setRotationPoint( 0F, -27F, 14F );
+        Insulator_Alpha2 = new ModelRenderer( this, 42, 25 );
+        Insulator_Alpha2.setTextureSize( 128, 128 );
+        Insulator_Alpha2.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Alpha2.setRotationPoint( 0F, -24F, 14F );
+        Rounding_bit_Alpha8 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha8.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha8.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha8.setRotationPoint( 0F, -24F, 17.5F );
+        Rounding_bit_Bravo8 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo8.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo8.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo8.setRotationPoint( -3.5F, -24F, 14F );
+        Rounding_bit_Charlie8 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie8.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie8.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie8.setRotationPoint( 0F, -24F, 10.5F );
+        Rounding_bit_Delta8 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta8.setTextureSize( 128, 128 );
+        Rounding_bit_Delta8.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta8.setRotationPoint( 3.5F, -24F, 14F );
+        Insulator_Bravo2 = new ModelRenderer( this, 42, 25 );
+        Insulator_Bravo2.setTextureSize( 128, 128 );
+        Insulator_Bravo2.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Bravo2.setRotationPoint( 0F, -26F, 14F );
+        Rounding_bit_Alpha9 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha9.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha9.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha9.setRotationPoint( 0F, -26F, 17.5F );
+        Rounding_bit_Bravo9 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo9.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo9.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo9.setRotationPoint( -3.5F, -26F, 14F );
+        Rounding_bit_Charlie9 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie9.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie9.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie9.setRotationPoint( 0F, -26F, 10.5F );
+        Rounding_bit_Delta9 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta9.setTextureSize( 128, 128 );
+        Rounding_bit_Delta9.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta9.setRotationPoint( 3.5F, -26F, 14F );
+        Insulator_Charlie2 = new ModelRenderer( this, 42, 25 );
+        Insulator_Charlie2.setTextureSize( 128, 128 );
+        Insulator_Charlie2.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Charlie2.setRotationPoint( 0F, -28F, 14F );
+        Rounding_bit_Alpha10 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha10.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha10.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha10.setRotationPoint( 0F, -28F, 17.5F );
+        Rounding_bit_Bravo10 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo10.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo10.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo10.setRotationPoint( -3.5F, -28F, 14F );
+        Rounding_bit_Charlie10 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie10.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie10.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie10.setRotationPoint( 0F, -28F, 10.5F );
+        Rounding_bit_Delta10 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta10.setTextureSize( 128, 128 );
+        Rounding_bit_Delta10.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta10.setRotationPoint( 3.5F, -28F, 14F );
+        Insulator_Delta2 = new ModelRenderer( this, 42, 25 );
+        Insulator_Delta2.setTextureSize( 128, 128 );
+        Insulator_Delta2.addBox( -3F, -0.5F, -3F, 6, 1, 6);
+        Insulator_Delta2.setRotationPoint( 0F, -30F, 14F );
+        Rounding_bit_Alpha11 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Alpha11.setTextureSize( 128, 128 );
+        Rounding_bit_Alpha11.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Alpha11.setRotationPoint( 0F, -30F, 17.5F );
+        Rounding_bit_Bravo11 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Bravo11.setTextureSize( 128, 128 );
+        Rounding_bit_Bravo11.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Bravo11.setRotationPoint( -3.5F, -30F, 14F );
+        Rounding_bit_Charlie11 = new ModelRenderer( this, 8, 30 );
+        Rounding_bit_Charlie11.setTextureSize( 128, 128 );
+        Rounding_bit_Charlie11.addBox( -2F, -0.5F, -0.5F, 4, 1, 1);
+        Rounding_bit_Charlie11.setRotationPoint( 0F, -30F, 10.5F );
+        Rounding_bit_Delta11 = new ModelRenderer( this, 8, 25 );
+        Rounding_bit_Delta11.setTextureSize( 128, 128 );
+        Rounding_bit_Delta11.addBox( -0.5F, -0.5F, -2F, 1, 1, 4);
+        Rounding_bit_Delta11.setRotationPoint( 3.5F, -30F, 14F );
     }
 
    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
@@ -1283,6 +1598,319 @@ public class ModelSubStation extends ModelBase
         Dissipation_Grid_Bravo_Row_5.rotateAngleZ = 0F;
         Dissipation_Grid_Bravo_Row_5.renderWithRotation(par7);
 
-    }
+        Connector_Alpha.rotateAngleX = 0F;
+        Connector_Alpha.rotateAngleY = 0F;
+        Connector_Alpha.rotateAngleZ = 0F;
+        Connector_Alpha.renderWithRotation(par7);
 
+        Insulator_Alpha.rotateAngleX = 0F;
+        Insulator_Alpha.rotateAngleY = 0F;
+        Insulator_Alpha.rotateAngleZ = 0F;
+        Insulator_Alpha.renderWithRotation(par7);
+
+        Rounding_bit_Alpha.rotateAngleX = 0F;
+        Rounding_bit_Alpha.rotateAngleY = 0F;
+        Rounding_bit_Alpha.rotateAngleZ = 0F;
+        Rounding_bit_Alpha.renderWithRotation(par7);
+
+        Rounding_bit_Bravo.rotateAngleX = 0F;
+        Rounding_bit_Bravo.rotateAngleY = 0F;
+        Rounding_bit_Bravo.rotateAngleZ = 0F;
+        Rounding_bit_Bravo.renderWithRotation(par7);
+
+        Rounding_bit_Charlie.rotateAngleX = 0F;
+        Rounding_bit_Charlie.rotateAngleY = 0F;
+        Rounding_bit_Charlie.rotateAngleZ = 0F;
+        Rounding_bit_Charlie.renderWithRotation(par7);
+
+        Rounding_bit_Delta.rotateAngleX = 0F;
+        Rounding_bit_Delta.rotateAngleY = 0F;
+        Rounding_bit_Delta.rotateAngleZ = 0F;
+        Rounding_bit_Delta.renderWithRotation(par7);
+
+        Insulator_Bravo.rotateAngleX = 0F;
+        Insulator_Bravo.rotateAngleY = 0F;
+        Insulator_Bravo.rotateAngleZ = 0F;
+        Insulator_Bravo.renderWithRotation(par7);
+
+        Rounding_bit_Alpha1.rotateAngleX = 0F;
+        Rounding_bit_Alpha1.rotateAngleY = 0F;
+        Rounding_bit_Alpha1.rotateAngleZ = 0F;
+        Rounding_bit_Alpha1.renderWithRotation(par7);
+
+        Rounding_bit_Bravo1.rotateAngleX = 0F;
+        Rounding_bit_Bravo1.rotateAngleY = 0F;
+        Rounding_bit_Bravo1.rotateAngleZ = 0F;
+        Rounding_bit_Bravo1.renderWithRotation(par7);
+
+        Rounding_bit_Charlie1.rotateAngleX = 0F;
+        Rounding_bit_Charlie1.rotateAngleY = 0F;
+        Rounding_bit_Charlie1.rotateAngleZ = 0F;
+        Rounding_bit_Charlie1.renderWithRotation(par7);
+
+        Rounding_bit_Delta1.rotateAngleX = 0F;
+        Rounding_bit_Delta1.rotateAngleY = 0F;
+        Rounding_bit_Delta1.rotateAngleZ = 0F;
+        Rounding_bit_Delta1.renderWithRotation(par7);
+
+        Insulator_Charlie.rotateAngleX = 0F;
+        Insulator_Charlie.rotateAngleY = 0F;
+        Insulator_Charlie.rotateAngleZ = 0F;
+        Insulator_Charlie.renderWithRotation(par7);
+
+        Rounding_bit_Alpha2.rotateAngleX = 0F;
+        Rounding_bit_Alpha2.rotateAngleY = 0F;
+        Rounding_bit_Alpha2.rotateAngleZ = 0F;
+        Rounding_bit_Alpha2.renderWithRotation(par7);
+
+        Rounding_bit_Bravo2.rotateAngleX = 0F;
+        Rounding_bit_Bravo2.rotateAngleY = 0F;
+        Rounding_bit_Bravo2.rotateAngleZ = 0F;
+        Rounding_bit_Bravo2.renderWithRotation(par7);
+
+        Rounding_bit_Charlie2.rotateAngleX = 0F;
+        Rounding_bit_Charlie2.rotateAngleY = 0F;
+        Rounding_bit_Charlie2.rotateAngleZ = 0F;
+        Rounding_bit_Charlie2.renderWithRotation(par7);
+
+        Rounding_bit_Delta2.rotateAngleX = 0F;
+        Rounding_bit_Delta2.rotateAngleY = 0F;
+        Rounding_bit_Delta2.rotateAngleZ = 0F;
+        Rounding_bit_Delta2.renderWithRotation(par7);
+
+        Insulator_Delta.rotateAngleX = 0F;
+        Insulator_Delta.rotateAngleY = 0F;
+        Insulator_Delta.rotateAngleZ = 0F;
+        Insulator_Delta.renderWithRotation(par7);
+
+        Rounding_bit_Alpha3.rotateAngleX = 0F;
+        Rounding_bit_Alpha3.rotateAngleY = 0F;
+        Rounding_bit_Alpha3.rotateAngleZ = 0F;
+        Rounding_bit_Alpha3.renderWithRotation(par7);
+
+        Rounding_bit_Bravo3.rotateAngleX = 0F;
+        Rounding_bit_Bravo3.rotateAngleY = 0F;
+        Rounding_bit_Bravo3.rotateAngleZ = 0F;
+        Rounding_bit_Bravo3.renderWithRotation(par7);
+
+        Rounding_bit_Charlie3.rotateAngleX = 0F;
+        Rounding_bit_Charlie3.rotateAngleY = 0F;
+        Rounding_bit_Charlie3.rotateAngleZ = 0F;
+        Rounding_bit_Charlie3.renderWithRotation(par7);
+
+        Rounding_bit_Delta3.rotateAngleX = 0F;
+        Rounding_bit_Delta3.rotateAngleY = 0F;
+        Rounding_bit_Delta3.rotateAngleZ = 0F;
+        Rounding_bit_Delta3.renderWithRotation(par7);
+
+        Connector_Bravo.rotateAngleX = 0F;
+        Connector_Bravo.rotateAngleY = 0F;
+        Connector_Bravo.rotateAngleZ = 0F;
+        Connector_Bravo.renderWithRotation(par7);
+
+        Insulator_Alpha1.rotateAngleX = 0F;
+        Insulator_Alpha1.rotateAngleY = 0F;
+        Insulator_Alpha1.rotateAngleZ = 0F;
+        Insulator_Alpha1.renderWithRotation(par7);
+
+        Rounding_bit_Alpha4.rotateAngleX = 0F;
+        Rounding_bit_Alpha4.rotateAngleY = 0F;
+        Rounding_bit_Alpha4.rotateAngleZ = 0F;
+        Rounding_bit_Alpha4.renderWithRotation(par7);
+
+        Rounding_bit_Bravo4.rotateAngleX = 0F;
+        Rounding_bit_Bravo4.rotateAngleY = 0F;
+        Rounding_bit_Bravo4.rotateAngleZ = 0F;
+        Rounding_bit_Bravo4.renderWithRotation(par7);
+
+        Rounding_bit_Charlie4.rotateAngleX = 0F;
+        Rounding_bit_Charlie4.rotateAngleY = 0F;
+        Rounding_bit_Charlie4.rotateAngleZ = 0F;
+        Rounding_bit_Charlie4.renderWithRotation(par7);
+
+        Rounding_bit_Delta4.rotateAngleX = 0F;
+        Rounding_bit_Delta4.rotateAngleY = 0F;
+        Rounding_bit_Delta4.rotateAngleZ = 0F;
+        Rounding_bit_Delta4.renderWithRotation(par7);
+
+        Insulator_Bravo1.rotateAngleX = 0F;
+        Insulator_Bravo1.rotateAngleY = 0F;
+        Insulator_Bravo1.rotateAngleZ = 0F;
+        Insulator_Bravo1.renderWithRotation(par7);
+
+        Rounding_bit_Alpha5.rotateAngleX = 0F;
+        Rounding_bit_Alpha5.rotateAngleY = 0F;
+        Rounding_bit_Alpha5.rotateAngleZ = 0F;
+        Rounding_bit_Alpha5.renderWithRotation(par7);
+
+        Rounding_bit_Bravo5.rotateAngleX = 0F;
+        Rounding_bit_Bravo5.rotateAngleY = 0F;
+        Rounding_bit_Bravo5.rotateAngleZ = 0F;
+        Rounding_bit_Bravo5.renderWithRotation(par7);
+
+        Rounding_bit_Charlie5.rotateAngleX = 0F;
+        Rounding_bit_Charlie5.rotateAngleY = 0F;
+        Rounding_bit_Charlie5.rotateAngleZ = 0F;
+        Rounding_bit_Charlie5.renderWithRotation(par7);
+
+        Rounding_bit_Delta5.rotateAngleX = 0F;
+        Rounding_bit_Delta5.rotateAngleY = 0F;
+        Rounding_bit_Delta5.rotateAngleZ = 0F;
+        Rounding_bit_Delta5.renderWithRotation(par7);
+
+        Insulator_Charlie1.rotateAngleX = 0F;
+        Insulator_Charlie1.rotateAngleY = 0F;
+        Insulator_Charlie1.rotateAngleZ = 0F;
+        Insulator_Charlie1.renderWithRotation(par7);
+
+        Rounding_bit_Alpha6.rotateAngleX = 0F;
+        Rounding_bit_Alpha6.rotateAngleY = 0F;
+        Rounding_bit_Alpha6.rotateAngleZ = 0F;
+        Rounding_bit_Alpha6.renderWithRotation(par7);
+
+        Rounding_bit_Bravo6.rotateAngleX = 0F;
+        Rounding_bit_Bravo6.rotateAngleY = 0F;
+        Rounding_bit_Bravo6.rotateAngleZ = 0F;
+        Rounding_bit_Bravo6.renderWithRotation(par7);
+
+        Rounding_bit_Charlie6.rotateAngleX = 0F;
+        Rounding_bit_Charlie6.rotateAngleY = 0F;
+        Rounding_bit_Charlie6.rotateAngleZ = 0F;
+        Rounding_bit_Charlie6.renderWithRotation(par7);
+
+        Rounding_bit_Delta6.rotateAngleX = 0F;
+        Rounding_bit_Delta6.rotateAngleY = 0F;
+        Rounding_bit_Delta6.rotateAngleZ = 0F;
+        Rounding_bit_Delta6.renderWithRotation(par7);
+
+        Insulator_Delta1.rotateAngleX = 0F;
+        Insulator_Delta1.rotateAngleY = 0F;
+        Insulator_Delta1.rotateAngleZ = 0F;
+        Insulator_Delta1.renderWithRotation(par7);
+
+        Rounding_bit_Alpha7.rotateAngleX = 0F;
+        Rounding_bit_Alpha7.rotateAngleY = 0F;
+        Rounding_bit_Alpha7.rotateAngleZ = 0F;
+        Rounding_bit_Alpha7.renderWithRotation(par7);
+
+        Rounding_bit_Bravo7.rotateAngleX = 0F;
+        Rounding_bit_Bravo7.rotateAngleY = 0F;
+        Rounding_bit_Bravo7.rotateAngleZ = 0F;
+        Rounding_bit_Bravo7.renderWithRotation(par7);
+
+        Rounding_bit_Charlie7.rotateAngleX = 0F;
+        Rounding_bit_Charlie7.rotateAngleY = 0F;
+        Rounding_bit_Charlie7.rotateAngleZ = 0F;
+        Rounding_bit_Charlie7.renderWithRotation(par7);
+
+        Rounding_bit_Delta7.rotateAngleX = 0F;
+        Rounding_bit_Delta7.rotateAngleY = 0F;
+        Rounding_bit_Delta7.rotateAngleZ = 0F;
+        Rounding_bit_Delta7.renderWithRotation(par7);
+
+        Connector_Charlie.rotateAngleX = 0F;
+        Connector_Charlie.rotateAngleY = 0F;
+        Connector_Charlie.rotateAngleZ = 0F;
+        Connector_Charlie.renderWithRotation(par7);
+
+        Insulator_Alpha2.rotateAngleX = 0F;
+        Insulator_Alpha2.rotateAngleY = 0F;
+        Insulator_Alpha2.rotateAngleZ = 0F;
+        Insulator_Alpha2.renderWithRotation(par7);
+
+        Rounding_bit_Alpha8.rotateAngleX = 0F;
+        Rounding_bit_Alpha8.rotateAngleY = 0F;
+        Rounding_bit_Alpha8.rotateAngleZ = 0F;
+        Rounding_bit_Alpha8.renderWithRotation(par7);
+
+        Rounding_bit_Bravo8.rotateAngleX = 0F;
+        Rounding_bit_Bravo8.rotateAngleY = 0F;
+        Rounding_bit_Bravo8.rotateAngleZ = 0F;
+        Rounding_bit_Bravo8.renderWithRotation(par7);
+
+        Rounding_bit_Charlie8.rotateAngleX = 0F;
+        Rounding_bit_Charlie8.rotateAngleY = 0F;
+        Rounding_bit_Charlie8.rotateAngleZ = 0F;
+        Rounding_bit_Charlie8.renderWithRotation(par7);
+
+        Rounding_bit_Delta8.rotateAngleX = 0F;
+        Rounding_bit_Delta8.rotateAngleY = 0F;
+        Rounding_bit_Delta8.rotateAngleZ = 0F;
+        Rounding_bit_Delta8.renderWithRotation(par7);
+
+        Insulator_Bravo2.rotateAngleX = 0F;
+        Insulator_Bravo2.rotateAngleY = 0F;
+        Insulator_Bravo2.rotateAngleZ = 0F;
+        Insulator_Bravo2.renderWithRotation(par7);
+
+        Rounding_bit_Alpha9.rotateAngleX = 0F;
+        Rounding_bit_Alpha9.rotateAngleY = 0F;
+        Rounding_bit_Alpha9.rotateAngleZ = 0F;
+        Rounding_bit_Alpha9.renderWithRotation(par7);
+
+        Rounding_bit_Bravo9.rotateAngleX = 0F;
+        Rounding_bit_Bravo9.rotateAngleY = 0F;
+        Rounding_bit_Bravo9.rotateAngleZ = 0F;
+        Rounding_bit_Bravo9.renderWithRotation(par7);
+
+        Rounding_bit_Charlie9.rotateAngleX = 0F;
+        Rounding_bit_Charlie9.rotateAngleY = 0F;
+        Rounding_bit_Charlie9.rotateAngleZ = 0F;
+        Rounding_bit_Charlie9.renderWithRotation(par7);
+
+        Rounding_bit_Delta9.rotateAngleX = 0F;
+        Rounding_bit_Delta9.rotateAngleY = 0F;
+        Rounding_bit_Delta9.rotateAngleZ = 0F;
+        Rounding_bit_Delta9.renderWithRotation(par7);
+
+        Insulator_Charlie2.rotateAngleX = 0F;
+        Insulator_Charlie2.rotateAngleY = 0F;
+        Insulator_Charlie2.rotateAngleZ = 0F;
+        Insulator_Charlie2.renderWithRotation(par7);
+
+        Rounding_bit_Alpha10.rotateAngleX = 0F;
+        Rounding_bit_Alpha10.rotateAngleY = 0F;
+        Rounding_bit_Alpha10.rotateAngleZ = 0F;
+        Rounding_bit_Alpha10.renderWithRotation(par7);
+
+        Rounding_bit_Bravo10.rotateAngleX = 0F;
+        Rounding_bit_Bravo10.rotateAngleY = 0F;
+        Rounding_bit_Bravo10.rotateAngleZ = 0F;
+        Rounding_bit_Bravo10.renderWithRotation(par7);
+
+        Rounding_bit_Charlie10.rotateAngleX = 0F;
+        Rounding_bit_Charlie10.rotateAngleY = 0F;
+        Rounding_bit_Charlie10.rotateAngleZ = 0F;
+        Rounding_bit_Charlie10.renderWithRotation(par7);
+
+        Rounding_bit_Delta10.rotateAngleX = 0F;
+        Rounding_bit_Delta10.rotateAngleY = 0F;
+        Rounding_bit_Delta10.rotateAngleZ = 0F;
+        Rounding_bit_Delta10.renderWithRotation(par7);
+
+        Insulator_Delta2.rotateAngleX = 0F;
+        Insulator_Delta2.rotateAngleY = 0F;
+        Insulator_Delta2.rotateAngleZ = 0F;
+        Insulator_Delta2.renderWithRotation(par7);
+
+        Rounding_bit_Alpha11.rotateAngleX = 0F;
+        Rounding_bit_Alpha11.rotateAngleY = 0F;
+        Rounding_bit_Alpha11.rotateAngleZ = 0F;
+        Rounding_bit_Alpha11.renderWithRotation(par7);
+
+        Rounding_bit_Bravo11.rotateAngleX = 0F;
+        Rounding_bit_Bravo11.rotateAngleY = 0F;
+        Rounding_bit_Bravo11.rotateAngleZ = 0F;
+        Rounding_bit_Bravo11.renderWithRotation(par7);
+
+        Rounding_bit_Charlie11.rotateAngleX = 0F;
+        Rounding_bit_Charlie11.rotateAngleY = 0F;
+        Rounding_bit_Charlie11.rotateAngleZ = 0F;
+        Rounding_bit_Charlie11.renderWithRotation(par7);
+
+        Rounding_bit_Delta11.rotateAngleX = 0F;
+        Rounding_bit_Delta11.rotateAngleY = 0F;
+        Rounding_bit_Delta11.rotateAngleZ = 0F;
+        Rounding_bit_Delta11.renderWithRotation(par7);
+    }
 }
