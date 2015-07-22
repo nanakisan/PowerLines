@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.extra.IRotatable;
+import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -79,11 +80,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
             NodeRotationMessage message = new NodeRotationMessage(x, y, z, ((IRotatable) te).getRotation());
 
-            //noinspection unchecked
-            for (EntityPlayer p : (List<EntityPlayer>)world.playerEntities)
-            {
-                PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) p);
-            }
+            NetworkUtils.broadcastToWorld(world, message);
         }
 
         return false;

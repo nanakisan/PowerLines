@@ -1,9 +1,14 @@
 package untouchedwagons.minecraft.powerlines.tileentity;
 
+import untouchedwagons.minecraft.powerlines.extra.ConnectionPointCoordinateCalculator;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.extra.PowerLineUtils;
 
 public class TileEntityLargePowerLine extends TileEntityPowerLine implements IBoundingBlock {
+
+    public TileEntityLargePowerLine() {
+        super(new ConnectionPointCoordinateCalculator(8));
+    }
 
     @Override
     public void onPlace() {

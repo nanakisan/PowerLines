@@ -4,15 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import untouchedwagons.minecraft.powerlines.PowerLinesMod;
-import untouchedwagons.minecraft.powerlines.extra.IRotatable;
-import untouchedwagons.minecraft.powerlines.network.NodeRotationMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityDumbFluxedBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
@@ -40,31 +36,6 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
             default:
                 return null;
         }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z) {
-        if (world.isRemote)
-            return false;
-
-        TileEntityBoundingBox tebbox = (TileEntityBoundingBox)world.getTileEntity(x, y, z);
-
-        TileEntity te = world.getTileEntity(tebbox.orig_x, tebbox.orig_y, tebbox.orig_z);
-
-        if (te instanceof IRotatable && player.isSneaking())
-        {
-            ((IRotatable) te).rotate();
-
-            NodeRotationMessage message = new NodeRotationMessage(tebbox.orig_x, tebbox.orig_y, tebbox.orig_z, ((IRotatable) te).getRotation());
-
-            //noinspection unchecked
-            for (EntityPlayer p : (List<EntityPlayer>)world.playerEntities)
-            {
-                PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) p);
-            }
-        }
-
-        return false;
     }
 
     @Override

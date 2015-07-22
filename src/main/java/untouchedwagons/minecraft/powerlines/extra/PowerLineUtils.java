@@ -37,9 +37,6 @@ public class PowerLineUtils {
 
         BoundingBoxHomePositionMessage message = new BoundingBoxHomePositionMessage(x, y, z, orig_x, orig_y, orig_z);
 
-        for (EntityPlayer player : (List<EntityPlayer>)world.playerEntities)
-        {
-            PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
-        }
+        NetworkUtils.broadcastToWorld(world, message);
     }
 }

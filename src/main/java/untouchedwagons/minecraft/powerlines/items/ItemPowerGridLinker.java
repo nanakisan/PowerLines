@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import untouchedwagons.math.MathHelper;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
+import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -177,12 +178,7 @@ public class ItemPowerGridLinker extends Item {
             PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(world));
             PowerGridNodeGridUUIDChange message2 = new PowerGridNodeGridUUIDChange(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, grid_uuid);
 
-            //noinspection unchecked
-            for (EntityPlayer player_in_world : (List<EntityPlayer>)world.playerEntities)
-            {
-                PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player_in_world);
-                PowerLinesMod.networking.sendTo(message2, (EntityPlayerMP) player_in_world);
-            }
+            NetworkUtils.broadcastToWorld(world, message, message2);
 
             player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-link-success")));
             return true;
