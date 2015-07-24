@@ -10,10 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
-import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
-import untouchedwagons.minecraft.powerlines.extra.IRotatable;
-import untouchedwagons.minecraft.powerlines.extra.PowerLineUtils;
-import untouchedwagons.minecraft.powerlines.extra.Rotation;
+import untouchedwagons.minecraft.powerlines.extra.*;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -22,7 +19,7 @@ import untouchedwagons.minecraft.powerlines.network.NodeRotationMessage;
 import java.util.List;
 import java.util.UUID;
 
-public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler, IRotatable {
+public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler, IRotatable, IWrenchable {
 
     private EnergyMode mode = EnergyMode.INPUT;
     private Rotation rotation = Rotation.NORTH_SOUTH;
@@ -204,11 +201,17 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         grid.setEnergyStored(grid.getEnergyStored() - ier.receiveEnergy(ForgeDirection.UP, grid.getEnergyStored(), false));
     }
 
+    @Override
+    public void wrench() {
+        this.mode = this.mode.getOpposite();
+    }
+
     public enum EnergyMode
     {
         INPUT("input"), OUTPUT("output"), UNKNOWN("unknown");
 
         public static final EnergyMode[] VALID_MODES = { INPUT, OUTPUT };
+        public static final int[] OPPOSITES = { 1, 0, 0 };
 
         private final String mode;
 
@@ -236,6 +239,11 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         @Override
         public String toString() {
             return this.mode;
+        }
+
+        public EnergyMode getOpposite()
+        {
+            return VALID_MODES[OPPOSITES[ordinal()]];
         }
     }
 }

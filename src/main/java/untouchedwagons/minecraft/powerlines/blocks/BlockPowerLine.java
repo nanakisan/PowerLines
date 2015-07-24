@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.blocks;
 
+import cofh.api.item.IToolHammer;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -11,9 +12,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
 import untouchedwagons.minecraft.powerlines.extra.IRotatable;
+import untouchedwagons.minecraft.powerlines.extra.IWrenchable;
 import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
@@ -73,14 +76,22 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             return false;
 
         TileEntity te = world.getTileEntity(x, y, z);
+        ItemStack item_held = player.getHeldItem();
+        boolean item_is_hammer = item_held != null && item_held.getItem() instanceof IToolHammer;
 
-        if (te instanceof IRotatable && player.isSneaking())
+        if (te instanceof IRotatable && player.isSneaking() && item_is_hammer)
         {
             ((IRotatable) te).rotate();
 
             NodeRotationMessage message = new NodeRotationMessage(x, y, z, ((IRotatable) te).getRotation());
 
             NetworkUtils.broadcastToWorld(world, message);
+        }
+
+        if (te instanceof IWrenchable && !player.isSneaking() && item_is_hammer)
+        {
+            IWrenchable wrenchable = (IWrenchable) te;
+            wrenchable.wrench();
         }
 
         return false;

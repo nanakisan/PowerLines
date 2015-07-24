@@ -20,6 +20,7 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
+import untouchedwagons.minecraft.powerlines.items.ItemScrewdriver;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.items.ItemPowerGridLinker;
@@ -38,6 +39,7 @@ public class PowerLinesMod
     public static BlockSubStation substation;
 
     public static ItemPowerGridLinker grid_linker;
+    public static ItemScrewdriver screwdriver;
 
     public static Configuration config;
 
@@ -83,6 +85,7 @@ public class PowerLinesMod
         PowerLinesMod.substation = new BlockSubStation();
 
         PowerLinesMod.grid_linker = new ItemPowerGridLinker();
+        PowerLinesMod.screwdriver = new ItemScrewdriver();
 
         GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
@@ -96,6 +99,7 @@ public class PowerLinesMod
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
 
         GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker", "powerlines");
+        GameRegistry.registerItem(PowerLinesMod.screwdriver, "Screwdriver", "powerlines");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }

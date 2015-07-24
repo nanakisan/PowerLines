@@ -27,6 +27,9 @@ text.grid-linker-too-far-error=Power line nodes are too far apart.
 text.grid-linker-too-steep-error=Angle between the two power lines is too great
 
 text.grid-linker-link-success=Power grid set. If this is a substation, make sure it can connect to the other substations so that they all can work.
+
+text.screwdriver.snark=Totally not a wrench.
+
 text.grid=Grid
 
 text.waila.grid-uuid-none=None

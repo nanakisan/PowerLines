@@ -13,7 +13,6 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityDumbFluxedBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityFluxedBoundingBox;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockBoundingBox extends Block implements ITileEntityProvider {
@@ -36,6 +35,21 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z) {
+        TileEntityBoundingBox tebb = (TileEntityBoundingBox) world.getTileEntity(x, y, z);
+
+        if (!world.blockExists(tebb.orig_x, tebb.orig_y, tebb.orig_z))
+        {
+            return false;
+        }
+
+        Block b = world.getBlock(tebb.orig_x, tebb.orig_y, tebb.orig_z);
+        b.onBlockActivated(world, tebb.orig_x, tebb.orig_y, tebb.orig_z, player, side, hit_x, hit_y, hit_z);
+
+        return false;
     }
 
     @Override
