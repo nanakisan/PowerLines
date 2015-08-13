@@ -1,6 +1,5 @@
-package untouchedwagons.minecraft.powerlines.network;
+package untouchedwagons.minecraft.powerlines.network.grids;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
+import untouchedwagons.minecraft.powerlines.network.AbstractMessage;
 
 public class PowerGridSynchronizationMessage extends AbstractMessage<PowerGridSynchronizationMessage> {
     private PowerGridWorldSavedData grid_data;

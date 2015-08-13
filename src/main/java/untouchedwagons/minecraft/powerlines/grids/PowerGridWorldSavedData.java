@@ -38,10 +38,27 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         return new_grid;
     }
 
+    protected List<PowerGrid> getGrids()
+    {
+        return this.grids;
+    }
+
     public void removePowerGrid(PowerGrid grid)
     {
         this.grids.remove(grid);
         this.markDirty();
+    }
+
+    public void removePowerGrid(UUID grid_uuid)
+    {
+        for (PowerGrid grid : this.grids)
+        {
+            if (grid.getGridUUID().equals(grid_uuid))
+            {
+                this.grids.remove(grid);
+                return;
+            }
+        }
     }
 
     @Override
@@ -83,6 +100,11 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         if (data == null) {
             data = new PowerGridWorldSavedData();
             world.mapStorage.setData(IDENTIFIER, data);
+        }
+
+        for (PowerGrid grid : data.getGrids())
+        {
+            grid.setWorld(world);
         }
 
         return data;

@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.blocks;
 
-import cofh.api.item.IToolHammer;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -12,16 +11,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
-import untouchedwagons.minecraft.powerlines.extra.IRotatable;
-import untouchedwagons.minecraft.powerlines.extra.IWrenchable;
 import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.*;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridCreatedMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridSynchronizationMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
 import java.util.LinkedHashMap;
@@ -71,33 +68,6 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     public int getRenderType() { return -1; }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hit_x, float hit_y, float hit_z) {
-        if (world.isRemote)
-            return false;
-
-        TileEntity te = world.getTileEntity(x, y, z);
-        ItemStack item_held = player.getHeldItem();
-        boolean item_is_hammer = item_held != null && item_held.getItem() instanceof IToolHammer;
-
-        if (te instanceof IRotatable && player.isSneaking() && item_is_hammer)
-        {
-            ((IRotatable) te).rotate();
-
-            NodeRotationMessage message = new NodeRotationMessage(x, y, z, ((IRotatable) te).getRotation());
-
-            NetworkUtils.broadcastToWorld(world, message);
-        }
-
-        if (te instanceof IWrenchable && !player.isSneaking() && item_is_hammer)
-        {
-            IWrenchable wrenchable = (IWrenchable) te;
-            wrenchable.wrench();
-        }
-
-        return false;
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         if (world.isRemote)
             return;
@@ -106,13 +76,18 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
         if (te instanceof IBoundingBlock)
         {
-            ((IBoundingBlock)te).onPlace();
+            ((IBoundingBlock)te).onPlace(entity);
         }
 
         UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
 
-        if (grid_uuid != null)
-            connectToPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
+        if (grid_uuid != null) {
+            PowerGridWorldSavedData save_data = PowerGridWorldSavedData.get(world);
+            PowerGrid grid = save_data.getGridByUUID(grid_uuid);
+
+            PowerGridCreatedMessage m1 = new PowerGridCreatedMessage(grid_uuid);
+            NetworkUtils.broadcastToWorld(world, m1);
+        }
 
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
     }
@@ -154,18 +129,11 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         PowerGridNode node = new PowerGridNode(te_node.getNodeUUID(), te_node.xCoord, te_node.yCoord, te_node.zCoord, this.isSubStation(), false, this.getNodeIdentifier());
         PowerGridWorldSavedData data = PowerGridWorldSavedData.get(te_node.getWorldObj());
 
-        PowerGrid grid = data.getGridByUUID(grid_uuid);
+        PowerGrid grid = grid = data.getGridByUUID(grid_uuid);
         grid.connectGridNode(node);
         grid.connectGrid();
 
-        // Inform everyone in the world of the changes.
-        PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(te_node.getWorldObj()));
 
-        //noinspection unchecked
-        for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
-        {
-            PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
-        }
     }
 
     public void disconnectFromPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
@@ -180,8 +148,7 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(te_node.getWorldObj()));
 
         //noinspection unchecked
-        for (EntityPlayer player : (List<EntityPlayer>)te_node.getWorldObj().playerEntities)
-        {
+        for (EntityPlayer player : (List<EntityPlayer>) te_node.getWorldObj().playerEntities) {
             PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
         }
     }

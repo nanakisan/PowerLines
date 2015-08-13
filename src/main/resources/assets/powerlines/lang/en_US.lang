@@ -18,7 +18,8 @@ text.grid-linker-info.8=power lines are not.
 text.grid-linker-clear=Grid Linker cleared
 text.grid-linker-saved=Node info saved
 
-text.grid-linker-no-grid-error=This node has not been connected to a power grid.
+text.grid-linker-no-grid-set-error=This node has not been connected to a power grid.
+text.grid-linker-no-grid-error=Destination power grid does not exist
 text.grid-linker-no-data-error=No data to load.
 text.grid-linker-no-block-error=Original power line node has been unloaded.
 text.grid-linker-no-node-error=The origin node could not be found in the power grid.
@@ -27,8 +28,6 @@ text.grid-linker-too-far-error=Power line nodes are too far apart.
 text.grid-linker-too-steep-error=Angle between the two power lines is too great
 
 text.grid-linker-link-success=Power grid set. If this is a substation, make sure it can connect to the other substations so that they all can work.
-
-text.screwdriver.snark=Totally not a wrench.
 
 text.grid=Grid
 

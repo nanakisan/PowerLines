@@ -34,9 +34,5 @@ public class PowerLineUtils {
         world.setBlock(x, y, z, PowerLinesMod.bounding_box, meta, 2);
 
         ((TileEntityBoundingBox) world.getTileEntity(x, y, z)).setParentLocation(orig_x, orig_y, orig_z);
-
-        BoundingBoxHomePositionMessage message = new BoundingBoxHomePositionMessage(x, y, z, orig_x, orig_y, orig_z);
-
-        NetworkUtils.broadcastToWorld(world, message);
     }
 }

@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,14 +12,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.math.MathHelper;
-import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.PowerGridNodeGridUUIDChange;
-import untouchedwagons.minecraft.powerlines.network.PowerGridSynchronizationMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeConnectedMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeDisconnectedMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeNeighbourshipMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridSynchronizationMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
@@ -76,7 +76,7 @@ public class ItemPowerGridLinker extends Item {
         {
             if (tepgn.getPowerGridUUID() == null) // Player is shift-right clicking a power line that's not linked to a power grid
             {
-                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-grid-error")));
+                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-grid-set-error")));
                 return false;
             }
 
@@ -157,28 +157,32 @@ public class ItemPowerGridLinker extends Item {
             else
             {
                 PowerGrid old_grid = PowerGridWorldSavedData.get(world).getGridByUUID(tepgn.getPowerGridUUID());
+
                 this_node = old_grid.getGridNode(tepgn.getNodeUUID());
 
                 old_grid.disconnectGridNode(this_node);
                 old_grid.connectGrid();
+
+                PowerGridNodeDisconnectedMessage m1 = new PowerGridNodeDisconnectedMessage(tepgn.getPowerGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
+
+                NetworkUtils.broadcastToWorld(world, m1);
             }
+
+            // Add the node to the grid
+            grid.connectGridNode(this_node);
+            tepgn.setGridUUID(grid_uuid);
+
+            PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid.getGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
+            NetworkUtils.broadcastToWorld(world, m2);
 
             // Establish connections between the two nodes
             that_node.getNeighbours().add(this_node);
             this_node.getNeighbours().add(that_node);
 
-            // Update the TE's grid UUID
-            tepgn.setGridUUID(grid_uuid);
+            PowerGridNodeNeighbourshipMessage m3 = new PowerGridNodeNeighbourshipMessage(grid.getGridUUID(), this_node.getNodeUUID(), that_node.getNodeUUID());
+            NetworkUtils.broadcastToWorld(world, m3);
 
-            // Inform the grid about the new node
-            grid.connectGridNode(this_node);
             grid.connectGrid();
-
-            // Inform everyone in the world of the changes.
-            PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(world));
-            PowerGridNodeGridUUIDChange message2 = new PowerGridNodeGridUUIDChange(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, grid_uuid);
-
-            NetworkUtils.broadcastToWorld(world, message, message2);
 
             player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-link-success")));
             return true;

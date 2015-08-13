@@ -27,8 +27,6 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 import java.util.List;
 import java.util.UUID;
 
-import static untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation.EnergyMode.INPUT;
-
 @Interface(iface = "mcp.mobius.waila.api.IWailaDataProvider", modid = "Waila")
 public class WailaDataProvider implements IWailaDataProvider
 {

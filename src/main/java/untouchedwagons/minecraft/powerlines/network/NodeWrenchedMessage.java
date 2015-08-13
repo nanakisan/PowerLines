@@ -5,7 +5,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
-import untouchedwagons.minecraft.powerlines.extra.IRotatable;
 import untouchedwagons.minecraft.powerlines.extra.IWrenchable;
 
 public class NodeWrenchedMessage extends AbstractMessage<NodeWrenchedMessage> {

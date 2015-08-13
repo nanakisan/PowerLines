@@ -92,29 +92,22 @@ public class TileEntityFluxedBoundingBox extends TileEntityBoundingBox implement
             return false;
         }
 
-        try {
-            // Is this block north or south of its parent block
-            boolean is_north_south = this.xCoord == sub_station.xCoord && this.yCoord == sub_station.yCoord && (this.zCoord - 1 == sub_station.zCoord || this.zCoord + 1 == sub_station.zCoord);
-            // Is this block east or west of its parent block
-            boolean is_east_west = this.zCoord == sub_station.zCoord && this.yCoord == sub_station.yCoord && (this.xCoord - 1 == sub_station.xCoord || this.xCoord + 1 == sub_station.xCoord);
-
-            return sub_station.canConnectEnergy(from) && ((is_north_south && sub_station.getRotation() == Rotation.NORTH_SOUTH) || (is_east_west && sub_station.getRotation() == Rotation.EAST_WEST));
-        }
-        catch (NullPointerException npe)
-        {
-            FMLLog.warning(String.format("orig_x = %d, orig_y = %d, orig_z = %d", this.orig_x, this.orig_y, this.orig_z));
-        }
-
-        return false;
+        return from == ForgeDirection.DOWN;
     }
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        if (from != ForgeDirection.DOWN)
+            return 0;
+
         return this.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        if (from != ForgeDirection.DOWN)
+            return 0;
+
         return this.extractEnergy(maxExtract, simulate);
     }
 

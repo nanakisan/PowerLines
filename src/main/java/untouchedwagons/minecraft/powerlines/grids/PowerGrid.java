@@ -5,6 +5,7 @@ import cofh.api.energy.IEnergyStorage;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 
 import java.util.*;
@@ -14,6 +15,7 @@ public class PowerGrid implements IEnergyStorage {
     private final List<PowerGridNode> nodes = new LinkedList<PowerGridNode>();
     private UUID grid_uuid;
     private PowerGridWorldSavedData storage;
+    private World world;
 
     public PowerGrid(PowerGridWorldSavedData storage) {
         this.storage = storage;
@@ -209,5 +211,9 @@ public class PowerGrid implements IEnergyStorage {
 
             searchForConnectedSubStations(neighbour, substations, visited_nodes);
         }
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 }

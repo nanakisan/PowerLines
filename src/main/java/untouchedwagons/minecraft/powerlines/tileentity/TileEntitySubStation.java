@@ -4,22 +4,22 @@ import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.*;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.NodeRotationMessage;
 
-import java.util.List;
 import java.util.UUID;
 
-public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler, IRotatable, IWrenchable {
+public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler, IWrenchable {
 
     private EnergyMode mode = EnergyMode.INPUT;
     private Rotation rotation = Rotation.NORTH_SOUTH;
@@ -29,18 +29,41 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     }
 
     @Override
-    public void onPlace() {
+    public void onPlace(EntityLivingBase entity) {
+        int player_direction = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        switch (player_direction)
+        {
+            case 0:
+            case 2:
+                this.rotation = Rotation.NORTH_SOUTH;
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+
+                break;
+            case 1:
+            case 3:
+                this.rotation = Rotation.EAST_WEST;
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
+                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
+                break;
+        }
+
+        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
+
         // The four corners are dumb fluxed bounding boxes. They can report the energy state, but cannot handle power
         PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
         PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
         PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
         PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-
-        // The four bounding blocks immediately adjacent to the sub station can handle power, half are active due to rotation
-        PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
 
         for (int x = -1; x < 2; x++)
         {
@@ -69,6 +92,19 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
                 }
             }
         }
+
+        this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord);
+
+        if (this.getRotation() == Rotation.NORTH_SOUTH)
+        {
+            this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord - 1);
+            this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord + 1);
+        }
+        else if (this.getRotation() == Rotation.EAST_WEST)
+        {
+            this.worldObj.setBlockToAir(this.xCoord - 1, this.yCoord + 3, this.zCoord);
+            this.worldObj.setBlockToAir(this.xCoord + 1, this.yCoord + 3, this.zCoord);
+        }
     }
 
     @Override
@@ -85,6 +121,20 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
 
         nbt.setString("mode", this.mode.toString());
         nbt.setString("rotation", this.rotation.toString());
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbtTag = new NBTTagCompound();
+
+        this.writeToNBT(nbtTag);
+
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.func_148857_g());
     }
 
     @Override
@@ -160,24 +210,9 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         return mode;
     }
 
-    @Override
-    public void rotate() {
-        this.setRotation(this.rotation.getOpposite());
-    }
-
-    @Override
-    public Rotation getRotation() {
+    public Rotation getRotation()
+    {
         return this.rotation;
-    }
-
-    @Override
-    public void setRotation(Rotation rotation) {
-        this.rotation = rotation;
-
-        this.worldObj.markBlockForUpdate(this.xCoord - 1, this.yCoord, this.zCoord);
-        this.worldObj.markBlockForUpdate(this.xCoord + 1, this.yCoord, this.zCoord);
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord - 1);
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord + 1);
     }
 
     @Override
@@ -204,46 +239,5 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public void wrench() {
         this.mode = this.mode.getOpposite();
-    }
-
-    public enum EnergyMode
-    {
-        INPUT("input"), OUTPUT("output"), UNKNOWN("unknown");
-
-        public static final EnergyMode[] VALID_MODES = { INPUT, OUTPUT };
-        public static final int[] OPPOSITES = { 1, 0, 0 };
-
-        private final String mode;
-
-        EnergyMode(String mode) {
-            this.mode = mode;
-        }
-
-        public String getMode() {
-            return mode;
-        }
-
-        public static EnergyMode fromString(String mode)
-        {
-            for (EnergyMode valid_mode : EnergyMode.VALID_MODES)
-            {
-                if (valid_mode.getMode().equals(mode))
-                {
-                    return valid_mode;
-                }
-            }
-
-            return EnergyMode.UNKNOWN;
-        }
-
-        @Override
-        public String toString() {
-            return this.mode;
-        }
-
-        public EnergyMode getOpposite()
-        {
-            return VALID_MODES[OPPOSITES[ordinal()]];
-        }
     }
 }

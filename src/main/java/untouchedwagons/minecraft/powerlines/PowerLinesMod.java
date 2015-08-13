@@ -20,11 +20,11 @@ import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
 import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.items.ItemScrewdriver;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.items.ItemPowerGridLinker;
 import untouchedwagons.minecraft.powerlines.network.*;
+import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.*;
 
@@ -39,7 +39,6 @@ public class PowerLinesMod
     public static BlockSubStation substation;
 
     public static ItemPowerGridLinker grid_linker;
-    public static ItemScrewdriver screwdriver;
 
     public static Configuration config;
 
@@ -75,17 +74,18 @@ public class PowerLinesMod
         PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(PowerGridNodeGridUUIDChange.class, PowerGridNodeGridUUIDChange.class, 2, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(NodeRotationMessage.class, NodeRotationMessage.class, 3, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(BoundingBoxHomePositionMessage.class, BoundingBoxHomePositionMessage.class, 4, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 5, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 2, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridDestroyedMessage.class, PowerGridDestroyedMessage.class, 3, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridNodeNeighbourshipMessage.class, PowerGridNodeNeighbourshipMessage.class, 6, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 7, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();
         PowerLinesMod.substation = new BlockSubStation();
 
         PowerLinesMod.grid_linker = new ItemPowerGridLinker();
-        PowerLinesMod.screwdriver = new ItemScrewdriver();
 
         GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
@@ -99,7 +99,6 @@ public class PowerLinesMod
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
 
         GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker", "powerlines");
-        GameRegistry.registerItem(PowerLinesMod.screwdriver, "Screwdriver", "powerlines");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }
