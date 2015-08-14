@@ -7,12 +7,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
+import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridConnectionStateMessage;
 
 import java.util.*;
 
 public class PowerGrid implements IEnergyStorage {
     private final EnergyStorage energy = new EnergyStorage(PowerLinesMod.config.get("power-grid", "max-energy", 1000000).getInt());
     private final List<PowerGridNode> nodes = new LinkedList<PowerGridNode>();
+
+    private boolean is_connected;
     private UUID grid_uuid;
     private PowerGridWorldSavedData storage;
     private World world;
@@ -38,8 +42,11 @@ public class PowerGrid implements IEnergyStorage {
         // Get any node that's a substation, we'll use it as a starting point for finding everything
         for (PowerGridNode node : this.nodes)
         {
-            if (first_substation == null && node.isSubStation())
+            if (node.isSubStation())
+            {
                 first_substation = node;
+                break;
+            }
         }
 
         // No substations in the grid. This can occur if a player links a power line to a substation,
@@ -56,11 +63,10 @@ public class PowerGrid implements IEnergyStorage {
 
         int substation_count = substations_in_grid.size();
         int connected_substations = substations.size();
+        boolean is_connected = substation_count == connected_substations;
 
-        for (PowerGridNode substation : substations_in_grid)
-        {
-            substation.setIsConnected(substation_count == connected_substations);
-        }
+        PowerGridConnectionStateMessage m1 = new PowerGridConnectionStateMessage(this.getGridUUID(), is_connected);
+        NetworkUtils.broadcastToWorld(this.world, m1);
     }
 
     public void connectGridNode(PowerGridNode node)
@@ -105,6 +111,7 @@ public class PowerGrid implements IEnergyStorage {
         this.energy.readFromNBT(nbt);
 
         this.grid_uuid = UUID.fromString(nbt.getString("grid-uuid"));
+        this.is_connected = nbt.getBoolean("is-connected");
 
         NBTTagList node_list = nbt.getTagList("nodes", 10);
 
@@ -128,6 +135,7 @@ public class PowerGrid implements IEnergyStorage {
         this.energy.writeToNBT(nbt);
 
         nbt.setString("grid-uuid", this.grid_uuid.toString());
+        nbt.setBoolean("is-connected", this.isConnected());
 
         NBTTagList node_list = new NBTTagList();
 
@@ -189,6 +197,14 @@ public class PowerGrid implements IEnergyStorage {
         }
 
         return substations;
+    }
+
+    public boolean isConnected() {
+        return is_connected;
+    }
+
+    public void setIsConnected(boolean is_connected) {
+        this.is_connected = is_connected;
     }
 
     /**

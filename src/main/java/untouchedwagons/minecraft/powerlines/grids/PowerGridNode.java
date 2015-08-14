@@ -14,7 +14,7 @@ public class PowerGridNode {
     private int y;
     private int z;
     private boolean is_sub_station;
-    private boolean is_connected = false;
+    //private boolean is_connected = false;
     private String node_type;
 
     private final Set<PowerGridNode> neighbours = new LinkedHashSet<PowerGridNode>();
@@ -27,13 +27,13 @@ public class PowerGridNode {
         this.z = z;
     }
 
-    public PowerGridNode(UUID node_uuid, int x, int y, int z, boolean is_sub_station, boolean is_connected, String node_type) {
+    public PowerGridNode(UUID node_uuid, int x, int y, int z, boolean is_sub_station, String node_type) {
         this.node_uuid = node_uuid;
         this.x = x;
         this.y = y;
         this.z = z;
         this.is_sub_station = is_sub_station;
-        this.is_connected = is_connected;
+        //this.is_connected = is_connected;
         this.node_type = node_type;
     }
 
@@ -86,9 +86,7 @@ public class PowerGridNode {
         return this.is_sub_station;
     }
 
-    public boolean isConnected() {
-        return is_connected;
-    }
+    //public boolean isConnected() { return is_connected; }
 
     public String getNodeType() {
         return node_type;
@@ -98,9 +96,9 @@ public class PowerGridNode {
         return neighbours;
     }
 
-    public void setIsConnected(boolean isConnected) {
+    /*public void setIsConnected(boolean isConnected) {
         this.is_connected = isConnected;
-    }
+    }*/
 
     public void readFromNBT(NBTTagCompound nbt) {
         this.node_uuid = UUID.fromString(nbt.getString("node-uuid"));
@@ -108,7 +106,7 @@ public class PowerGridNode {
         this.y = nbt.getInteger("y");
         this.z = nbt.getInteger("z");
         this.is_sub_station = nbt.getBoolean("is-sub-station");
-        this.is_connected = nbt.getBoolean("is-connected");
+        //this.is_connected = nbt.getBoolean("is-connected");
         this.node_type = nbt.getString("node-type");
 
         NBTTagList neighbours = nbt.getTagList("neighbours", 10);
@@ -134,7 +132,7 @@ public class PowerGridNode {
         nbt.setInteger("y", this.getY());
         nbt.setInteger("z", this.getZ());
         nbt.setBoolean("is-sub-station", this.isSubStation());
-        nbt.setBoolean("is-connected", this.isConnected());
+        //nbt.setBoolean("is-connected", this.isConnected());
         nbt.setString("node-type", this.getNodeType());
 
         NBTTagList neighbours_list = new NBTTagList();

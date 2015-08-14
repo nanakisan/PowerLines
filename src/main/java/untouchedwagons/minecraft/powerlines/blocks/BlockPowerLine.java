@@ -18,6 +18,7 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.network.grids.PowerGridCreatedMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeConnectedMessage;
 import untouchedwagons.minecraft.powerlines.network.grids.PowerGridSynchronizationMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
@@ -79,7 +80,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             ((IBoundingBlock)te).onPlace(entity);
         }
 
-        UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
+        TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) te;
+        UUID grid_uuid = tepgn.getPowerGridUUID();
 
         if (grid_uuid != null) {
             PowerGridWorldSavedData save_data = PowerGridWorldSavedData.get(world);
@@ -87,6 +89,14 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
             PowerGridCreatedMessage m1 = new PowerGridCreatedMessage(grid_uuid);
             NetworkUtils.broadcastToWorld(world, m1);
+
+            PowerGridNode node = new PowerGridNode(tepgn.getNodeUUID(), x, y, z, this.isSubStation(), this.getNodeIdentifier());
+            grid.connectGridNode(node);
+
+            PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid_uuid, node);
+            NetworkUtils.broadcastToWorld(world, m2);
+
+            grid.connectGrid();
         }
 
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
@@ -122,18 +132,6 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         }
 
         return world.setBlockToAir(x, y, z);
-    }
-
-    public void connectToPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
-    {
-        PowerGridNode node = new PowerGridNode(te_node.getNodeUUID(), te_node.xCoord, te_node.yCoord, te_node.zCoord, this.isSubStation(), false, this.getNodeIdentifier());
-        PowerGridWorldSavedData data = PowerGridWorldSavedData.get(te_node.getWorldObj());
-
-        PowerGrid grid = grid = data.getGridByUUID(grid_uuid);
-        grid.connectGridNode(node);
-        grid.connectGrid();
-
-
     }
 
     public void disconnectFromPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)

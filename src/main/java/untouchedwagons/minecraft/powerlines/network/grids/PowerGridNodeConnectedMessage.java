@@ -24,12 +24,17 @@ public class PowerGridNodeConnectedMessage extends AbstractGridNodeMessage<Power
         this.node_type = node_type;
     }
 
+    public PowerGridNodeConnectedMessage(UUID grid_uuid, PowerGridNode node)
+    {
+        this(grid_uuid, node.getNodeUUID(), node.getX(), node.getY(), node.getZ(), node.isSubStation(), node.getNodeType());
+    }
+
     @Override
     public IMessage onMessage(PowerGridNodeConnectedMessage message, MessageContext ctx) {
         World world = Minecraft.getMinecraft().theWorld;
         PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(message.getGridUUID());
 
-        PowerGridNode node = new PowerGridNode(message.getNodeUUID(), message.getX(), message.getY(), message.getZ(), message.isSubStation(), false, message.getNodeType());
+        PowerGridNode node = new PowerGridNode(message.getNodeUUID(), message.getX(), message.getY(), message.getZ(), message.isSubStation(), message.getNodeType());
 
         grid.connectGridNode(node);
 

@@ -3,6 +3,7 @@ package untouchedwagons.minecraft.powerlines.network.grids;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 
 import java.util.UUID;
 
@@ -13,12 +14,17 @@ public abstract class AbstractGridNodeMessage<T extends IMessage> extends Abstra
     public AbstractGridNodeMessage() {
     }
 
-    protected AbstractGridNodeMessage(UUID grid_uuid, UUID node_uuid, int x, int y, int z) {
+    public AbstractGridNodeMessage(UUID grid_uuid, UUID node_uuid, int x, int y, int z) {
         super(grid_uuid);
         this.node_uuid = node_uuid;
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public AbstractGridNodeMessage(UUID grid_uuid, PowerGridNode node)
+    {
+        this(grid_uuid, node.getNodeUUID(), node.getX(), node.getY(), node.getZ());
     }
 
     @Override

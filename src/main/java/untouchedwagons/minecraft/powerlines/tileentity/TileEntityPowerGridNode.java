@@ -9,6 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.extra.ConnectionPoint;
 import untouchedwagons.minecraft.powerlines.extra.ConnectionPointCoordinate;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
 import java.util.UUID;
 
@@ -74,6 +76,13 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
 
     public UUID getNodeUUID() {
         return node_uuid;
+    }
+
+    public PowerGridNode getPowerGridNode()
+    {
+        PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(this.worldObj);
+
+        return pgwsd.getGridByUUID(this.getPowerGridUUID()).getGridNode(this.getNodeUUID());
     }
 
     public void setGridUUID(UUID grid_uuid) {

@@ -28,7 +28,7 @@ import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
 import untouchedwagons.minecraft.powerlines.tileentity.*;
 
-@Mod(modid = "powerlines", name = "Power Lines", version = "0.0.4", dependencies = "required-after:CoFHCore")
+@Mod(modid = "powerlines", name = "Power Lines", version = "0.1.0", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
     @Mod.Instance
@@ -79,7 +79,8 @@ public class PowerLinesMod
         PowerLinesMod.networking.registerMessage(PowerGridNodeConnectedMessage.class, PowerGridNodeConnectedMessage.class, 4, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridNodeDisconnectedMessage.class, PowerGridNodeDisconnectedMessage.class, 5, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridNodeNeighbourshipMessage.class, PowerGridNodeNeighbourshipMessage.class, 6, Side.CLIENT);
-        PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 7, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(PowerGridConnectionStateMessage.class, PowerGridConnectionStateMessage.class, 7, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 8, Side.CLIENT);
 
         PowerLinesMod.bounding_box = new BlockBoundingBox();
         PowerLinesMod.large_power_line = new BlockLargePowerLine();

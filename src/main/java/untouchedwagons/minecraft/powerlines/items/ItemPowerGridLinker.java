@@ -152,7 +152,7 @@ public class ItemPowerGridLinker extends Item {
 
             if (tepgn.getPowerGridUUID() == null) // If this node isn't already part of a grid
             {
-                this_node = new PowerGridNode(tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), false, this_block.getNodeIdentifier());
+                this_node = new PowerGridNode(tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
             }
             else
             {

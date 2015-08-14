@@ -111,15 +111,14 @@ public class WailaDataProvider implements IWailaDataProvider
         if (tepgn instanceof TileEntitySubStation)
         {
             PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
-            PowerGridNode node = grid.getGridNode(tepgn.getNodeUUID());
 
             currenttip.add(
                     String.format(
                             "%sIs Connected:%s %s%b%s",
                             EnumChatFormatting.AQUA,
                             EnumChatFormatting.RESET,
-                            node.isConnected() ? EnumChatFormatting.GREEN : EnumChatFormatting.RED,
-                            node.isConnected(),
+                            grid.isConnected() ? EnumChatFormatting.GREEN : EnumChatFormatting.RED,
+                            grid.isConnected(),
                             EnumChatFormatting.RESET
                     )
             );

@@ -13,6 +13,7 @@ import java.util.UUID;
 public class PowerGridWorldSavedData extends WorldSavedData {
     private static final String IDENTIFIER = "power-lines";
     private final List<PowerGrid> grids = new LinkedList<PowerGrid>();
+    private World world;
 
     public PowerGridWorldSavedData(String p_i2141_1_) {
         super(p_i2141_1_);
@@ -31,6 +32,7 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         }
 
         PowerGrid new_grid = new PowerGrid(grid_uuid, this);
+        new_grid.setWorld(world);
 
         this.grids.add(new_grid);
         this.markDirty();
@@ -72,7 +74,6 @@ public class PowerGridWorldSavedData extends WorldSavedData {
             NBTTagCompound grid_tag = grids.getCompoundTagAt(i);
             PowerGrid grid = new PowerGrid(this);
             grid.readFromNBT(grid_tag);
-            grid.connectGrid();
 
             this.grids.add(grid);
         }
@@ -95,18 +96,23 @@ public class PowerGridWorldSavedData extends WorldSavedData {
     }
 
     public static PowerGridWorldSavedData get(World world) {
-        PowerGridWorldSavedData data = (PowerGridWorldSavedData)world.mapStorage.loadData(PowerGridWorldSavedData.class, IDENTIFIER);
+        PowerGridWorldSavedData data = (PowerGridWorldSavedData) world.mapStorage.loadData(PowerGridWorldSavedData.class, IDENTIFIER);
 
         if (data == null) {
             data = new PowerGridWorldSavedData();
             world.mapStorage.setData(IDENTIFIER, data);
         }
 
-        for (PowerGrid grid : data.getGrids())
-        {
+        data.setWorld(world);
+
+        for (PowerGrid grid : data.getGrids()) {
             grid.setWorld(world);
         }
 
         return data;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 }

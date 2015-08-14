@@ -10,6 +10,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
 import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
+import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
+import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.network.NodeWrenchedMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 
@@ -88,6 +90,17 @@ public class BlockSubStation extends BlockPowerLine {
             NetworkUtils.broadcastToWorld(world, message);
 
             player.addChatComponentMessage(new ChatComponentText(String.format("SubStation energy mode has been changed to %s", tess.getEnergyMode().toString())));
+        }
+        else
+        {
+            TileEntitySubStation tess = (TileEntitySubStation) world.getTileEntity(x, y, z);
+
+            if (tess == null) return false;
+
+            PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
+            PowerGrid grid = pgwsd.getGridByUUID(tess.getPowerGridUUID());
+
+            player.addChatComponentMessage(new ChatComponentText(String.format("is connected: %b", grid.isConnected())));
         }
 
         return true;

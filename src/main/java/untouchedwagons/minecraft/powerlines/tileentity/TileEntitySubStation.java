@@ -140,9 +140,8 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
-        if (!node.isConnected())
+        if (!grid.isConnected())
             return 0;
 
         return grid.receiveEnergy(maxReceive, simulate);
@@ -151,9 +150,8 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
-        if (!node.isConnected())
+        if (!grid.isConnected())
             return 0;
 
         return grid.extractEnergy(maxExtract, simulate);
@@ -162,9 +160,8 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int getEnergyStored() {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
-        if (!node.isConnected())
+        if (!grid.isConnected())
             return 0;
 
         return grid.getEnergyStored();
@@ -173,9 +170,8 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     public int getMaxEnergyStored() {
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
-        if (!node.isConnected())
+        if (!grid.isConnected())
             return 0;
 
         return grid.getMaxEnergyStored();
@@ -226,9 +222,8 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
             return;
 
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
-        PowerGridNode node = grid.getGridNode(this.getNodeUUID());
 
-        if (!node.isConnected())
+        if (!grid.isConnected())
             return;
 
         IEnergyReceiver ier = (IEnergyReceiver) te;
