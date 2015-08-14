@@ -6,14 +6,18 @@ item.grid-linker.name=Power Grid Linker
 
 text.grid-linker-not-tile-entity=That's not a Power Grid node
 
-text.grid-linker-info.1=Links power nodes together.
-text.grid-linker-info.2=Sneak+Right click a linked node
-text.grid-linker-info.3=to save the destination grid.
-text.grid-linker-info.4=Right click another node to
-text.grid-linker-info.5=connect the later to the
-text.grid-linker-info.6=former's grid. Substations are
-text.grid-linker-info.7=always linked to a grid, but
-text.grid-linker-info.8=power lines are not.
+text.grid-linker-sneak-info.1=Links power nodes together.
+text.grid-linker-sneak-info.2=Sneak+Right click a linked node
+text.grid-linker-sneak-info.3=to save the destination grid.
+text.grid-linker-sneak-info.4=Right click another node to
+text.grid-linker-sneak-info.5=connect the later to the
+text.grid-linker-sneak-info.6=former's grid. Substations are
+text.grid-linker-sneak-info.7=always linked to a grid, but
+text.grid-linker-sneak-info.8=power lines are not.
+
+text.grid-linker-info.1=Hold Shift to view usage information
+text.grid-linker-info.2=Node: §a%s§r
+text.grid-linker-info.3=Grid: §b%s§r
 
 text.grid-linker-clear=Grid Linker cleared
 text.grid-linker-saved=Node info saved

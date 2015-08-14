@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.math.MathHelper;
@@ -39,14 +40,31 @@ public class ItemPowerGridLinker extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip_list, boolean p_77624_4_) {
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.1"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.2"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.3"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.4"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.5"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.6"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.7"));
-        tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.8"));
+        if (player.isSneaking())
+        {
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.1"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.2"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.3"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.4"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.5"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.6"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.7"));
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-sneak-info.8"));
+        }
+        else
+        {
+            tooltip_list.add(StatCollector.translateToLocal("text.grid-linker-info.1"));
+
+            if (stack.hasTagCompound())
+            {
+                if (stack.getTagCompound().hasKey("grid-uuid") &&
+                    stack.getTagCompound().hasKey("node-uuid"))
+                {
+                    tooltip_list.add(String.format(StatCollector.translateToLocal("text.grid-linker-info.2"), stack.getTagCompound().getString("node-uuid")));
+                    tooltip_list.add(String.format(StatCollector.translateToLocal("text.grid-linker-info.3"), stack.getTagCompound().getString("grid-uuid")));
+                }
+            }
+        }
     }
 
     @Override
@@ -101,12 +119,20 @@ public class ItemPowerGridLinker extends Item {
             NBTTagCompound stack_tag = stack.getTagCompound();
             UUID grid_uuid = UUID.fromString(stack_tag.getString("grid-uuid"));
             UUID node_uuid = UUID.fromString(stack_tag.getString("node-uuid"));
+            PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
+            PowerGrid grid = pgwsd.hasPowerGrid(grid_uuid) ? pgwsd.getGridByUUID(grid_uuid) : null;
 
-            PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(grid_uuid);
+            // Has the player gone to another dimension?
+            if (grid == null)
+            {
+                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-grid-error")));
+                return false;
+            }
 
             PowerGridNode that_node = grid.getGridNode(node_uuid);
-            PowerGridNode this_node;
+            PowerGridNode this_node = null;
 
+            // Has the original node been connected to a different grid?
             if (that_node == null)
             {
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-no-node-error")));
@@ -120,7 +146,7 @@ public class ItemPowerGridLinker extends Item {
                 return false;
             }
 
-            // Has the player gone to another dimension or destroyed the original power line?
+            // Has the player destroyed the original power line?
             if (!(world.getBlock(that_node.getX(), that_node.getY(), that_node.getZ()) instanceof BlockPowerLine))
             {
                 player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal("text.grid-linker-missing-block-error")));
@@ -150,30 +176,40 @@ public class ItemPowerGridLinker extends Item {
                 return false;
             }
 
-            if (tepgn.getPowerGridUUID() == null) // If this node isn't already part of a grid
-            {
-                this_node = new PowerGridNode(tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
-            }
-            else
+            // The TE is connected to a different power grid
+            if (tepgn.getPowerGridUUID() != null && !tepgn.getPowerGridUUID().equals(grid_uuid))
             {
                 PowerGrid old_grid = PowerGridWorldSavedData.get(world).getGridByUUID(tepgn.getPowerGridUUID());
 
                 this_node = old_grid.getGridNode(tepgn.getNodeUUID());
 
                 old_grid.disconnectGridNode(this_node);
-                old_grid.connectGrid();
 
                 PowerGridNodeDisconnectedMessage m1 = new PowerGridNodeDisconnectedMessage(tepgn.getPowerGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
-
                 NetworkUtils.broadcastToWorld(world, m1);
+
+                old_grid.connectGrid();
+
+                tepgn.setGridUUID(null);
             }
 
-            // Add the node to the grid
-            grid.connectGridNode(this_node);
-            tepgn.setGridUUID(grid_uuid);
+            if (tepgn.getPowerGridUUID() == null) // If this node isn't already part of a grid or has been disconnected from one previously
+            {
+                this_node = new PowerGridNode(tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
 
-            PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid.getGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
-            NetworkUtils.broadcastToWorld(world, m2);
+                // Add the node to the grid
+                grid.connectGridNode(this_node);
+                tepgn.setGridUUID(grid_uuid);
+
+                PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid.getGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
+                NetworkUtils.broadcastToWorld(world, m2);
+            }
+
+            // this_node will be null if this node was on the same grid to begin with
+            if (this_node == null)
+            {
+                this_node = grid.getGridNode(tepgn.getNodeUUID());
+            }
 
             // Establish connections between the two nodes
             that_node.getNeighbours().add(this_node);

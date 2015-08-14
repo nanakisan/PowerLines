@@ -84,8 +84,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         UUID grid_uuid = tepgn.getPowerGridUUID();
 
         if (grid_uuid != null) {
-            PowerGridWorldSavedData save_data = PowerGridWorldSavedData.get(world);
-            PowerGrid grid = save_data.getGridByUUID(grid_uuid);
+            PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
+            PowerGrid grid = pgwsd.getGridByUUID(grid_uuid);
 
             PowerGridCreatedMessage m1 = new PowerGridCreatedMessage(grid_uuid);
             NetworkUtils.broadcastToWorld(world, m1);

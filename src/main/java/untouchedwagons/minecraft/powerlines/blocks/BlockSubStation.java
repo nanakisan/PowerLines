@@ -88,19 +88,6 @@ public class BlockSubStation extends BlockPowerLine {
             NodeWrenchedMessage message = new NodeWrenchedMessage(x, y, z);
 
             NetworkUtils.broadcastToWorld(world, message);
-
-            player.addChatComponentMessage(new ChatComponentText(String.format("SubStation energy mode has been changed to %s", tess.getEnergyMode().toString())));
-        }
-        else
-        {
-            TileEntitySubStation tess = (TileEntitySubStation) world.getTileEntity(x, y, z);
-
-            if (tess == null) return false;
-
-            PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
-            PowerGrid grid = pgwsd.getGridByUUID(tess.getPowerGridUUID());
-
-            player.addChatComponentMessage(new ChatComponentText(String.format("is connected: %b", grid.isConnected())));
         }
 
         return true;

@@ -23,6 +23,17 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         super(IDENTIFIER);
     }
 
+    public boolean hasPowerGrid(UUID grid_uuid)
+    {
+        for (PowerGrid grid : this.grids)
+        {
+            if (grid.getGridUUID().equals(grid_uuid))
+                return true;
+        }
+
+        return false;
+    }
+
     public PowerGrid getGridByUUID(UUID grid_uuid)
     {
         for (PowerGrid grid : this.grids)
