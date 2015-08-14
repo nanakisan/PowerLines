@@ -2,7 +2,6 @@ package untouchedwagons.minecraft.powerlines.grids;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyStorage;
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -117,12 +116,12 @@ public class PowerGrid implements IEnergyStorage {
 
         for (int i = 0; i < node_list.tagCount(); i++)
         {
-            NBTTagCompound node = node_list.getCompoundTagAt(i);
+            NBTTagCompound node_tag = node_list.getCompoundTagAt(i);
 
-            PowerGridNode node_coord = new PowerGridNode();
-            node_coord.readFromNBT(node);
+            PowerGridNode node = new PowerGridNode();
+            node.readFromNBT(node_tag);
 
-            this.nodes.add(node_coord);
+            this.nodes.add(node);
         }
 
         for (PowerGridNode node : this.nodes)
@@ -153,9 +152,7 @@ public class PowerGrid implements IEnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-
         int energy_injected = this.energy.receiveEnergy(maxReceive, simulate);
-        FMLLog.info(String.format("maxReceive = %d, simulate = %b, energy_injected = %d, energyStored = %d, maxEnergyStored = %d", maxReceive, simulate, energy_injected, this.energy.getEnergyStored(), this.energy.getMaxEnergyStored()));
 
         this.storage.markDirty();
 

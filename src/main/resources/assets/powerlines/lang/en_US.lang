@@ -41,3 +41,9 @@ text.substation.mode.text=Energy Mode
 text.substation.mode.input=Input
 text.substation.mode.output=Output
 text.substation.mode.unknown=Unknown
+
+tooltip.substation-info.1=Provides access to the power grid
+tooltip.substation-info.2=Max I/O: §c%dRF/t§r
+tooltip.substation-info.3=Max Distance: §a%d§r
+tooltip.substation-info.4=Max Angle: §a%d°§r
+tooltip.substation-info.5=Size: §e3x4x3§r

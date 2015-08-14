@@ -16,13 +16,11 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-import untouchedwagons.minecraft.powerlines.blocks.BlockBoundingBox;
-import untouchedwagons.minecraft.powerlines.blocks.BlockLargePowerLine;
-import untouchedwagons.minecraft.powerlines.blocks.BlockSubStation;
+import untouchedwagons.minecraft.powerlines.blocks.Blocks;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
+import untouchedwagons.minecraft.powerlines.items.Items;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockLargePowerLine;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
-import untouchedwagons.minecraft.powerlines.items.ItemPowerGridLinker;
 import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
@@ -31,14 +29,8 @@ import untouchedwagons.minecraft.powerlines.tileentity.*;
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.1.0", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
-    @Mod.Instance
-    public static PowerLinesMod INSTANCE;
-
-    public static BlockBoundingBox bounding_box;
-    public static BlockLargePowerLine large_power_line;
-    public static BlockSubStation substation;
-
-    public static ItemPowerGridLinker grid_linker;
+    public static final Blocks blocks = new Blocks();
+    public static final Items items = new Items();
 
     public static Configuration config;
 
@@ -46,7 +38,6 @@ public class PowerLinesMod
 
     @SidedProxy(serverSide = "untouchedwagons.minecraft.powerlines.proxy.ServerProxy", clientSide = "untouchedwagons.minecraft.powerlines.proxy.ClientProxy")
     public static CommonProxy proxy;
-
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -71,7 +62,7 @@ public class PowerLinesMod
 
         if (PowerLinesMod.config.hasChanged()) PowerLinesMod.config.save();
 
-        PowerLinesMod.networking = NetworkRegistry.INSTANCE.newSimpleChannel("powerlines");
+        PowerLinesMod.networking = new SimpleNetworkWrapper("powerlines");
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridCreatedMessage.class, PowerGridCreatedMessage.class, 2, Side.CLIENT);
@@ -82,24 +73,18 @@ public class PowerLinesMod
         PowerLinesMod.networking.registerMessage(PowerGridConnectionStateMessage.class, PowerGridConnectionStateMessage.class, 7, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 8, Side.CLIENT);
 
-        PowerLinesMod.bounding_box = new BlockBoundingBox();
-        PowerLinesMod.large_power_line = new BlockLargePowerLine();
-        PowerLinesMod.substation = new BlockSubStation();
-
-        PowerLinesMod.grid_linker = new ItemPowerGridLinker();
-
-        GameRegistry.registerBlock(PowerLinesMod.bounding_box, "BoundingBox");
+        GameRegistry.registerBlock(PowerLinesMod.blocks.boundingBox, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityFluxedBoundingBox.class, "FluxedBoundingBox");
         GameRegistry.registerTileEntity(TileEntityDumbFluxedBoundingBox.class, "DumbFluxedBoundingBox");
 
-        GameRegistry.registerBlock(PowerLinesMod.large_power_line, ItemBlockLargePowerLine.class, "LargePowerLine");
+        GameRegistry.registerBlock(PowerLinesMod.blocks.largePowerLine, ItemBlockLargePowerLine.class, "LargePowerLine");
         GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");
 
-        GameRegistry.registerBlock(PowerLinesMod.substation, ItemBlockSubStation.class, "SubStation");
+        GameRegistry.registerBlock(PowerLinesMod.blocks.subStation, ItemBlockSubStation.class, "SubStation");
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
 
-        GameRegistry.registerItem(PowerLinesMod.grid_linker, "GridLinker", "powerlines");
+        GameRegistry.registerItem(PowerLinesMod.items.powerGridLinker, "GridLinker", "powerlines");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }
@@ -125,8 +110,6 @@ public class PowerLinesMod
 
     private void sendPlayerPowerGridWorldSavedData(PlayerEvent event)
     {
-        FMLLog.info("Sending grid info");
-
         World world = event.player.getEntityWorld();
         PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
         PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(pgwsd);
