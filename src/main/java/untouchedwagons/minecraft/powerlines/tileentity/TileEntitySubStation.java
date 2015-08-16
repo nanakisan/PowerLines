@@ -25,7 +25,7 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     private Rotation rotation = Rotation.NORTH_SOUTH;
 
     public TileEntitySubStation() {
-        super(UUID.randomUUID());
+
     }
 
     @Override
@@ -209,6 +209,11 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     public Rotation getRotation()
     {
         return this.rotation;
+    }
+
+    @Override
+    public boolean requiresGridUUID() {
+        return true;
     }
 
     @Override

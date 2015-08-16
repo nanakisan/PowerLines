@@ -16,13 +16,13 @@ public class ClientProxy extends CommonProxy {
     public void registerTileEntitiesRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLargePowerLine.class, new LargePowerLineRenderer());
         MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(PowerLinesMod.large_power_line),
+                Item.getItemFromBlock(PowerLinesMod.blocks.largePowerLine),
                 new LargePowerLineItemRenderer()
             );
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySubStation.class, new SubStationRenderer());
         MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(PowerLinesMod.substation),
+                Item.getItemFromBlock(PowerLinesMod.blocks.subStation),
                 new SubStationItemRenderer()
         );
     }

@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.blocks;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -17,9 +18,7 @@ import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridCreatedMessage;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeConnectedMessage;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridSynchronizationMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
 import java.util.LinkedHashMap;
@@ -81,20 +80,29 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         }
 
         TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) te;
-        UUID grid_uuid = tepgn.getPowerGridUUID();
 
-        if (grid_uuid != null) {
+        tepgn.setNodeUUID(UUID.randomUUID());
+
+        IMessage message = new SetNodeUUIDMessage(x, y, z, tepgn.getNodeUUID());
+        NetworkUtils.broadcastToWorld(world, message);
+
+        if (tepgn.requiresGridUUID()) {
+            tepgn.setGridUUID(UUID.randomUUID());
+
             PowerGridWorldSavedData pgwsd = PowerGridWorldSavedData.get(world);
-            PowerGrid grid = pgwsd.getGridByUUID(grid_uuid);
+            PowerGrid grid = pgwsd.getGridByUUID(tepgn.getPowerGridUUID());
 
-            PowerGridCreatedMessage m1 = new PowerGridCreatedMessage(grid_uuid);
-            NetworkUtils.broadcastToWorld(world, m1);
+            message = new PowerGridCreatedMessage(tepgn.getPowerGridUUID());
+            NetworkUtils.broadcastToWorld(world, message);
+
+            message = new SetGridUUIDMessage(x, y, z, tepgn.getPowerGridUUID());
+            NetworkUtils.broadcastToWorld(world, message);
 
             PowerGridNode node = new PowerGridNode(tepgn.getNodeUUID(), x, y, z, this.isSubStation(), this.getNodeIdentifier());
             grid.connectGridNode(node);
 
-            PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid_uuid, node);
-            NetworkUtils.broadcastToWorld(world, m2);
+            message = new PowerGridNodeConnectedMessage(tepgn.getPowerGridUUID(), node);
+            NetworkUtils.broadcastToWorld(world, message);
 
             grid.connectGrid();
         }

@@ -31,7 +31,7 @@ public class PowerLineUtils {
 
     private static void placeBoundingBlock(World world, int x, int y, int z, int orig_x, int orig_y, int orig_z, int meta)
     {
-        world.setBlock(x, y, z, PowerLinesMod.bounding_box, meta, 2);
+        world.setBlock(x, y, z, PowerLinesMod.blocks.boundingBox, meta, 2);
 
         ((TileEntityBoundingBox) world.getTileEntity(x, y, z)).setParentLocation(orig_x, orig_y, orig_z);
     }

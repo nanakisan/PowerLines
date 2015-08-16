@@ -29,8 +29,8 @@ import untouchedwagons.minecraft.powerlines.tileentity.*;
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.1.0", dependencies = "required-after:CoFHCore")
 public class PowerLinesMod
 {
-    public static final Blocks blocks = new Blocks();
-    public static final Items items = new Items();
+    public static Blocks blocks;
+    public static Items items;
 
     public static Configuration config;
 
@@ -62,6 +62,9 @@ public class PowerLinesMod
 
         if (PowerLinesMod.config.hasChanged()) PowerLinesMod.config.save();
 
+        PowerLinesMod.blocks = new Blocks();
+        PowerLinesMod.items = new Items();
+
         PowerLinesMod.networking = new SimpleNetworkWrapper("powerlines");
         PowerLinesMod.networking.registerMessage(PowerGridSynchronizationMessage.class, PowerGridSynchronizationMessage.class, 0, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridEnergyStateMessage.class, PowerGridEnergyStateMessage.class, 1, Side.CLIENT);
@@ -72,6 +75,8 @@ public class PowerLinesMod
         PowerLinesMod.networking.registerMessage(PowerGridNodeNeighbourshipMessage.class, PowerGridNodeNeighbourshipMessage.class, 6, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(PowerGridConnectionStateMessage.class, PowerGridConnectionStateMessage.class, 7, Side.CLIENT);
         PowerLinesMod.networking.registerMessage(NodeWrenchedMessage.class, NodeWrenchedMessage.class, 8, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(SetNodeUUIDMessage.class, SetNodeUUIDMessage.class, 9, Side.CLIENT);
+        PowerLinesMod.networking.registerMessage(SetGridUUIDMessage.class, SetGridUUIDMessage.class, 10, Side.CLIENT);
 
         GameRegistry.registerBlock(PowerLinesMod.blocks.boundingBox, "BoundingBox");
         GameRegistry.registerTileEntity(TileEntityBoundingBox.class, "BoundingBox");

@@ -15,16 +15,8 @@ import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import java.util.UUID;
 
 public abstract class TileEntityPowerGridNode extends TileEntity {
-    protected UUID node_uuid = UUID.randomUUID();
-    protected UUID grid_uuid;
-
-    public TileEntityPowerGridNode() {
-        this(null);
-    }
-
-    public TileEntityPowerGridNode(UUID grid_uuid) {
-        this.grid_uuid = grid_uuid;
-    }
+    protected UUID node_uuid = null;
+    protected UUID grid_uuid = null;
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -85,8 +77,18 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
         return pgwsd.getGridByUUID(this.getPowerGridUUID()).getGridNode(this.getNodeUUID());
     }
 
+    public boolean requiresGridUUID()
+    {
+        return false;
+    }
+
     public void setGridUUID(UUID grid_uuid) {
         this.grid_uuid = grid_uuid;
+        this.markDirty();
+    }
+
+    public void setNodeUUID(UUID node_uuid) {
+        this.node_uuid = node_uuid;
         this.markDirty();
     }
 }

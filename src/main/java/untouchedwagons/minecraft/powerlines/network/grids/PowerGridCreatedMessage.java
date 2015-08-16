@@ -1,9 +1,11 @@
 package untouchedwagons.minecraft.powerlines.network.grids;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
 import java.util.UUID;
@@ -19,7 +21,9 @@ public class PowerGridCreatedMessage extends AbstractPowerGridMessage<PowerGridC
     @Override
     public IMessage onMessage(PowerGridCreatedMessage message, MessageContext ctx) {
         World world = Minecraft.getMinecraft().theWorld;
-        PowerGridWorldSavedData.get(world).getGridByUUID(message.getGridUUID());
+        PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(message.getGridUUID());
+
+        FMLLog.info(String.format("grid has been created: %b", grid != null));
 
         return null;
     }

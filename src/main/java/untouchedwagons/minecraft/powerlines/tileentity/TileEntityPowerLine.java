@@ -8,8 +8,6 @@ public abstract class TileEntityPowerLine extends TileEntityPowerGridNode {
     private final ConnectionPointCoordinateCalculator calculator;
 
     public TileEntityPowerLine(ConnectionPointCoordinateCalculator calculator) {
-        super(null);
-
         this.calculator = calculator;
     }
 
