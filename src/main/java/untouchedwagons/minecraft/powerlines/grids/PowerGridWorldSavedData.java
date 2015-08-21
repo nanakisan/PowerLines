@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.grids;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;

@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.network.grids;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -49,8 +48,6 @@ public class SetGridUUIDMessage extends AbstractMessage<SetGridUUIDMessage> {
         TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) world.getTileEntity(message.getX(), message.getY(), message.getZ());
 
         tepgn.setGridUUID(message.getGridUUID());
-
-        FMLLog.info(String.format("Setting substation's grid UUID to %s", message.getGridUUID()));
 
         return null;
     }

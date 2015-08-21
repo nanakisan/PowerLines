@@ -4,13 +4,9 @@ import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
-import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
 public class TileEntityFluxedBoundingBox extends TileEntityBoundingBox implements IEnergyStorage, IEnergyConnection, IEnergyHandler {

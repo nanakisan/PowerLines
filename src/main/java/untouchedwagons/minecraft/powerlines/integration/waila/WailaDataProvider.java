@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.integration.waila;
 
-import cpw.mods.fml.common.FMLLog;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -61,20 +60,37 @@ public class WailaDataProvider implements IWailaDataProvider
             tepgn = (TileEntityPowerGridNode) te;
         }
 
+        UUID node_uuid = tepgn.getNodeUUID();
+        UUID grid_uuid = tepgn.getPowerGridUUID();
+
         if(accessor.getPlayer().isSneaking())
         {
-            currenttip.add(
-                    String.format(
-                            "%sNode UUID%s: %s%s%s",
-                            EnumChatFormatting.AQUA,
-                            EnumChatFormatting.RESET,
-                            EnumChatFormatting.GREEN,
-                            tepgn.getNodeUUID(),
-                            EnumChatFormatting.RESET
-                    )
-            );
 
-            UUID grid_uuid = tepgn.getPowerGridUUID();
+            if (node_uuid != null) {
+                currenttip.add(
+                        String.format(
+                                "%sNode UUID%s: %s%s%s",
+                                EnumChatFormatting.AQUA,
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.GREEN,
+                                tepgn.getNodeUUID(),
+                                EnumChatFormatting.RESET
+                        )
+                );
+            }
+            else
+            {
+                currenttip.add(
+                        String.format(
+                                "%sNode UUID%s: %s%s%s",
+                                EnumChatFormatting.AQUA,
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.GREEN,
+                                StatCollector.translateToLocal("text.waila.grid-uuid-none"),
+                                EnumChatFormatting.RESET
+                        )
+                );
+            }
 
             if (grid_uuid != null)
             {
@@ -108,9 +124,9 @@ public class WailaDataProvider implements IWailaDataProvider
             currenttip.add("Sneak to view extra info");
         }
 
-        if (tepgn instanceof TileEntitySubStation)
+        if (tepgn instanceof TileEntitySubStation && grid_uuid != null)
         {
-            PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(tepgn.getPowerGridUUID());
+            PowerGrid grid = PowerGridWorldSavedData.get(accessor.getWorld()).getGridByUUID(grid_uuid);
 
             currenttip.add(
                     String.format(
@@ -159,7 +175,6 @@ public class WailaDataProvider implements IWailaDataProvider
     @Method(modid = "Waila")
     public static void callbackRegister(IWailaRegistrar registrar)
     {
-        FMLLog.info("Registering WAILA data provider");
         WailaDataProvider provider = new WailaDataProvider();
         registrar.registerStackProvider(provider, BlockBoundingBox.class);
 

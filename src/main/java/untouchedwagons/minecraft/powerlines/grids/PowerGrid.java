@@ -62,9 +62,9 @@ public class PowerGrid implements IEnergyStorage {
 
         int substation_count = substations_in_grid.size();
         int connected_substations = substations.size();
-        boolean is_connected = substation_count == connected_substations;
+        this.is_connected = substation_count == connected_substations;
 
-        PowerGridConnectionStateMessage m1 = new PowerGridConnectionStateMessage(this.getGridUUID(), is_connected);
+        PowerGridConnectionStateMessage m1 = new PowerGridConnectionStateMessage(this.getGridUUID(), this.is_connected);
         NetworkUtils.broadcastToWorld(this.world, m1);
     }
 
