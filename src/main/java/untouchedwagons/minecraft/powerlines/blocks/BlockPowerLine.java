@@ -29,14 +29,12 @@ import java.util.UUID;
 abstract public class BlockPowerLine extends Block implements ITileEntityProvider
 {
     private final PowerLineInfo pole_info;
-    private final ITileEntityFactory factory;
 
     private static final Map<String, PowerLineInfo> node_types = new LinkedHashMap<String, PowerLineInfo>();
 
-    protected BlockPowerLine(Material p_i45394_1_, ITileEntityFactory factory, PowerLineInfo pole_info) {
+    protected BlockPowerLine(Material p_i45394_1_, PowerLineInfo pole_info) {
         super(p_i45394_1_);
 
-        this.factory = factory;
         this.pole_info = pole_info;
 
         this.setHardness(2F);
@@ -48,11 +46,6 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
     public PowerLineInfo getPoleInfo() {
         return pole_info;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return this.factory.makeTileEntity(p_149915_1_, p_149915_2_);
     }
 
     @Override
@@ -177,10 +170,5 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             this.max_distance = max_distance;
             this.max_angle = max_angle;
         }
-    }
-
-    public interface ITileEntityFactory
-    {
-        TileEntity makeTileEntity(World p_149915_1_, int p_149915_2_);
     }
 }

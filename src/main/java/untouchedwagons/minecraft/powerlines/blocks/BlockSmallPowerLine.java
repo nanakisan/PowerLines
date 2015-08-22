@@ -10,12 +10,6 @@ public class BlockSmallPowerLine extends BlockPowerLine {
     public BlockSmallPowerLine() {
         super(
                 Material.wood,
-                new ITileEntityFactory() {
-                    @Override
-                    public TileEntity makeTileEntity(World p_149915_1_, int p_149915_2_) {
-                        return new TileEntityMediumPowerLine();
-                    }
-                },
                 new PowerLineInfo(
                         PowerLinesMod.config.get("small-power-line", "max-distance", 48).getInt(),
                         PowerLinesMod.config.get("small-power-line", "max-angle", 45).getDouble()
@@ -34,5 +28,10 @@ public class BlockSmallPowerLine extends BlockPowerLine {
     @Override
     public boolean isSubStation() {
         return false;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+        return new TileEntityMediumPowerLine();
     }
 }

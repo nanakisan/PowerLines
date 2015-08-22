@@ -18,16 +18,10 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 public class BlockSubStation extends BlockPowerLine {
     public BlockSubStation() {
         super(Material.iron,
-                new ITileEntityFactory() {
-                    @Override
-                    public TileEntity makeTileEntity(World p_149915_1_, int p_149915_2_) {
-                        return new TileEntitySubStation();
-                    }
-                },
-                new PowerLineInfo(
-                        PowerLinesMod.config.get("substation", "max-distance", 8).getInt(),
-                        PowerLinesMod.config.get("substation", "max-angle", 45).getDouble()
-                ));
+            new PowerLineInfo(
+                    PowerLinesMod.config.get("substation", "max-distance", 8).getInt(),
+                    PowerLinesMod.config.get("substation", "max-angle", 45).getDouble()
+            ));
 
         this.setHardness(2F);
         this.setStepSound(Block.soundTypeStone);
@@ -101,5 +95,10 @@ public class BlockSubStation extends BlockPowerLine {
     @Override
     public boolean isSubStation() {
         return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+        return new TileEntitySubStation();
     }
 }
