@@ -50,7 +50,7 @@ public class PowerGridWorldSavedData extends WorldSavedData {
         return new_grid;
     }
 
-    protected List<PowerGrid> getGrids()
+    public List<PowerGrid> getGrids()
     {
         return this.grids;
     }

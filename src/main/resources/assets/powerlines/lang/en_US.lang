@@ -3,6 +3,7 @@ tile.large-power-line.name=Large Power Line
 tile.pl-bounding-box.name=Bounding Box
 
 item.grid-linker.name=Power Grid Linker
+item.debugging-stick.name=Debugging Stick
 
 text.grid-linker-not-tile-entity=That's not a Power Grid node
 

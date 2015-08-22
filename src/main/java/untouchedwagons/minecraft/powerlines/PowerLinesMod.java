@@ -88,6 +88,7 @@ public class PowerLinesMod
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");
 
         GameRegistry.registerItem(PowerLinesMod.items.powerGridLinker, "GridLinker", "powerlines");
+        GameRegistry.registerItem(PowerLinesMod.items.debuggingStick, "DebuggingStick", "powerlines");
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }

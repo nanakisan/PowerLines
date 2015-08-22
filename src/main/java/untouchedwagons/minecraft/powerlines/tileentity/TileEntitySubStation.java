@@ -235,13 +235,15 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         if (!(te instanceof IEnergyReceiver))
             return;
 
-
         if (this.getPowerGridUUID() == null)
             return;
 
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(this.getPowerGridUUID());
 
         if (!grid.isConnected())
+            return;
+
+        if (this.getEnergyMode() != EnergyMode.OUTPUT)
             return;
 
         IEnergyReceiver ier = (IEnergyReceiver) te;

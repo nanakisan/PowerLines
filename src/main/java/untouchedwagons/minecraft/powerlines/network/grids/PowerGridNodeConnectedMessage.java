@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.network.grids;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.client.Minecraft;
@@ -36,6 +37,7 @@ public class PowerGridNodeConnectedMessage extends AbstractGridNodeMessage<Power
 
         PowerGridNode node = new PowerGridNode(message.getNodeUUID(), message.getX(), message.getY(), message.getZ(), message.isSubStation(), message.getNodeType());
 
+        FMLLog.info("Connecting node to grid");
         grid.connectGridNode(node);
 
         return null;

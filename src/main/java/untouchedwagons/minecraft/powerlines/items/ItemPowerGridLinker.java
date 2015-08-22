@@ -1,5 +1,6 @@
 package untouchedwagons.minecraft.powerlines.items;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import untouchedwagons.math.MathHelper;
@@ -18,10 +18,7 @@ import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeConnectedMessage;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeDisconnectedMessage;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridNodeNeighbourshipMessage;
-import untouchedwagons.minecraft.powerlines.network.grids.PowerGridSynchronizationMessage;
+import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityPowerGridNode;
 
@@ -162,6 +159,8 @@ public class ItemPowerGridLinker extends Item {
             double distance = MathHelper.calculateDistance(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, that_node.getX(), that_node.getY(), that_node.getZ());
             double angle = MathHelper.calculateAngle(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, that_node.getX(), that_node.getY(), that_node.getZ());
 
+            IMessage message;
+
             // Too far apart?
             if (distance > max_distance)
             {
@@ -185,8 +184,8 @@ public class ItemPowerGridLinker extends Item {
 
                 old_grid.disconnectGridNode(this_node);
 
-                PowerGridNodeDisconnectedMessage m1 = new PowerGridNodeDisconnectedMessage(tepgn.getPowerGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
-                NetworkUtils.broadcastToWorld(world, m1);
+                message = new PowerGridNodeDisconnectedMessage(tepgn.getPowerGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord);
+                NetworkUtils.broadcastToWorld(world, message);
 
                 old_grid.connectGrid();
 
@@ -201,8 +200,11 @@ public class ItemPowerGridLinker extends Item {
                 grid.connectGridNode(this_node);
                 tepgn.setGridUUID(grid_uuid);
 
-                PowerGridNodeConnectedMessage m2 = new PowerGridNodeConnectedMessage(grid.getGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
-                NetworkUtils.broadcastToWorld(world, m2);
+                message = new SetGridUUIDMessage(tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, grid_uuid);
+                NetworkUtils.broadcastToWorld(world, message);
+
+                message = new PowerGridNodeConnectedMessage(grid.getGridUUID(), tepgn.getNodeUUID(), tepgn.xCoord, tepgn.yCoord, tepgn.zCoord, this_block.isSubStation(), this_block.getNodeIdentifier());
+                NetworkUtils.broadcastToWorld(world, message);
             }
 
             // this_node will be null if this node was on the same grid to begin with
@@ -215,8 +217,8 @@ public class ItemPowerGridLinker extends Item {
             that_node.getNeighbours().add(this_node);
             this_node.getNeighbours().add(that_node);
 
-            PowerGridNodeNeighbourshipMessage m3 = new PowerGridNodeNeighbourshipMessage(grid.getGridUUID(), this_node.getNodeUUID(), that_node.getNodeUUID());
-            NetworkUtils.broadcastToWorld(world, m3);
+            message = new PowerGridNodeNeighbourshipMessage(grid_uuid, this_node.getNodeUUID(), that_node.getNodeUUID());
+            NetworkUtils.broadcastToWorld(world, message);
 
             grid.connectGrid();
 

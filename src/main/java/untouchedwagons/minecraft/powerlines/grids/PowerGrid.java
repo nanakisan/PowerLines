@@ -229,4 +229,8 @@ public class PowerGrid implements IEnergyStorage {
     public void setWorld(World world) {
         this.world = world;
     }
+
+    public List<PowerGridNode> getNodes() {
+        return nodes;
+    }
 }
