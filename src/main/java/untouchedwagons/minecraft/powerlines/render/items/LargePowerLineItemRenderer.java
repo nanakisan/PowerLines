@@ -24,9 +24,17 @@ public class LargePowerLineItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, 0);
+
+        if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+        {
+            GL11.glTranslatef(0.75F, 0F, 0.75F);
+        } else if (type == ItemRenderType.INVENTORY)
+        {
+            GL11.glTranslatef(0.75F, 0.125F, 0.75F);
+        }
+
         GL11.glRotatef(180, 0F, 0F, 1F);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        GL11.glScalef(0.20F, 0.20F, 0.20F);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         model.render(null, 0, 0, 0, 0, 0, 0.0625F);

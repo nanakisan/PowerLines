@@ -1,6 +1,5 @@
 package untouchedwagons.minecraft.powerlines.network.grids;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.client.Minecraft;
@@ -23,7 +22,6 @@ public class PowerGridNodeDisconnectedMessage extends AbstractGridNodeMessage<Po
         World world = Minecraft.getMinecraft().theWorld;
         PowerGrid grid = PowerGridWorldSavedData.get(world).getGridByUUID(message.getGridUUID());
 
-        FMLLog.info("Disconnecting node from grid");
         grid.disconnectGridNode(grid.getGridNode(message.getNodeUUID()));
 
         return null;

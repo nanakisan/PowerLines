@@ -118,38 +118,29 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
         UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
 
         if (grid_uuid != null)
-            disconnectFromPowerGrid(grid_uuid, (TileEntityPowerGridNode) te);
+            disconnectFromPowerGrid(world, (TileEntityPowerGridNode) te);
 
         super.breakBlock(world, x, y, z, block, meta);
     }
 
-    @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-        if (!player.capabilities.isCreativeMode && !world.isRemote && canHarvestBlock(player, world.getBlockMetadata(x, y, z)))
-        {
-            EntityItem entityItem = new EntityItem(world, x, y, z, getPickBlock(null, world, x, y, z, player));
-
-            world.spawnEntityInWorld(entityItem);
-        }
-
-        return world.setBlockToAir(x, y, z);
-    }
-
-    public void disconnectFromPowerGrid(UUID grid_uuid, TileEntityPowerGridNode te_node)
+    public void disconnectFromPowerGrid(World world, TileEntityPowerGridNode te_node)
     {
+        UUID grid_uuid = te_node.getPowerGridUUID();
         PowerGrid grid = PowerGridWorldSavedData.get(te_node.getWorldObj()).getGridByUUID(grid_uuid);
         PowerGridNode node = grid.getGridNode(te_node.getNodeUUID());
 
         grid.disconnectGridNode(node);
-        grid.connectGrid();
 
-        // Inform everyone in the world of the changes.
-        PowerGridSynchronizationMessage message = new PowerGridSynchronizationMessage(PowerGridWorldSavedData.get(te_node.getWorldObj()));
+        IMessage message = new PowerGridNodeDisconnectedMessage(grid_uuid, te_node.getNodeUUID(), te_node.xCoord, te_node.yCoord, te_node.zCoord);
+        NetworkUtils.broadcastToWorld(world, message);
 
-        //noinspection unchecked
-        for (EntityPlayer player : (List<EntityPlayer>) te_node.getWorldObj().playerEntities) {
-            PowerLinesMod.networking.sendTo(message, (EntityPlayerMP) player);
+        if (grid.getNodes().size() == 0)
+        {
+            message = new PowerGridDestroyedMessage(grid_uuid);
+            NetworkUtils.broadcastToWorld(world, message);
         }
+
+        grid.connectGrid();
     }
 
     public abstract String getNodeIdentifier();

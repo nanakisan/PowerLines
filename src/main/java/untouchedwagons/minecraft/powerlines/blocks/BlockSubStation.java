@@ -4,8 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
@@ -18,10 +21,10 @@ import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
 public class BlockSubStation extends BlockPowerLine {
     public BlockSubStation() {
         super(Material.iron,
-            new PowerLineInfo(
-                    PowerLinesMod.config.get("substation", "max-distance", 8).getInt(),
-                    PowerLinesMod.config.get("substation", "max-angle", 45).getDouble()
-            ));
+                new PowerLineInfo(
+                        PowerLinesMod.config.get("substation", "max-distance", 8).getInt(),
+                        PowerLinesMod.config.get("substation", "max-angle", 45).getDouble()
+                ));
 
         this.setHardness(2F);
         this.setStepSound(Block.soundTypeStone);
@@ -64,6 +67,11 @@ public class BlockSubStation extends BlockPowerLine {
                         world.isAirBlock(x, y + 3, z + 1);
 
         return super.canPlaceBlockAt(world, x, y, z) && is_air;
+    }
+
+    @Override
+    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
+        return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);
     }
 
     @Override

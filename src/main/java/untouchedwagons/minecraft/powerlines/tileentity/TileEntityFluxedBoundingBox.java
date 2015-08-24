@@ -6,6 +6,7 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import untouchedwagons.minecraft.powerlines.extra.EnergyMode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
@@ -81,13 +82,6 @@ public class TileEntityFluxedBoundingBox extends TileEntityBoundingBox implement
 
     @Override
     public boolean canConnectEnergy(ForgeDirection from) {
-        TileEntitySubStation sub_station = (TileEntitySubStation) worldObj.getTileEntity(this.orig_x, this.orig_y, this.orig_z);
-
-        if (sub_station == null)
-        {
-            return false;
-        }
-
         return from == ForgeDirection.DOWN;
     }
 
@@ -137,6 +131,9 @@ public class TileEntityFluxedBoundingBox extends TileEntityBoundingBox implement
         PowerGrid grid = PowerGridWorldSavedData.get(this.worldObj).getGridByUUID(sub_station.getPowerGridUUID());
 
         if (!grid.isConnected())
+            return;
+
+        if (sub_station.getEnergyMode() != EnergyMode.OUTPUT)
             return;
 
         IEnergyReceiver ier = (IEnergyReceiver) te;

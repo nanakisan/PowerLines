@@ -4,10 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityBoundingBox;
@@ -35,6 +38,11 @@ public class BlockBoundingBox extends Block implements ITileEntityProvider {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
+        return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);
     }
 
     @Override
