@@ -5,6 +5,20 @@ tile.pl-bounding-box.name=Bounding Box
 item.grid-linker.name=Power Grid Linker
 item.debugging-stick.name=Debugging Stick
 
+item.crafting-alpha.0.name=Large Iron Base Plate
+item.crafting-alpha.1.name=Dissipation Grid
+item.crafting-alpha.2.name=Dissipation Grid Panel
+item.crafting-alpha.3.name=Connector
+item.crafting-alpha.4.name=Ceramic Disk
+item.crafting-alpha.5.name=Unfired Ceramic Disk
+item.crafting-alpha.6.name=Long Iron Bar
+item.crafting-alpha.7.name=Small Iron Base Plate
+
+item.crafting-bravo.0.name=Large Powerline Leg
+item.crafting-bravo.1.name=Large Powerline Body
+item.crafting-bravo.2.name=Large Powerline Arm
+item.crafting-bravo.3.name=Large Powerline Cap
+
 text.grid-linker-not-tile-entity=That's not a Power Grid node
 
 text.grid-linker-sneak-info.1=Links power nodes together.

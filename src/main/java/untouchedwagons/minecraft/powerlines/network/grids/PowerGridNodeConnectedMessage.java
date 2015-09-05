@@ -37,7 +37,6 @@ public class PowerGridNodeConnectedMessage extends AbstractGridNodeMessage<Power
 
         PowerGridNode node = new PowerGridNode(message.getNodeUUID(), message.getX(), message.getY(), message.getZ(), message.isSubStation(), message.getNodeType());
 
-        FMLLog.info("Connecting node to grid");
         grid.connectGridNode(node);
 
         return null;

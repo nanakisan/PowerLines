@@ -22,6 +22,8 @@ import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.network.grids.*;
 import untouchedwagons.minecraft.powerlines.proxy.CommonProxy;
+import untouchedwagons.minecraft.powerlines.recipes.CraftingRecipesHandler;
+import untouchedwagons.minecraft.powerlines.recipes.FurnaceRecipesHandler;
 import untouchedwagons.minecraft.powerlines.tileentity.*;
 
 @Mod(modid = "powerlines", name = "Power Lines", version = "0.1.0", dependencies = "required-after:CoFHCore")
@@ -89,6 +91,11 @@ public class PowerLinesMod
 
         GameRegistry.registerItem(PowerLinesMod.items.powerGridLinker, "GridLinker", "powerlines");
         GameRegistry.registerItem(PowerLinesMod.items.debuggingStick, "DebuggingStick", "powerlines");
+        GameRegistry.registerItem(PowerLinesMod.items.craftingAlpha, "CrafitingAlpha", "powerlines");
+        GameRegistry.registerItem(PowerLinesMod.items.craftingBravo, "CrafitingBravo", "powerlines");
+
+        CraftingRecipesHandler.registerRecipes();
+        FurnaceRecipesHandler.registerRecipes();
 
         FMLInterModComms.sendMessage("Waila", "register", "untouchedwagons.minecraft.powerlines.integration.waila.WailaDataProvider.callbackRegister");
     }
