@@ -4,7 +4,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
+import untouchedwagons.minecraft.powerlines.extra.MultiblockPosition;
+import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityMediumPowerLine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockMediumPowerLine extends BlockPowerLine {
     public BlockMediumPowerLine() {
@@ -28,6 +33,11 @@ public class BlockMediumPowerLine extends BlockPowerLine {
     @Override
     public boolean isSubStation() {
         return false;
+    }
+
+    @Override
+    public List<MultiblockPosition> getMultiblockPositions(Rotation rotation) {
+        return new ArrayList<MultiblockPosition>();
     }
 
     @Override

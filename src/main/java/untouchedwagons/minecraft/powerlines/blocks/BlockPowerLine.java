@@ -6,15 +6,10 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import untouchedwagons.minecraft.powerlines.PowerLinesMod;
-import untouchedwagons.minecraft.powerlines.extra.IBoundingBlock;
-import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
+import untouchedwagons.minecraft.powerlines.extra.*;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
@@ -26,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-abstract public class BlockPowerLine extends Block implements ITileEntityProvider
+public abstract class BlockPowerLine extends Block implements ITileEntityProvider
 {
     private final PowerLineInfo pole_info;
 
@@ -49,6 +44,18 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     }
 
     @Override
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+        for (MultiblockPosition mbp : this.getMultiblockPositions(Rotation.NORTH_SOUTH))
+        {
+            if (!world.isAirBlock(x + mbp.getXOffset(), y + mbp.getYOffset(), z + mbp.getZOffset()))
+                return false;
+        }
+
+        return super.canPlaceBlockAt(world, x, y, z);
+    }
+
+    @Override
     public boolean renderAsNormalBlock() { return false; }
 
     @Override
@@ -67,17 +74,19 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
 
         TileEntity te = world.getTileEntity(x, y, z);
 
-        if (te instanceof IBoundingBlock)
-        {
-            ((IBoundingBlock)te).onPlace(entity);
-        }
-
         TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) te;
+
+        tepgn.setRotation(PowerLineUtils.getEntityRotation(entity));
 
         tepgn.setNodeUUID(UUID.randomUUID());
 
         IMessage message = new SetNodeUUIDMessage(x, y, z, tepgn.getNodeUUID());
         NetworkUtils.broadcastToWorld(world, message);
+
+        for (MultiblockPosition mbp : this.getMultiblockPositions(tepgn.getRotation()))
+        {
+            PowerLineUtils.placeBoundingBlock(world, x + mbp.getXOffset(), y + mbp.getYOffset(), z + mbp.getZOffset(), x, y, z, mbp.getType());
+        }
 
         if (tepgn.requiresGridUUID()) {
             tepgn.setGridUUID(UUID.randomUUID());
@@ -109,10 +118,14 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
             return;
 
         TileEntity te = world.getTileEntity(x, y, z);
+        TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) te;
 
-        if (te instanceof IBoundingBlock)
+        for (MultiblockPosition mbp : this.getMultiblockPositions(tepgn.getRotation()))
         {
-            ((IBoundingBlock)te).onBreak();
+            if (mbp.getType() == MultiblockPosition.BoundingBlockType.None)
+                continue;
+
+            world.setBlockToAir(x + mbp.getXOffset(), y + mbp.getYOffset(), z + mbp.getZOffset());
         }
 
         UUID grid_uuid = ((TileEntityPowerGridNode)te).getPowerGridUUID();
@@ -146,6 +159,8 @@ abstract public class BlockPowerLine extends Block implements ITileEntityProvide
     public abstract String getNodeIdentifier();
 
     public abstract boolean isSubStation();
+
+    public abstract List<MultiblockPosition> getMultiblockPositions(Rotation rotation);
 
     public static PowerLineInfo getPowerLineInfoByType(String node_type)
     {

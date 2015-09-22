@@ -19,92 +19,12 @@ import untouchedwagons.minecraft.powerlines.extra.*;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
-public class TileEntitySubStation extends TileEntityPowerGridNode implements IBoundingBlock, IEnergyStorage, IEnergyConnection, IEnergyHandler, IWrenchable {
+public class TileEntitySubStation extends TileEntityPowerGridNode implements IEnergyStorage, IEnergyConnection, IEnergyHandler, IWrenchable {
 
     private EnergyMode mode = EnergyMode.INPUT;
-    private Rotation rotation = Rotation.NORTH_SOUTH;
 
     public TileEntitySubStation() {
 
-    }
-
-    @Override
-    public void onPlace(EntityLivingBase entity) {
-        int player_direction = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-        switch (player_direction)
-        {
-            case 0:
-            case 2:
-                this.rotation = Rotation.NORTH_SOUTH;
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-
-                break;
-            case 1:
-            case 3:
-                this.rotation = Rotation.EAST_WEST;
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-                PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-                break;
-        }
-
-        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord, this.yCoord + 3, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
-
-        // The four corners are dumb fluxed bounding boxes. They can report the energy state, but cannot handle power
-        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord - 1, this.xCoord, this.yCoord, this.zCoord);
-        PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord + 1, this.xCoord, this.yCoord, this.zCoord);
-
-        for (int x = -1; x < 2; x++)
-        {
-            for (int y = 1; y < 3; y++)
-            {
-                for (int z = -1; z < 2; z++)
-                {
-                    PowerLineUtils.placeDumbFluxedBoundingBlock(this.worldObj, this.xCoord + x, this.yCoord + y, this.zCoord + z, this.xCoord, this.yCoord, this.zCoord);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onBreak() {
-        for (int x = -1; x < 2; x++)
-        {
-            for (int y = 0; y < 3; y++)
-            {
-                for (int z = -1; z < 2; z++)
-                {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-
-                    this.worldObj.setBlockToAir(this.xCoord + x, this.yCoord + y, this.zCoord + z);
-                }
-            }
-        }
-
-        this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord);
-
-        if (this.getRotation() == Rotation.NORTH_SOUTH)
-        {
-            this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord - 1);
-            this.worldObj.setBlockToAir(this.xCoord, this.yCoord + 3, this.zCoord + 1);
-        }
-        else if (this.getRotation() == Rotation.EAST_WEST)
-        {
-            this.worldObj.setBlockToAir(this.xCoord - 1, this.yCoord + 3, this.zCoord);
-            this.worldObj.setBlockToAir(this.xCoord + 1, this.yCoord + 3, this.zCoord);
-        }
     }
 
     @Override
@@ -112,7 +32,6 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         super.readFromNBT(nbt);
 
         this.mode = EnergyMode.fromString(nbt.getString("mode"));
-        this.rotation = Rotation.fromString(nbt.getString("rotation"));
     }
 
     @Override
@@ -120,7 +39,6 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         super.writeToNBT(nbt);
 
         nbt.setString("mode", this.mode.toString());
-        nbt.setString("rotation", this.rotation.toString());
     }
 
     @Override
@@ -218,11 +136,6 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
         return mode;
     }
 
-    public Rotation getRotation()
-    {
-        return this.rotation;
-    }
-
     @Override
     public boolean requiresGridUUID() {
         return true;
@@ -262,6 +175,6 @@ public class TileEntitySubStation extends TileEntityPowerGridNode implements IBo
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, this.xCoord + 1, this.yCoord + 4, this.zCoord + 1);
+        return AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, this.xCoord + 1, this.yCoord + 3, this.zCoord + 1);
     }
 }

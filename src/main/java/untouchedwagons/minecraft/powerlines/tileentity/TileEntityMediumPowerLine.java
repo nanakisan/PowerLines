@@ -2,8 +2,8 @@ package untouchedwagons.minecraft.powerlines.tileentity;
 
 import untouchedwagons.minecraft.powerlines.extra.ConnectionPointCoordinateCalculator;
 
-public class TileEntityMediumPowerLine extends TileEntityPowerLine {
+public class TileEntityMediumPowerLine extends TileEntityPowerGridNode {
     public TileEntityMediumPowerLine() {
-        super(new ConnectionPointCoordinateCalculator(8));
+        super();
     }
 }

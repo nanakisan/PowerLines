@@ -12,11 +12,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
+import untouchedwagons.minecraft.powerlines.extra.MultiblockPosition;
 import untouchedwagons.minecraft.powerlines.extra.NetworkUtils;
+import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGrid;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.network.NodeWrenchedMessage;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntitySubStation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockSubStation extends BlockPowerLine {
     public BlockSubStation() {
@@ -47,26 +52,6 @@ public class BlockSubStation extends BlockPowerLine {
     public int getRenderType()
     {
         return -1;
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-
-        boolean is_air = world.isAirBlock(x - 1, y, z - 1) &&
-                        world.isAirBlock(x - 1, y, z) &&
-                        world.isAirBlock(x - 1, y, z + 1) &&
-                        world.isAirBlock(x, y, z - 1) &&
-                        world.isAirBlock(x, y, z + 1) &&
-                        world.isAirBlock(x + 1, y, z - 1) &&
-                        world.isAirBlock(x + 1, y, z) &&
-                        world.isAirBlock(x + 1, y, z + 1) &&
-                        world.isAirBlock(x - 1, y + 3, z) &&
-                        world.isAirBlock(x + 1, y + 3, z) &&
-                        world.isAirBlock(x, y + 3, z) &&
-                        world.isAirBlock(x, y + 3, z - 1) &&
-                        world.isAirBlock(x, y + 3, z + 1);
-
-        return super.canPlaceBlockAt(world, x, y, z) && is_air;
     }
 
     @Override
@@ -103,6 +88,62 @@ public class BlockSubStation extends BlockPowerLine {
     @Override
     public boolean isSubStation() {
         return true;
+    }
+
+    @Override
+    public List<MultiblockPosition> getMultiblockPositions(Rotation rotation) {
+        List<MultiblockPosition> positions = new ArrayList<MultiblockPosition>();
+
+        if (rotation == Rotation.NORTH_SOUTH)
+        {
+            /*
+             * The reason for having a None bounding block type is due to a limitation in Block.canPlaceBlockAt. Since
+             * no entity object is given, it cannot be determined what the orientation of the multiblock will be. Thus
+             * the North/South orientation must include the position of blocks unique to the East/West rotation. No
+             * actual blocks will ever be placed but no non-air blocks must exist at those spots
+             */
+            positions.add(new MultiblockPosition(-1, 3, -1, MultiblockPosition.BoundingBlockType.None));
+            positions.add(new MultiblockPosition(-1, 3, 0, MultiblockPosition.BoundingBlockType.None));
+            positions.add(new MultiblockPosition(1, 3, -1, MultiblockPosition.BoundingBlockType.None));
+            positions.add(new MultiblockPosition(1, 3, 0, MultiblockPosition.BoundingBlockType.None));
+            positions.add(new MultiblockPosition(-1, 3, 1, MultiblockPosition.BoundingBlockType.None));
+            positions.add(new MultiblockPosition(1, 3, 1, MultiblockPosition.BoundingBlockType.None));
+
+            positions.add(new MultiblockPosition(0, 3, -1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(0, 3, 1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(0, 0, -1, MultiblockPosition.BoundingBlockType.Fluxed));
+            positions.add(new MultiblockPosition(0, 0, 1, MultiblockPosition.BoundingBlockType.Fluxed));
+            positions.add(new MultiblockPosition(-1, 0, 0, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(1, 0, 0, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        }
+        else
+        {
+            positions.add(new MultiblockPosition(-1, 3, 0, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(1, 3, 0, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(-1, 0, 0, MultiblockPosition.BoundingBlockType.Fluxed));
+            positions.add(new MultiblockPosition(1, 0, 0, MultiblockPosition.BoundingBlockType.Fluxed));
+            positions.add(new MultiblockPosition(0, 0, -1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+            positions.add(new MultiblockPosition(0, 0, 1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        }
+
+        positions.add(new MultiblockPosition(0, 3, 0, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        positions.add(new MultiblockPosition(-1, 0, -1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        positions.add(new MultiblockPosition(-1, 0, 1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        positions.add(new MultiblockPosition(1, 0, -1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+        positions.add(new MultiblockPosition(1, 0, 1, MultiblockPosition.BoundingBlockType.DumbFluxed));
+
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = 1; y < 3; y++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    positions.add(new MultiblockPosition(x, y, z, MultiblockPosition.BoundingBlockType.DumbFluxed));
+                }
+            }
+        }
+
+        return positions;
     }
 
     @Override

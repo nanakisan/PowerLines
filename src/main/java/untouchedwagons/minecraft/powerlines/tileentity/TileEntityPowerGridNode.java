@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import untouchedwagons.minecraft.powerlines.blocks.BlockPowerLine;
 import untouchedwagons.minecraft.powerlines.extra.ConnectionPoint;
 import untouchedwagons.minecraft.powerlines.extra.ConnectionPointCoordinate;
+import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridNode;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 
@@ -18,6 +19,8 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
     protected UUID node_uuid = null;
     protected UUID grid_uuid = null;
 
+    protected Rotation rotation = Rotation.NORTH_SOUTH;
+
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
@@ -26,6 +29,7 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
 
         String grid_uuid = nbt.getString("grid-uuid");
         this.grid_uuid = grid_uuid.equals("") ? null : UUID.fromString(grid_uuid);
+        this.rotation = Rotation.fromString(nbt.getString("rotation"));
     }
 
     @Override
@@ -34,6 +38,7 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
 
         nbt.setString("node-uuid", this.node_uuid.toString());
         nbt.setString("grid-uuid", this.grid_uuid != null ? this.grid_uuid.toString() : "");
+        nbt.setString("rotation", this.rotation.toString());
     }
 
     @Override
@@ -68,6 +73,15 @@ public abstract class TileEntityPowerGridNode extends TileEntity {
 
     public UUID getNodeUUID() {
         return node_uuid;
+    }
+
+    public Rotation getRotation()
+    {
+        return this.rotation;
+    }
+
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
     }
 
     public PowerGridNode getPowerGridNode()

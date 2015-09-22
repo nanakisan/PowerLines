@@ -5,6 +5,7 @@ public enum Rotation {
 
     private final String rotation;
 
+    public static final Rotation[] ROTATION_MAP = { NORTH_SOUTH, EAST_WEST, NORTH_SOUTH, EAST_WEST };
     public static final Rotation[] VALID_ROTATIONS = { NORTH_SOUTH, EAST_WEST };
     public static final int[] OPPOSITES = { 1, 0, 0 };
 
@@ -27,6 +28,11 @@ public enum Rotation {
         }
 
         return Rotation.UNKNOWN;
+    }
+
+    public static Rotation fromInt(int rotation)
+    {
+        return ROTATION_MAP[rotation];
     }
 
     @Override

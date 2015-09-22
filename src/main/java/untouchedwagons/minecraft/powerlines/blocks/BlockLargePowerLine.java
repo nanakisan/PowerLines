@@ -4,7 +4,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import untouchedwagons.minecraft.powerlines.PowerLinesMod;
+import untouchedwagons.minecraft.powerlines.extra.MultiblockPosition;
+import untouchedwagons.minecraft.powerlines.extra.Rotation;
 import untouchedwagons.minecraft.powerlines.tileentity.TileEntityLargePowerLine;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockLargePowerLine extends BlockPowerLine {
     public BlockLargePowerLine() {
@@ -18,17 +23,6 @@ public class BlockLargePowerLine extends BlockPowerLine {
 
         this.setBlockName("large-power-line");
         this.setBlockTextureName("powerlines:large-power-line");
-
-        this.setBlockBounds(0, 0, 0, 1, 4, 1);
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        boolean is_air = world.isAirBlock(x, y + 1, z) &&
-                        world.isAirBlock(x, y + 2, z) &&
-                        world.isAirBlock(x, y + 3, z);
-
-        return super.canPlaceBlockAt(world, x, y, z) && is_air;
     }
 
     @Override
@@ -39,6 +33,26 @@ public class BlockLargePowerLine extends BlockPowerLine {
     @Override
     public boolean isSubStation() {
         return false;
+    }
+
+    @Override
+    public List<MultiblockPosition> getMultiblockPositions(Rotation rotation) {
+        List<MultiblockPosition> positions = new ArrayList<MultiblockPosition>();
+
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    if (x == 0 && y == 0 && z == 0) continue;
+
+                    positions.add(new MultiblockPosition(x, y, z, MultiblockPosition.BoundingBlockType.Simple));
+                }
+            }
+        }
+
+        return positions;
     }
 
     @Override
