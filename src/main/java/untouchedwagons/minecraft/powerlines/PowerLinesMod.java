@@ -18,6 +18,7 @@ import untouchedwagons.minecraft.powerlines.blocks.Blocks;
 import untouchedwagons.minecraft.powerlines.grids.PowerGridWorldSavedData;
 import untouchedwagons.minecraft.powerlines.items.Items;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockLargePowerLine;
+import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockMediumPowerLine;
 import untouchedwagons.minecraft.powerlines.items.blocks.ItemBlockSubStation;
 import untouchedwagons.minecraft.powerlines.network.*;
 import untouchedwagons.minecraft.powerlines.network.grids.*;
@@ -85,6 +86,9 @@ public class PowerLinesMod
 
         GameRegistry.registerBlock(PowerLinesMod.blocks.largePowerLine, ItemBlockLargePowerLine.class, "LargePowerLine");
         GameRegistry.registerTileEntity(TileEntityLargePowerLine.class, "LargePowerLine");
+
+        GameRegistry.registerBlock(PowerLinesMod.blocks.mediumPowerLine, ItemBlockMediumPowerLine.class, "MediumPowerLine");
+        GameRegistry.registerTileEntity(TileEntityMediumPowerLine.class, "MediumPowerLine");
 
         GameRegistry.registerBlock(PowerLinesMod.blocks.subStation, ItemBlockSubStation.class, "SubStation");
         GameRegistry.registerTileEntity(TileEntitySubStation.class, "SubStation");

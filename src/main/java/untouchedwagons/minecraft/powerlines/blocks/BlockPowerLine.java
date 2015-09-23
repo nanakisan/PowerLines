@@ -77,7 +77,6 @@ public abstract class BlockPowerLine extends Block implements ITileEntityProvide
         TileEntityPowerGridNode tepgn = (TileEntityPowerGridNode) te;
 
         tepgn.setRotation(PowerLineUtils.getEntityRotation(entity));
-
         tepgn.setNodeUUID(UUID.randomUUID());
 
         IMessage message = new SetNodeUUIDMessage(x, y, z, tepgn.getNodeUUID());

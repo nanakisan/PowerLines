@@ -1,5 +1,6 @@
 tile.sub-station.name=Substation
 tile.large-power-line.name=Large Power Line
+tile.medium-power-line.name=Medium Power Line
 tile.pl-bounding-box.name=Bounding Box
 
 item.grid-linker.name=Power Grid Linker
