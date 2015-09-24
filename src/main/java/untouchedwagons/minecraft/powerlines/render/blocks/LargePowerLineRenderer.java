@@ -19,9 +19,9 @@ public class LargePowerLineRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntityLargePowerLine te, double x, double y, double z, float partialTick) {
-        GL11.glPushMatrix();
-
         bindTexture(texture);
+
+        GL11.glPushMatrix();
 
         if (te.getRotation() == Rotation.EAST_WEST)
         {

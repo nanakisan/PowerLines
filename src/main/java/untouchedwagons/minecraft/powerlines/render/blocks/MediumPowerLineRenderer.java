@@ -26,9 +26,9 @@ public class MediumPowerLineRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntityMediumPowerLine te, double x, double y, double z, float partialTick) {
-        GL11.glPushMatrix();
-
         bindTexture(texture);
+
+        GL11.glPushMatrix();
 
         if (te.getRotation() == Rotation.EAST_WEST)
         {
