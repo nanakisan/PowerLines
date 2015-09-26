@@ -4,12 +4,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
-import untouchedwagons.minecraft.powerlines.models.ModelSubStation;
 
 public class SubStationItemRenderer implements IItemRenderer {
-    private final ModelSubStation model = new ModelSubStation();
-    private final ResourceLocation texture = new ResourceLocation("powerlines", "render/subStation.png");
+    private final ResourceLocation texture;
+    private final ResourceLocation obj_model;
+    private final IModelCustom model;
+
+    public SubStationItemRenderer() {
+        texture = new ResourceLocation("powerlines", "render/subStation.png");
+        obj_model = new ResourceLocation("powerlines", "models/SubStation.obj");
+        model = AdvancedModelLoader.loadModel(obj_model);
+    }
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -23,6 +31,8 @@ public class SubStationItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+
         GL11.glPushMatrix();
 
         if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
@@ -30,11 +40,9 @@ public class SubStationItemRenderer implements IItemRenderer {
             GL11.glTranslatef(0.75F, 0.4F, 0.75F);
         }
 
-        GL11.glRotatef(180, 0F, 0F, 1F);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        model.render(null, 0, 0, 0, 0, 0, 0.0625F);
+        model.renderAll();
 
         GL11.glPopMatrix();
     }

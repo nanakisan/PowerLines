@@ -10,6 +10,6 @@ public class TileEntityLargePowerLine extends TileEntityPowerGridNode {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, this.xCoord + 1, this.yCoord + 8, this.zCoord + 1);
+        return AxisAlignedBB.getBoundingBox(this.xCoord - 2, this.yCoord, this.zCoord - 2, this.xCoord + 2, this.yCoord + 12, this.zCoord + 2);
     }
 }

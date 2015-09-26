@@ -15,9 +15,9 @@ public class MediumPowerLineRenderer extends TileEntitySpecialRenderer {
     private final IModelCustom model;
 
     public MediumPowerLineRenderer() {
-        texture = new ResourceLocation("powerlines", "render/mediumPowerLine.png");
-        obj_model = new ResourceLocation("powerlines", "models/MediumPowerLine.obj");
-        model = AdvancedModelLoader.loadModel(obj_model);
+        this.texture = new ResourceLocation("powerlines", "render/mediumPowerLine.png");
+        this.obj_model = new ResourceLocation("powerlines", "models/MediumPowerLine.obj");
+        this.model = AdvancedModelLoader.loadModel(obj_model);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MediumPowerLineRenderer extends TileEntitySpecialRenderer {
 
         GL11.glScaled(6.25, 6.25, 6.25);
 
-        model.renderAll();
+        this.model.renderAll();
 
         GL11.glPopMatrix();
     }
