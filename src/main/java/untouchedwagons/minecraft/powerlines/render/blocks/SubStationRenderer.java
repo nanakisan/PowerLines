@@ -34,9 +34,9 @@ public class SubStationRenderer extends TileEntitySpecialRenderer {
      * @param partialTick /me shrugs
      */
     public void renderTileEntityAt(TileEntitySubStation te, double x, double y, double z, float partialTick) {
+        GL11.glPushMatrix();
         bindTexture(texture);
 
-        GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
         if (te.getRotation() == Rotation.EAST_WEST)
