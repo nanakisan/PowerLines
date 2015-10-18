@@ -40,7 +40,7 @@ public class MediumPowerLineRenderer extends TileEntitySpecialRenderer {
             GL11.glTranslated(x, y, z + 1);
         }
 
-        GL11.glScaled(6.25, 6.25, 6.25);
+        GL11.glScaled(0.62, 0.62, 0.62);
 
         this.model.renderAll();
 

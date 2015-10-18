@@ -39,7 +39,7 @@ public class LargePowerLineItemRenderer implements IItemRenderer {
             GL11.glScalef(0.20F, 0.20F, 0.20F);
         } else if (type == ItemRenderType.INVENTORY)
         {
-            GL11.glTranslatef(0.25F, 0F, 0.75F);
+            GL11.glTranslatef(0.75F, 0.1F, 0.75F);
             GL11.glScalef(0.1F, 0.1F, 0.1F);
         }
 

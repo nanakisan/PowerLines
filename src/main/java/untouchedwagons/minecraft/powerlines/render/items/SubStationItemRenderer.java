@@ -39,8 +39,12 @@ public class SubStationItemRenderer implements IItemRenderer {
         {
             GL11.glTranslatef(0.75F, 0.4F, 0.75F);
         }
+        else if (type == ItemRenderType.INVENTORY)
+        {
+            GL11.glTranslatef(0.75F, 0.2F, 0.75F);
+        }
 
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        GL11.glScalef(0.2F, 0.2F, 0.2F);
 
         model.renderAll();
 

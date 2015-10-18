@@ -30,14 +30,11 @@ public class LargePowerLineRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
 
+        GL11.glTranslated(x + 0.5, y, z + 0.5);
+
         if (te.getRotation() == Rotation.EAST_WEST)
         {
-            GL11.glTranslated(x + 2.9, y, z + 2.9);
             GL11.glRotated(90, 0, 1, 0);
-        }
-        else
-        {
-            GL11.glTranslated(x - 1.9, y, z + 2.9);
         }
 
         this.model.renderAll();

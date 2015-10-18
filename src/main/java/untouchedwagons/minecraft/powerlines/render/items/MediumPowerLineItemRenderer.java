@@ -36,7 +36,8 @@ public class MediumPowerLineItemRenderer implements IItemRenderer {
         if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
         {
             GL11.glTranslatef(0.75F, 0F, 0.75F);
-        } else if (type == ItemRenderType.INVENTORY)
+        }
+        else if (type == ItemRenderType.INVENTORY)
         {
             GL11.glTranslatef(0.75F, 0.125F, 0.75F);
         }
